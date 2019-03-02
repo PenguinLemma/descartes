@@ -8,6 +8,7 @@ set(HEADERS
     dielectric.h
     hitable.h
     hitable_list.h
+    image.h
     lambertian.h
     material.h
     metal.h

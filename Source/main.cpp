@@ -4,9 +4,11 @@
 #include <random>
 #include <chrono>
 #include <limits>
+#include <algorithm>
 #include "hitable_list.h"
 #include "sphere.h"
 #include "camera.h"
+#include "image.h"
 #include "lambertian.h"
 #include "metal.h"
 #include "dielectric.h"
@@ -97,7 +99,6 @@ std::vector<std::unique_ptr<Hitable> > CreateRandomScene()
     return spheres;
 }
 
-
 } // namespace descartes
 
 } // namespace plemma
@@ -106,25 +107,19 @@ int main() {
 
     using plemma::descartes::RealNum;
     using plemma::descartes::Vec3;
-    int nx = 2000;
-    int ny = 1500;
-    int n_rays_per_pixel = 100;
-    std::ofstream myimage;
+    using plemma::descartes::Image;
+    uint16_t nx = 2000;
+    uint16_t ny = 1500;
+    uint16_t n_rays_per_pixel = 100;
 
-    myimage.open("../myimage.ppm");
-    myimage << "P3\n" << nx << " " << ny << "\n255\n";
-    RealNum nny = static_cast<RealNum>(ny);
-    RealNum nnx = static_cast<RealNum>(nx);
 
     Vec3 lookfrom(10.0f, 1.4f, 2.0f);
     Vec3 lookat(3.5f, 0.6f, 0.5f);
     RealNum dist_to_focus = (lookfrom - lookat).Norm();
     RealNum aperture = 0.1f;
+    RealNum aspect = static_cast<RealNum>(nx) / static_cast<RealNum>(ny);
 
-    plemma::descartes::my_engine();
-    std::uniform_real_distribution<RealNum> dist(0.0, 1.0);
-
-    plemma::descartes::Camera cam(lookfrom, lookat, Vec3(0.0f, 1.0f, 0.0f), 30.0f, nnx / nny, aperture, dist_to_focus);
+    plemma::descartes::Camera cam(lookfrom, lookat, Vec3(0.0f, 1.0f, 0.0f), 30.0f, aspect, aperture, dist_to_focus);
 
     std::cout << "------ Welcome to Descartes ------" << std::endl;
     std::cout << std::endl << std::endl;
@@ -138,18 +133,24 @@ int main() {
 
     std::cout << "0% processing completed." << std::endl;
 
+    Image image(nx, ny);
+
     int percentage_completed = 0;
     int prev_percentage_written = 0;
     const int initial_depth = 0;
-    for (int j = ny-1; j >= 0; --j)
+    RealNum width = static_cast<RealNum>(nx);
+    RealNum height = static_cast<RealNum>(ny);
+    plemma::descartes::my_engine();
+    std::uniform_real_distribution<RealNum> dist(0.0, 1.0);
+    for (uint16_t i = 0U; i < nx; ++i)
     {
-        for (int i = 0; i < nx; ++i)
+        for (uint16_t j = 0U; j < ny; ++j)
         {
             Vec3 color(0.0, 0.0, 0.0);
-            for (int s = 0; s < n_rays_per_pixel; ++s)
+            for (uint16_t s = 0U; s < n_rays_per_pixel; ++s)
             {
-                RealNum u = (static_cast<RealNum>(i) + dist(plemma::descartes::my_engine()))/nnx;
-                RealNum v = (static_cast<RealNum>(j) + dist(plemma::descartes::my_engine()))/nny;
+                RealNum u = (static_cast<RealNum>(i) + dist(plemma::descartes::my_engine())) / width;
+                RealNum v = (static_cast<RealNum>(j) + dist(plemma::descartes::my_engine())) / height;
 
                 plemma::descartes::Ray r = cam.GetRay(u,v);
 
@@ -158,14 +159,13 @@ int main() {
 
             color /= static_cast<RealNum>(n_rays_per_pixel);
             // The sqrts below are for gamma correction -> read about it
-            int red = static_cast<int>(255.9999*sqrt(color.R()));
-            int green = static_cast<int>(255.9999*sqrt(color.G()));
-            int blue = static_cast<int>(255.9999*sqrt(color.B()));
-
-            myimage << red << " " << green << " " << blue << std::endl;
+            auto gamma_correction = [](RealNum x){ return static_cast<RealNum>(std::sqrt(x)); };
+            std::transform(color.Begin(), color.End(), color.Begin(), gamma_correction);
+            color *= static_cast<RealNum>(255.9999);
+            image.PaintPixel(i, j, color);
         }
 
-        percentage_completed = static_cast<int>(100.0 * (1.0 - static_cast<RealNum>(j + 1) / nny));
+        percentage_completed = static_cast<int>(100.0 * (static_cast<RealNum>(i + 1) / width));
         if (static_cast<int>(percentage_completed) >= prev_percentage_written + 5)
         {
             int to_write = percentage_completed - (percentage_completed % 5);
@@ -174,11 +174,10 @@ int main() {
         }
     }
 
+    image.Save("../myimage.ppm");
+
     std::cout << "100% processing completed." << std::endl;
     std::cout << std::endl;
-    std::cout << "---- RayTracer.exe FINISHED ITS JOB ----" << std::endl;
+    std::cout << "---- Descartes.exe FINISHED ITS JOB ----" << std::endl;
     std::cout << "Results can be seen in 'myimage.ppm', in the root of this repo." << std::endl << std::endl;
-
-    myimage.close();
 }
-

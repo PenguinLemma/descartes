@@ -29,6 +29,8 @@ public:
     inline Vec3 operator-() const { return Vec3(-comp_[0], -comp_[1], -comp_[2]); }
     inline RealNum operator[](int i) const { return comp_[i]; }
     inline RealNum& operator[](int i) { return comp_[i]; }
+    inline auto Begin() { return comp_.begin(); }
+    inline auto End() { return comp_.end(); }
 
     inline Vec3& operator+=(const Vec3& v);
     inline Vec3& operator-=(const Vec3& v);
