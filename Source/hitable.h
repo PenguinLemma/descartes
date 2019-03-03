@@ -5,7 +5,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 class Material;
@@ -25,6 +25,6 @@ public:
     virtual ~Hitable() {}
 };
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma

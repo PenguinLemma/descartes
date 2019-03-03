@@ -6,7 +6,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 class Material
@@ -16,6 +16,6 @@ public:
                          Vec3& attenuation, Ray& scattered_ray) const = 0;
 };
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma

@@ -8,7 +8,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 class HitableList : public Hitable
@@ -47,6 +47,6 @@ void HitableList::Add(std::unique_ptr<Hitable>&& hitable)
     hitables_.push_back(std::move(hitable));
 }
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma

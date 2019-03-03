@@ -7,7 +7,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 class Metal : public Material
@@ -30,6 +30,6 @@ private:
     RealNum fuzz_;
 };
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma

@@ -5,7 +5,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 std::default_random_engine& my_engine()
@@ -15,6 +15,6 @@ std::default_random_engine& my_engine()
     return eng;
 }
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma

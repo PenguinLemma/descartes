@@ -9,7 +9,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 class Sphere: public Hitable
@@ -57,6 +57,6 @@ bool Sphere::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) con
     return false;
 }
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma

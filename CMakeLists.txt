@@ -1,8 +1,8 @@
-# Building Descartes with CMake
+# Building Glancy with CMake
 
 cmake_minimum_required(VERSION 3.0)
 
-project(Descartes)
+project(Glancy)
 
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})

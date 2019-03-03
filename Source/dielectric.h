@@ -10,7 +10,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 class Dielectric : public Material
@@ -66,6 +66,6 @@ private:
     RealNum refraction_index_;
 };
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma

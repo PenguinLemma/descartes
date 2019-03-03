@@ -19,4 +19,4 @@ set(HEADERS
     vec3.h
 )
 
-add_executable(Descartes ${SOURCES} ${HEADERS})
+add_executable(Glancy ${SOURCES} ${HEADERS})

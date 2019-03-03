@@ -7,7 +7,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 typedef float RealNum;
@@ -218,6 +218,6 @@ inline bool Refract(const Vec3& v, const Vec3& n, RealNum ni_over_nt, Vec3& refr
     return false;
 }
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma

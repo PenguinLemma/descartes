@@ -5,7 +5,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 inline RealNum Schlick(RealNum cosine, RealNum refraction_index)
@@ -15,6 +15,6 @@ inline RealNum Schlick(RealNum cosine, RealNum refraction_index)
     return r0 + (1.0 - r0) * std::pow((1.0 - cosine), 5.0);
 }
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma

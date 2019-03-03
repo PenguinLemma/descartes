@@ -4,7 +4,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 class Ray
@@ -20,6 +20,6 @@ public:
     Vec3 direction_;
 };
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma

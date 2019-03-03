@@ -6,7 +6,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 class Camera
@@ -48,6 +48,6 @@ private:
     RealNum lens_radius_;
 };
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma

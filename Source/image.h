@@ -7,7 +7,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 class Image
@@ -41,6 +41,6 @@ void Image::Save(const std::string& file_path) const
     myimage.close();
 }
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma

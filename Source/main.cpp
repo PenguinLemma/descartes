@@ -16,7 +16,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 Vec3 GetColor(const Ray& r, HitableList& world, int depth)
@@ -99,15 +99,15 @@ std::vector<std::unique_ptr<Hitable> > CreateRandomScene()
     return spheres;
 }
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma
 
 int main() {
 
-    using plemma::descartes::RealNum;
-    using plemma::descartes::Vec3;
-    using plemma::descartes::Image;
+    using plemma::glancy::RealNum;
+    using plemma::glancy::Vec3;
+    using plemma::glancy::Image;
     uint16_t nx = 2000;
     uint16_t ny = 1500;
     uint16_t n_rays_per_pixel = 100;
@@ -119,16 +119,16 @@ int main() {
     RealNum aperture = 0.1f;
     RealNum aspect = static_cast<RealNum>(nx) / static_cast<RealNum>(ny);
 
-    plemma::descartes::Camera cam(lookfrom, lookat, Vec3(0.0f, 1.0f, 0.0f), 30.0f, aspect, aperture, dist_to_focus);
+    plemma::glancy::Camera cam(lookfrom, lookat, Vec3(0.0f, 1.0f, 0.0f), 30.0f, aspect, aperture, dist_to_focus);
 
-    std::cout << "------ Welcome to Descartes ------" << std::endl;
+    std::cout << "------ Welcome to Glancy ------" << std::endl;
     std::cout << std::endl << std::endl;
     std::cout << "Creating random spheres distribution" << std::endl;
     std::cout << std::endl;
 
-    plemma::descartes::HitableList world(plemma::descartes::CreateRandomScene());
+    plemma::glancy::HitableList world(plemma::glancy::CreateRandomScene());
 
-    std::cout << "Please, wait patiently while Descartes is enlightened" << std::endl;
+    std::cout << "Please, wait patiently while Glancy is enlightened" << std::endl;
     std::cout << std::endl;
 
     std::cout << "0% processing completed." << std::endl;
@@ -140,7 +140,7 @@ int main() {
     const int initial_depth = 0;
     RealNum width = static_cast<RealNum>(nx);
     RealNum height = static_cast<RealNum>(ny);
-    plemma::descartes::my_engine();
+    plemma::glancy::my_engine();
     std::uniform_real_distribution<RealNum> dist(0.0, 1.0);
     for (uint16_t i = 0U; i < nx; ++i)
     {
@@ -149,10 +149,10 @@ int main() {
             Vec3 color(0.0, 0.0, 0.0);
             for (uint16_t s = 0U; s < n_rays_per_pixel; ++s)
             {
-                RealNum u = (static_cast<RealNum>(i) + dist(plemma::descartes::my_engine())) / width;
-                RealNum v = (static_cast<RealNum>(j) + dist(plemma::descartes::my_engine())) / height;
+                RealNum u = (static_cast<RealNum>(i) + dist(plemma::glancy::my_engine())) / width;
+                RealNum v = (static_cast<RealNum>(j) + dist(plemma::glancy::my_engine())) / height;
 
-                plemma::descartes::Ray r = cam.GetRay(u,v);
+                plemma::glancy::Ray r = cam.GetRay(u,v);
 
                 color += GetColor(r, world, initial_depth);
             }
@@ -178,6 +178,6 @@ int main() {
 
     std::cout << "100% processing completed." << std::endl;
     std::cout << std::endl;
-    std::cout << "---- Descartes.exe FINISHED ITS JOB ----" << std::endl;
+    std::cout << "---- Glancy.exe FINISHED ITS JOB ----" << std::endl;
     std::cout << "Results can be seen in 'myimage.ppm', in the root of this repo." << std::endl << std::endl;
 }

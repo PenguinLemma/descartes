@@ -8,7 +8,7 @@
 
 namespace plemma
 {
-namespace descartes
+namespace glancy
 {
 
 class Lambertian : public Material
@@ -28,6 +28,6 @@ private:
     Vec3 albedo_;
 };
 
-} // namespace descartes
+} // namespace glancy
 
 } // namespace plemma
