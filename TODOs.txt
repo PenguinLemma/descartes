@@ -1,22 +1,22 @@
 DONE:
 - Better memory manage (smart pointers, vector instead of list)
 - Extract all random number generations to a class so that seeding and initialising is done just once
+- Add image.h
 
 TODOs:
-- Add image.h
 - Rework to add scenes and renderer
-- Switch to use uint8_t, etc
+- Switch to use uint8_t, uin16_t, etc
 - Add timing tool:
 chronometer::start();
-chronometer::end("Process X", units); // that should produce "Process X tool *end - start in $units * $units".
+chronometer::end("Process X", units); // that should produce "Process X took *end - start in $units * $units".
 chronometer::measure(MyMethod(arg1, arg2, argn), "MyMethod", units); // that should make the call MyMethod(arg1, arg2, argn) and write "MyMethod took ..."
-- Improve structure and create a "renderer" class or something similar.
-- Add methods in HitableList that handle the addition of Hitables,
-with the option to check if the new Hitable would invade other Hitables.
+- Add the option to check if the new Hitable would invade other Hitables in HitableList::Add()
 - Improve code quality:
-    * Add namespaces
-    * Check that naming conventions are preserved (as of Google's style guide)
+    * Improve use of namespaces
+    * Check that naming conventions are preserved (as of Google's style guide or whichever is decided)
     * Add automatic formatting
-- Exchange gtest by Catch2 as testing library
+- Add Catch2 as testing library
 - Create tests
-- Add scenes folder where each scene will have its own file
+Property-based testing seems a good approach, Catch2 still doesn't support fully
+property-based testing, but generators might provide a good start:
+https://github.com/catchorg/Catch2/blob/master/docs/generators.md
