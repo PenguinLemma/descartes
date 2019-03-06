@@ -13,8 +13,11 @@ set(HEADERS
     material.h
     metal.h
     rand_engine.h
+    renderer.h
     ray.h
+    scene.h
     sphere.h
+    two_spheres_scene.h
     utilities.h
     vec3.h
 )
