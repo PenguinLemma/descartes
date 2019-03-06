@@ -15,6 +15,7 @@ class TwoSpheresScene : public Scene
 {
 public:
     void LoadWorld() override;
+    virtual const HitableList& World() const override { return world_; }
     ~TwoSpheresScene() {}
 private:
     HitableList world_;
@@ -25,7 +26,7 @@ void TwoSpheresScene::LoadWorld()
     world_.Add(std::make_unique<Sphere>(Vec3(0.0f, -1000.0f, 0.0f), 1000.0f,
                         std::make_shared<Lambertian>(Vec3(0.5f, 0.5f, 0.5f))));
     world_.Add(std::make_unique<Sphere>(Vec3(0.0f, 1.0f, 0.0f), 1.0f,
-                        std::make_shared<Dielectric>(1.5f)));
+                        std::make_shared<Metal>(Vec3(0.5f, 0.5f, 0.5f), 0.9)));
 }
 
 } // namespace glancy

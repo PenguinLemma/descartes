@@ -15,6 +15,7 @@ class RandomSpheresScene : public Scene
 {
 public:
     void LoadWorld() override;
+    virtual const HitableList& World() const override { return world_; }
     ~RandomSpheresScene() {}
 private:
     HitableList world_;
@@ -64,7 +65,7 @@ void RandomSpheresScene::LoadWorld()
                                 0.5*(1.0 + dist(my_engine())),
                                 0.5*(1.0 + dist(my_engine())));
                     world_.Add(std::make_unique<Sphere>(center, 0.2,
-                        std::make_shared<Metal>(albedo, 0.5*dist(my_engine())));
+                        std::make_shared<Metal>(albedo, 0.5*dist(my_engine()))));
                 }
                 else
                 {

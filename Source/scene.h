@@ -14,7 +14,7 @@ class Scene
 {
 public:
     virtual void LoadWorld() = 0;
-    virtual const HitableList& World() const final { return world_; }
+    virtual const HitableList& World() const = 0;
     virtual ~Scene() {}
 private:
     HitableList world_;
