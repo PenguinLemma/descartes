@@ -17,7 +17,7 @@ public:
     HitableList() {}
     HitableList(std::vector<std::unique_ptr<Hitable> >&& data) : hitables_(std::move(data)) {}
     bool Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const override;
-    void Add(std::unique_ptr<Hitable>&& hitable);
+    void Add(std::unique_ptr<Hitable>&& hitable){ hitables_.push_back(std::move(hitable)); }
 
 private:
     std::vector<std::unique_ptr<Hitable> > hitables_;
@@ -40,11 +40,6 @@ bool HitableList::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec
         }
     }
     return hit_anything;
-}
-
-void HitableList::Add(std::unique_ptr<Hitable>&& hitable)
-{
-    hitables_.push_back(std::move(hitable));
 }
 
 } // namespace glancy

@@ -30,11 +30,11 @@ void Image::Save(const std::string& file_path) const
     for (uint16_t c = height; c > 0U; --c)
     {
         uint16_t column = c - 1U;
-        for (uint16_t row = 0; row < width; ++row)
+        for (uint16_t row = 0U; row < width; ++row)
         {
-            myimage << static_cast<int>(pixels_[row][column].R()) << " ";
-            myimage << static_cast<int>(pixels_[row][column].G()) << " ";
-            myimage << static_cast<int>(pixels_[row][column].B()) << std::endl;
+            myimage << static_cast<uint16_t>(pixels_[row][column].R()) << " ";
+            myimage << static_cast<uint16_t>(pixels_[row][column].G()) << " ";
+            myimage << static_cast<uint16_t>(pixels_[row][column].B()) << std::endl;
         }
     }
 

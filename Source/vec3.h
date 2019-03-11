@@ -179,9 +179,9 @@ inline Vec3 UnitVector(Vec3 v)
 
 inline Vec3 GetRandomPointInUnitBall()
 {
-    Vec3 p(1.0f, 1.0f, 1.0f);
-    std::uniform_real_distribution<RealNum> distribution(-1.0f, 1.0f);
-    while (!(p.SquaredNorm() < 1.0f))
+    Vec3 p(1.0, 1.0, 1.0);
+    std::uniform_real_distribution<RealNum> distribution(-1.0, 1.0);
+    while (!(p.SquaredNorm() < 1.0))
     {
         p = Vec3(distribution(my_engine()), distribution(my_engine()), distribution(my_engine()));
     }
@@ -190,18 +190,18 @@ inline Vec3 GetRandomPointInUnitBall()
 
 inline Vec3 GetRandomPointInUnitDiscXY()
 {
-    Vec3 p(1.0f, 1.0f, 0.0f);
-    std::uniform_real_distribution<RealNum> distribution(-1.0f, 1.0f);
-    while (!(p.SquaredNorm() < 1.0f))
+    Vec3 p(1.0, 1.0, 0.0);
+    std::uniform_real_distribution<RealNum> distribution(-1.0, 1.0);
+    while (!(p.SquaredNorm() < 1.0))
     {
-        p = Vec3(distribution(my_engine()), distribution(my_engine()), 0.0f);
+        p = Vec3(distribution(my_engine()), distribution(my_engine()), 0.0);
     }
     return p;
 }
 
 inline Vec3 Reflect(const Vec3& v, const Vec3& n)
 {
-    return v - 2.0f * Dot(v,n)*n;
+    return v - 2.0 * Dot(v,n)*n;
 }
 
 // name "ni_over_nt" might need to be improved
@@ -209,8 +209,8 @@ inline bool Refract(const Vec3& v, const Vec3& n, RealNum ni_over_nt, Vec3& refr
 {
     Vec3 v_unit = UnitVector(v);
     RealNum dt = Dot(v_unit, n);
-    RealNum discriminant = 1.0f - ni_over_nt * ni_over_nt * (1.0f - dt * dt);
-    if (discriminant > 0.0f)
+    RealNum discriminant = 1.0 - ni_over_nt * ni_over_nt * (1.0 - dt * dt);
+    if (discriminant > 0.0)
     {
         refracted = ni_over_nt * (v_unit - dt * n) - sqrt(discriminant) * n;
         return true;

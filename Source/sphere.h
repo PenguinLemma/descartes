@@ -31,7 +31,7 @@ bool Sphere::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) con
     RealNum c = Dot(or_to_center, or_to_center) - radius_ * radius_;
     RealNum discriminant = b*b - a*c;
 
-    if (discriminant > 0)
+    if (discriminant > 0.0)
     {
         RealNum sqrt_discriminant = std::sqrt(discriminant);
         RealNum temp = (-b - sqrt_discriminant)/a;
