@@ -19,7 +19,7 @@ public:
                          Vec3& attenuation, Ray& scattered_ray) const override
     {
         Vec3 reflected = Reflect(UnitVector(ray_in.Direction()), rec.normal);
-        scattered_ray = Ray(rec.p, reflected + fuzz_*GetRandomPointInUnitBall());
+        scattered_ray = Ray(rec.p, reflected + fuzz_*GetRandomPointInUnitBall(), ray_in.Time());
         attenuation = albedo_;
         return (Dot(scattered_ray.Direction(), rec.normal) > 0.0);
     }

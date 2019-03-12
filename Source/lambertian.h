@@ -19,7 +19,7 @@ public:
                          Vec3& attenuation, Ray& scattered_ray) const override
     {
         Vec3 direction = rec.normal + GetRandomPointInUnitBall();
-        scattered_ray = Ray(rec.p, direction);
+        scattered_ray = Ray(rec.p, direction, ray_in.Time());
         attenuation = albedo_;
         return true;
     }

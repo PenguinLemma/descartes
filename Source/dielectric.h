@@ -53,11 +53,11 @@ public:
 
         if (distribution(my_engine()) < reflect_prob)
         {
-            scattered_ray = Ray(rec.p, reflected);
+            scattered_ray = Ray(rec.p, reflected, ray_in.Time());
         }
         else
         {
-            scattered_ray = Ray(rec.p, refracted);
+            scattered_ray = Ray(rec.p, refracted, ray_in.Time());
         }
         return true;
     }
