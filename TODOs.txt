@@ -4,13 +4,14 @@ DONE:
 - Add image.h
 - Rework to add scenes and renderer
 - Switch to use uint8_t, uin16_t, etc
+- Add motion blur
 
 TODOs:
-- Add Bounding Volume Hierarchies
 - Add timing tool:
 chronometer::start();
 chronometer::end("Process X", units); // that should produce "Process X took *end - start in $units * $units".
 chronometer::measure(MyMethod(arg1, arg2, argn), "MyMethod", units); // that should make the call MyMethod(arg1, arg2, argn) and write "MyMethod took ..."
+- Add Bounding Volume Hierarchies
 - Try to switch to constexpr as much as possible
 - Use timing tool to find out if constexpr is helping
 - Add the option to check if the new Hitable would invade other Hitables in HitableList::Add()
