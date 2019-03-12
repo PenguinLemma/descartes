@@ -5,12 +5,11 @@ DONE:
 - Rework to add scenes and renderer
 - Switch to use uint8_t, uin16_t, etc
 - Add motion blur
+- Add timing tool:
+    - class plemma::chronometer::SingleMeasurement
+    - free method plemma::crhonometer::MeasureFunction()
 
 TODOs:
-- Add timing tool:
-chronometer::start();
-chronometer::end("Process X", units); // that should produce "Process X took *end - start in $units * $units".
-chronometer::measure(MyMethod(arg1, arg2, argn), "MyMethod", units); // that should make the call MyMethod(arg1, arg2, argn) and write "MyMethod took ..."
 - Add Bounding Volume Hierarchies
 - Try to switch to constexpr as much as possible
 - Use timing tool to find out if constexpr is helping

@@ -4,6 +4,7 @@ set(SOURCES
 
 set(HEADERS
     camera.h
+    chronometer.h
     constants.h
     dielectric.h
     hitable.h
