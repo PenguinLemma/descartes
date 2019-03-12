@@ -16,8 +16,8 @@ template <typename UnaryOp>
 class Renderer
 {
 public:
-    Renderer(UnaryOp gc, unsigned int h_pixels, unsigned int v_pixels,
-             unsigned int rays_pixel, uint16_t maxd)
+    Renderer(UnaryOp gc, size_t h_pixels, size_t v_pixels,
+             size_t rays_pixel, uint16_t maxd)
     :
         GammaCorrection(gc),
         num_horizontal_pixels_(h_pixels),
@@ -31,9 +31,9 @@ private:
     Vec3 GetColor(const HitableList& world, const Ray& r, uint16_t depth) const;
 
     UnaryOp GammaCorrection;
-    const uint16_t num_horizontal_pixels_;
-    const uint16_t num_vertical_pixels_;
-    const uint16_t num_rays_per_pixel_;
+    const size_t num_horizontal_pixels_;
+    const size_t num_vertical_pixels_;
+    const size_t num_rays_per_pixel_;
     const uint16_t maximum_depth_;
 };
 
@@ -49,13 +49,13 @@ void Renderer<UnaryOp>::ProcessScene(const Scene& scene, const Camera& camera, I
     const RealNum vertical_length = static_cast<RealNum>(num_vertical_pixels_);
     const HitableList& world(scene.World());
     std::uniform_real_distribution<RealNum> dist(0.0, 1.0);
-    for (uint16_t j = num_vertical_pixels_; j >= 1; --j)
+    for (size_t j = num_vertical_pixels_; j >= 1; --j)
     {
-        uint16_t index_ver = j - 1;
-        for (uint16_t index_hor = 0; index_hor < num_horizontal_pixels_; ++index_hor)
+        size_t index_ver = j - 1;
+        for (size_t index_hor = 0; index_hor < num_horizontal_pixels_; ++index_hor)
         {
             Vec3 color(0.0, 0.0, 0.0);
-            for (uint16_t s = 0; s < num_rays_per_pixel_; ++s)
+            for (size_t s = 0; s < num_rays_per_pixel_; ++s)
             {
                 RealNum u = (static_cast<RealNum>(index_hor) + dist(my_engine())) / horizontal_length;
                 RealNum v = (static_cast<RealNum>(index_ver) + dist(my_engine())) / vertical_length;
@@ -107,7 +107,7 @@ Vec3 Renderer<UnaryOp>::GetColor(const HitableList& world, const Ray& r, uint16_
     else
     {
         Vec3 unit_direction = UnitVector(r.Direction());
-        float t = 0.5*(unit_direction.Y() + 1.0);
+        RealNum t = 0.5*(unit_direction.Y() + 1.0);
         return (1.0 - t)*Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0);
     }
 }

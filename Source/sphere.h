@@ -12,18 +12,57 @@ namespace plemma
 namespace glancy
 {
 
+template <typename Center, typename Radius>
 class Sphere: public Hitable
 {
 public:
     Sphere() {}
-    Sphere(Vec3 c, RealNum r, std::shared_ptr<Material> mat) : center_(c), radius_(r), material_(mat) {};
+    Sphere(Center c, Radius r, std::shared_ptr<Material> mat) : center_(c), radius_(r), material_(mat) {};
     virtual bool Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const override;
-    Vec3 center_;
-    RealNum radius_;
+    Center center_;
+    Radius radius_;
     std::shared_ptr<Material> material_;
 };
+template<typename Center, typename Radius>
+bool Sphere<Center,Radius>::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const
+{
+    Vec3 center = center_(r.Time());
+    RealNum radius = radius_(r.Time());
+    Vec3 or_to_center = r.Origin() - center;
+    RealNum a = Dot(r.Direction(), r.Direction());
+    RealNum b = Dot(or_to_center, r.Direction());
+    RealNum c = Dot(or_to_center, or_to_center) - radius * radius;
+    RealNum discriminant = b*b - a*c;
 
-bool Sphere::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const
+    if (discriminant > 0.0)
+    {
+        RealNum sqrt_discriminant = std::sqrt(discriminant);
+        RealNum temp = (-b - sqrt_discriminant)/a;
+        if (temp < t_max && temp > t_min)
+        {
+            rec.t      = temp;
+            rec.p      = r.PointAtParameter(rec.t);
+            rec.normal = (rec.p - center) / radius;
+            rec.mat    = material_;
+            return true;
+        }
+
+        temp = (-b + sqrt_discriminant)/a;
+        if (temp < t_max && temp > t_min)
+        {
+            rec.t      = temp;
+            rec.p      = r.PointAtParameter(rec.t);
+            rec.normal = (rec.p - center) / radius;
+            rec.mat    = material_;
+            return true;
+        }
+    }
+    return false;
+}
+
+
+template<>
+bool Sphere<Vec3, RealNum>::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const
 {
     Vec3 or_to_center = r.Origin() - center_;
     RealNum a = Dot(r.Direction(), r.Direction());

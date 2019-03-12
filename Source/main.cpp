@@ -35,8 +35,8 @@ int main() {
     RandomSpheresScene scene;
     scene.LoadWorld();
 
-    uint16_t nx = 2000;
-    uint16_t ny = 1500;
+    size_t nx = 2000;
+    size_t ny = 1500;
     Image image(nx, ny);
 
     Vec3 lookfrom(10.0, 1.4, 2.0);
@@ -45,9 +45,9 @@ int main() {
     RealNum aperture = 0.1;
     RealNum aspect = static_cast<RealNum>(nx) / static_cast<RealNum>(ny);
 
-    Camera camera(lookfrom, lookat, Vec3(0.0, 1.0, 0.0), 30.0, aspect, aperture, dist_to_focus);
+    Camera camera(lookfrom, lookat, Vec3(0.0, 1.0, 0.0), 30.0, aspect, aperture, dist_to_focus, 0.0, 0.1);
 
-    uint16_t n_rays_per_pixel = 100;
+    size_t n_rays_per_pixel = 100;
     uint16_t max_depth = 50;
     auto gamma_correction = [](RealNum x){ return static_cast<RealNum>(std::sqrt(x)); };
     plemma::glancy::Renderer rend(gamma_correction, nx, ny, n_rays_per_pixel, max_depth);
