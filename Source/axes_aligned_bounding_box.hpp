@@ -1,4 +1,7 @@
-#include "Vec3.h"
+#pragma once
+
+#include "vec3.h"
+#include <algorithm>
 
 namespace plemma
 {
@@ -8,14 +11,14 @@ namespace glancy
 class AxesAlignedBoundingBox
 {
 public:
-    AxesAlignedBoundingBox() {}
+    AxesAlignedBoundingBox() = default;
     AxesAlignedBoundingBox(const Vec3& m, const Vec3& M) :
         minima_(m),
         maxima_(M)
     {}
 
-    Vec3 Minima() { return minima_; }
-    Vec3 Maxima() { return maxima_; }
+    Vec3 Minima() const { return minima_; }
+    Vec3 Maxima() const { return maxima_; }
 
     bool Hit(const Ray& r, RealNum param_min, RealNum param_max) const
     {
@@ -46,6 +49,33 @@ private:
     Vec3 minima_;
     Vec3 maxima_;
 };
+
+inline AxesAlignedBoundingBox ComputeAABBForFixedSphere(const Vec3& center, RealNum radius)
+{
+    return AxesAlignedBoundingBox(center - Vec3(radius, radius, radius),
+                                  center + Vec3(radius, radius, radius));
+}
+
+inline AxesAlignedBoundingBox UnionOfAABBs(const AxesAlignedBoundingBox& bbox1,
+                                           const AxesAlignedBoundingBox& bbox2)
+{
+    // Get minimum
+    Vec3 minima;
+    Vec3 maxima;
+    std::transform(bbox1.Minima().Begin(),
+                   bbox1.Minima().End(),
+                   bbox2.Minima().Begin(),
+                   minima.Begin(),
+                   [](RealNum a, RealNum b){ return std::min(a,b); }
+                );
+    std::transform(bbox1.Maxima().Begin(),
+                   bbox1.Maxima().End(),
+                   bbox2.Maxima().Begin(),
+                   maxima.Begin(),
+                   [](RealNum a, RealNum b){ return std::min(a,b); }
+                );
+    return AxesAlignedBoundingBox(minima, maxima);
+}
 
 } // namespace glancy
 
