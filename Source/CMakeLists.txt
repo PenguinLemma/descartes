@@ -3,6 +3,7 @@ set(SOURCES
 )
 
 set(HEADERS
+    axes_aligned_bounding_box.h
     camera.h
     chronometer.h
     constants.h
