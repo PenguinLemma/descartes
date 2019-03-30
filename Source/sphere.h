@@ -19,6 +19,7 @@ public:
     Sphere() {}
     Sphere(Center c, Radius r, std::shared_ptr<Material> mat) : center_(c), radius_(r), material_(mat) {};
     virtual bool Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const override;
+private:
     Center center_;
     Radius radius_;
     std::shared_ptr<Material> material_;
