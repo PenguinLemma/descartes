@@ -2,7 +2,7 @@
 
 #include <cmath>
 #include <random>
-#include <vector>
+#include <array>
 #include "rand_engine.h"
 
 namespace plemma
@@ -16,59 +16,59 @@ typedef float RealNum;
 class Vec3
 {
 public:
-    Vec3() {}
-    Vec3(RealNum a, RealNum b, RealNum c) : comp_{a,b,c} {}
-    inline RealNum X() const { return comp_[0]; }
-    inline RealNum Y() const { return comp_[1]; }
-    inline RealNum Z() const { return comp_[2]; }
-    inline RealNum R() const { return comp_[0]; }
-    inline RealNum G() const { return comp_[1]; }
-    inline RealNum B() const { return comp_[2]; }
+    constexpr Vec3() noexcept = default;
+    constexpr Vec3(RealNum a, RealNum b, RealNum c) noexcept : comp_{a,b,c} {}
+    constexpr RealNum X() const noexcept { return comp_[0]; }
+    constexpr RealNum Y() const noexcept { return comp_[1]; }
+    constexpr RealNum Z() const noexcept { return comp_[2]; }
+    constexpr RealNum R() const noexcept { return comp_[0]; }
+    constexpr RealNum G() const noexcept { return comp_[1]; }
+    constexpr RealNum B() const noexcept { return comp_[2]; }
 
-    inline const Vec3& operator+() const { return *this; }
-    inline Vec3 operator-() const { return Vec3(-comp_[0], -comp_[1], -comp_[2]); }
-    inline RealNum operator[](int i) const { return comp_[i]; }
-    inline RealNum& operator[](int i) { return comp_[i]; }
-    inline auto Begin() { return comp_.begin(); }
-    inline auto End() { return comp_.end(); }
+    constexpr const Vec3& operator+() const noexcept { return *this; }
+    constexpr Vec3 operator-() const noexcept { return Vec3(-comp_[0], -comp_[1], -comp_[2]); }
+    constexpr RealNum operator[](int i) const noexcept { return comp_[i]; }
+    constexpr RealNum& operator[](int i) noexcept { return comp_[i]; }
+    constexpr auto Begin() noexcept { return comp_.begin(); }
+    constexpr auto End() noexcept { return comp_.end(); }
 
-    inline Vec3& operator+=(const Vec3& v);
-    inline Vec3& operator-=(const Vec3& v);
-    inline Vec3& operator*=(const Vec3& v);
-    inline Vec3& operator/=(const Vec3& v);
-    inline Vec3& operator*=(const RealNum t);
-    inline Vec3& operator/=(const RealNum t);
+    constexpr Vec3& operator+=(const Vec3& v) noexcept;
+    constexpr Vec3& operator-=(const Vec3& v) noexcept;
+    constexpr Vec3& operator*=(const Vec3& v) noexcept;
+    constexpr Vec3& operator/=(const Vec3& v) noexcept;
+    constexpr Vec3& operator*=(const RealNum t) noexcept;
+    constexpr Vec3& operator/=(const RealNum t) noexcept;
 
-    inline RealNum Norm() const
+    constexpr RealNum Norm() const noexcept
     {
         return sqrt(comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2]);
     }
 
-    inline RealNum SquaredNorm() const
+    constexpr RealNum SquaredNorm() const noexcept
     {
         return comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2];
     }
 
-    inline void Normalize();
+    constexpr void Normalize() noexcept;
 
 private:
-    std::vector<RealNum> comp_{ static_cast<RealNum>(0), static_cast<RealNum>(0), static_cast<RealNum>(0) };
+    std::array<RealNum, 3> comp_{};
 };
 
 
-inline std::istream& operator>>(std::istream& is, Vec3& v)
+inline std::istream& operator>>(std::istream& is, Vec3& v) noexcept
 {
     is >> v[0] >> v[1] >> v[2];
     return is;
 }
 
-inline std::ostream& operator<<(std::ostream& os, const Vec3& v)
+inline std::ostream& operator<<(std::ostream& os, const Vec3& v) noexcept
 {
     os << v[0] << " " << v[1] << " " << v[2];
     return os;
 }
 
-inline void Vec3::Normalize()
+constexpr void Vec3::Normalize() noexcept
 {
     RealNum norm_inverse = static_cast<RealNum>(1.0) / std::sqrt(comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2]);
     comp_[0] *= norm_inverse;
@@ -76,54 +76,54 @@ inline void Vec3::Normalize()
     comp_[2] *= norm_inverse;
 }
 
-inline Vec3 operator+(const Vec3& u, const Vec3& v)
+constexpr Vec3 operator+(const Vec3& u, const Vec3& v) noexcept
 {
     return Vec3(u[0] + v[0], u[1] + v[1], u[2] + v[2]);
 }
 
-inline Vec3 operator-(const Vec3& u, const Vec3& v)
+constexpr Vec3 operator-(const Vec3& u, const Vec3& v) noexcept
 {
     return Vec3(u[0] - v[0], u[1] - v[1], u[2] - v[2]);
 }
 
-inline Vec3 operator*(const Vec3& u, const Vec3& v)
+constexpr Vec3 operator*(const Vec3& u, const Vec3& v) noexcept
 {
     return Vec3(u[0] * v[0], u[1] * v[1], u[2] * v[2]);
 }
 
-inline Vec3 operator/(const Vec3& u, const Vec3& v)
+constexpr Vec3 operator/(const Vec3& u, const Vec3& v) noexcept
 {
     return Vec3(u[0] / v[0], u[1] / v[1], u[2] / v[2]);
 }
 
-inline Vec3 operator*(RealNum t, const Vec3& v)
+constexpr Vec3 operator*(RealNum t, const Vec3& v) noexcept
 {
     return Vec3(t * v[0], t * v[1], t * v[2]);
 }
 
-inline Vec3 operator/(const Vec3& v, const RealNum t)
+constexpr Vec3 operator/(const Vec3& v, const RealNum t) noexcept
 {
     return Vec3(v[0]/t, v[1]/t, v[2]/t);
 }
 
-inline Vec3 operator*(const Vec3& v, const RealNum t)
+constexpr Vec3 operator*(const Vec3& v, const RealNum t) noexcept
 {
     return Vec3(v[0]*t, v[1]*t, v[2]*t);
 }
 
-inline RealNum Dot(const Vec3& u, const Vec3& v)
+constexpr RealNum Dot(const Vec3& u, const Vec3& v) noexcept
 {
     return u[0]*v[0] + u[1]*v[1] + u[2]*v[2];
 }
 
-inline Vec3 Cross(const Vec3& u, const Vec3& v)
+constexpr Vec3 Cross(const Vec3& u, const Vec3& v) noexcept
 {
     return Vec3(u[1]*v[2] - u[2]*v[1],
                 u[2]*v[0] - u[0]*v[2],
                 u[0]*v[1] - u[1]*v[0]);
 }
 
-inline Vec3& Vec3::operator+=(const Vec3& v)
+constexpr Vec3& Vec3::operator+=(const Vec3& v) noexcept
 {
     comp_[0] += v[0];
     comp_[1] += v[1];
@@ -131,7 +131,7 @@ inline Vec3& Vec3::operator+=(const Vec3& v)
     return *this;
 }
 
-inline Vec3& Vec3::operator-=(const Vec3& v)
+constexpr Vec3& Vec3::operator-=(const Vec3& v) noexcept
 {
     comp_[0] -= v[0];
     comp_[1] -= v[1];
@@ -139,7 +139,7 @@ inline Vec3& Vec3::operator-=(const Vec3& v)
     return *this;
 }
 
-inline Vec3& Vec3::operator*=(const Vec3& v)
+constexpr Vec3& Vec3::operator*=(const Vec3& v) noexcept
 {
     comp_[0] *= v[0];
     comp_[1] *= v[1];
@@ -147,7 +147,7 @@ inline Vec3& Vec3::operator*=(const Vec3& v)
     return *this;
 }
 
-inline Vec3& Vec3::operator/=(const Vec3& v)
+constexpr Vec3& Vec3::operator/=(const Vec3& v) noexcept
 {
     comp_[0] /= v[0];
     comp_[1] /= v[1];
@@ -155,7 +155,7 @@ inline Vec3& Vec3::operator/=(const Vec3& v)
     return *this;
 }
 
-inline Vec3& Vec3::operator*=(const RealNum t)
+constexpr Vec3& Vec3::operator*=(const RealNum t) noexcept
 {
     comp_[0] *= t;
     comp_[1] *= t;
@@ -163,7 +163,7 @@ inline Vec3& Vec3::operator*=(const RealNum t)
     return *this;
 }
 
-inline Vec3& Vec3::operator/=(const RealNum t)
+constexpr Vec3& Vec3::operator/=(const RealNum t) noexcept
 {
     RealNum tinv = static_cast<RealNum>(1.0) / t;
     comp_[0] *= tinv;
@@ -172,12 +172,12 @@ inline Vec3& Vec3::operator/=(const RealNum t)
     return *this;
 }
 
-inline Vec3 UnitVector(Vec3 v)
+constexpr Vec3 UnitVector(Vec3 v) noexcept
 {
     return v / v.Norm();
 }
 
-inline Vec3 GetRandomPointInUnitBall()
+inline Vec3 GetRandomPointInUnitBall() noexcept
 {
     Vec3 p(1.0, 1.0, 1.0);
     std::uniform_real_distribution<RealNum> distribution(-1.0, 1.0);
@@ -188,7 +188,7 @@ inline Vec3 GetRandomPointInUnitBall()
     return p;
 }
 
-inline Vec3 GetRandomPointInUnitDiscXY()
+inline Vec3 GetRandomPointInUnitDiscXY() noexcept
 {
     Vec3 p(1.0, 1.0, 0.0);
     std::uniform_real_distribution<RealNum> distribution(-1.0, 1.0);
@@ -199,13 +199,13 @@ inline Vec3 GetRandomPointInUnitDiscXY()
     return p;
 }
 
-inline Vec3 Reflect(const Vec3& v, const Vec3& n)
+constexpr Vec3 Reflect(const Vec3& v, const Vec3& n) noexcept
 {
     return v - 2.0 * Dot(v,n)*n;
 }
 
 // name "ni_over_nt" might need to be improved
-inline bool Refract(const Vec3& v, const Vec3& n, RealNum ni_over_nt, Vec3& refracted)
+constexpr bool Refract(const Vec3& v, const Vec3& n, RealNum ni_over_nt, Vec3& refracted) noexcept
 {
     Vec3 v_unit = UnitVector(v);
     RealNum dt = Dot(v_unit, n);
