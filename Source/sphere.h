@@ -1,11 +1,15 @@
 #pragma once
 
+#include "constants.h"
 #include "hitable.h"
 #include "material.h"
 #include "ray.h"
 #include "vec3.h"
-#include <memory>
+#include "axes_aligned_bounding_box.hpp"
 #include <cmath>
+#include <memory>
+#include <numeric>
+#include <vector>
 
 namespace plemma
 {
@@ -19,11 +23,14 @@ public:
     Sphere() {}
     Sphere(Center c, Radius r, std::shared_ptr<Material> mat) : center_(c), radius_(r), material_(mat) {};
     virtual bool Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const override;
+    virtual bool ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const override;
+
 private:
     Center center_;
     Radius radius_;
     std::shared_ptr<Material> material_;
 };
+
 template<typename Center, typename Radius>
 bool Sphere<Center,Radius>::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const
 {
@@ -95,6 +102,54 @@ bool Sphere<Vec3, RealNum>::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitR
         }
     }
     return false;
+}
+
+template <typename Center, typename Radius>
+bool Sphere<Center, Radius>::ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const
+{
+    size_t number_snapshots = static_cast<size_t>(
+        std::ceil((time_to - time_from) / kSecondsBetweenSnapshotsForBBoxCalculation));
+    std::vector<RealNum> times(number_snapshots);
+    RealNum prev_to_start = time_from - kSecondsBetweenSnapshotsForBBoxCalculation;
+    std::generate(std::begin(times), std::end(times),
+        [t = prev_to_start]() mutable { return t + kSecondsBetweenSnapshotsForBBoxCalculation; }
+    );
+
+    // Compute the maximum displacement of the center between
+    // snapshots to add that distance to the radius as tolerance
+    // That way we might get bigger bboxes but we cover for the
+    // posibility of weird movements outliers
+    RealNum max_distance = 0.0;
+    for (size_t i = 1; i < number_snapshots; ++i)
+    {
+        RealNum distance = (center_(times[i]) - center_(times[i-1])).Norm();
+        if(distance > max_distance)
+            max_distance = distance;
+    }
+
+    // Compute union of first and last snapshot as the might
+    // be the most distant.
+    bbox = UnionOfAABBs(
+        ComputeAABBForFixedSphere(center_(times[0]), radius_(times[0]) + max_distance),
+        ComputeAABBForFixedSphere(center_(times[number_snapshots - 1]),
+                                  radius_(times[number_snapshots - 1]) + max_distance)
+    );
+
+    for (size_t i = 1; i < number_snapshots - 1; ++i)
+    {
+        bbox = UnionOfAABBs(
+            bbox,
+            ComputeAABBForFixedSphere(center_(times[i]), radius_(times[i]) + max_distance)
+        );
+    }
+    return true;
+}
+
+template <>
+bool Sphere<Vec3, RealNum>::ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const
+{
+    bbox = ComputeAABBForFixedSphere(center_, radius_);
+    return true;
 }
 
 } // namespace glancy
