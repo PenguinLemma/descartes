@@ -27,17 +27,17 @@ void RandomSpheresScene::LoadWorld()
     std::uniform_real_distribution<RealNum> dist(0.0, 1.0);
 
     // Add big sphere on top of which all other sphere will lay
-    world_.Add(std::make_unique<Sphere<Vec3, RealNum> >(Vec3(0.0, -1000.0, 0.0), 1000.0,
+    world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(Vec3(0.0, -1000.0, 0.0), 1000.0,
                                         std::make_shared<Lambertian>(Vec3(0.5, 0.5, 0.5))));
 
     // Add 3 mid size spheres
-    world_.Add(std::make_unique<Sphere<Vec3, RealNum> >(Vec3(0.0, 1.0, 0.0), 1.0,
+    world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(Vec3(0.0, 1.0, 0.0), 1.0,
                                         std::make_shared<Dielectric>(1.5)));
 
-    world_.Add(std::make_unique<Sphere<Vec3, RealNum> >(Vec3(-4.0, 1.0, 0.0), 1.0,
+    world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(Vec3(-4.0, 1.0, 0.0), 1.0,
                                         std::make_shared<Lambertian>(Vec3(0.4, 0.2, 0.1))));
 
-    world_.Add(std::make_unique<Sphere<Vec3, RealNum> >(Vec3(4.0, 1.0, 0.0), 1.0,
+    world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(Vec3(4.0, 1.0, 0.0), 1.0,
                                         std::make_shared<Metal>(Vec3(0.7, 0.6, 0.5), 0.0)));
 
     // Add a bunch of random spheres
@@ -64,13 +64,13 @@ void RandomSpheresScene::LoadWorld()
                                 dist(my_engine()) * dist(my_engine()));
                     if (is_static)
                     {
-                        world_.Add(std::make_unique<Sphere<Vec3,RealNum> >(
+                        world_.Add(std::make_shared<Sphere<Vec3,RealNum> >(
                             center, radius, std::make_shared<Lambertian>(albedo))
                         );
                     }
                     else
                     {
-                        world_.Add(std::make_unique<Sphere<decltype(moving_center), decltype(constant_radius)> >(
+                        world_.Add(std::make_shared<Sphere<decltype(moving_center), decltype(constant_radius)> >(
                             moving_center, constant_radius, std::make_shared<Lambertian>(albedo))
                         );
                     }
@@ -82,13 +82,13 @@ void RandomSpheresScene::LoadWorld()
                                 0.5*(1.0 + dist(my_engine())));
                     if (is_static)
                     {
-                        world_.Add(std::make_unique<Sphere<Vec3,RealNum> >(
+                        world_.Add(std::make_shared<Sphere<Vec3,RealNum> >(
                             center, radius, std::make_shared<Metal>(albedo, 0.5*dist(my_engine())))
                         );
                     }
                     else
                     {
-                        world_.Add(std::make_unique<Sphere<decltype(moving_center), decltype(constant_radius)> >(
+                        world_.Add(std::make_shared<Sphere<decltype(moving_center), decltype(constant_radius)> >(
                             moving_center, constant_radius, std::make_shared<Metal>(albedo, 0.5*dist(my_engine())))
                         );
                     }
@@ -97,13 +97,13 @@ void RandomSpheresScene::LoadWorld()
                 {
                     if (is_static)
                     {
-                        world_.Add(std::make_unique<Sphere<Vec3, RealNum> >(
+                        world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(
                             center, radius, std::make_shared<Dielectric>(1.5))
                         );
                     }
                     else
                     {
-                        world_.Add(std::make_unique<Sphere<decltype(moving_center), decltype(constant_radius)> >(
+                        world_.Add(std::make_shared<Sphere<decltype(moving_center), decltype(constant_radius)> >(
                             moving_center, constant_radius, std::make_shared<Dielectric>(1.5))
                         );
                     }

@@ -32,6 +32,9 @@ public:
         vertical_   = 2.0 * half_height * focus_dist * vertical_normal_;
     }
 
+    RealNum TimeShutterOpens() const { return time_open_shutter_; }
+    RealNum TimeShutterCloses() const { return time_close_shutter_; }
+
     Ray GetRay(RealNum u, RealNum v) const
     {
         Vec3 random_dir = lens_radius_ * GetRandomPointInUnitDiscXY();
