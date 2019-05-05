@@ -15,12 +15,15 @@ class HitableList : public Hitable
 {
 public:
     HitableList() {}
-    HitableList(std::vector<std::unique_ptr<Hitable> >&& data) : hitables_(std::move(data)) {}
+    HitableList(std::vector<std::shared_ptr<Hitable> >&& data) : hitables_(data) {}
     bool Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const override;
-    void Add(std::unique_ptr<Hitable>&& hitable){ hitables_.push_back(std::move(hitable)); }
+    bool ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const override;
+    void Add(std::shared_ptr<Hitable>&& hitable){ hitables_.push_back(hitable); }
+    auto Begin() const { return std::begin(hitables_); }
+    auto End() const { return std::end(hitables_); }
 
 private:
-    std::vector<std::unique_ptr<Hitable> > hitables_;
+    std::vector<std::shared_ptr<Hitable> > hitables_;
 };
 
 bool HitableList::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const
@@ -40,6 +43,35 @@ bool HitableList::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec
         }
     }
     return hit_anything;
+}
+
+bool HitableList::ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const
+{
+    if (hitables_.size() < 1)
+        return false;
+
+    AxesAlignedBoundingBox temp_bbox;
+    if(not hitables_[0]->ComputeBoundingBox(time_from, time_to, temp_bbox))
+    {
+        return false;
+    }
+    else
+    {
+        bbox = temp_bbox;
+    }
+
+    for (size_t i = 1; i < hitables_.size(); ++i)
+    {
+        if(hitables_[i]->ComputeBoundingBox(time_from, time_to, temp_bbox))
+        {
+            bbox = UnionOfAABBs(bbox, temp_bbox);
+        }
+        else
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 } // namespace glancy

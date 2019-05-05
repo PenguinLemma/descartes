@@ -1,8 +1,9 @@
 #pragma once
 
-#include "scene.h"
+#include "bounding_volume_hierarchy.hpp"
 #include "camera.h"
 #include "image.h"
+#include "scene.h"
 #include <algorithm>
 #include <iostream>
 #include <limits>
@@ -26,10 +27,12 @@ public:
         maximum_depth_(maxd)
     { }
 
-    void ProcessScene(const Scene& scene, const Camera& camera, Image& image) const;
+    void ProcessScene(const Scene& scene, const Camera& camera, Image& image);
 private:
-    Vec3 GetColor(const HitableList& world, const Ray& r, uint16_t depth) const;
+    Vec3 GetColor(const Hitable& target, const Ray& r, uint16_t depth) const;
+    void PreprocessWorld(const HitableList& world, RealNum t0, RealNum t1);
 
+    BoundingVolumeHierarchy ordered_world_;
     UnaryOp GammaCorrection;
     const size_t num_horizontal_pixels_;
     const size_t num_vertical_pixels_;
@@ -38,17 +41,17 @@ private:
 };
 
 template <typename UnaryOp>
-void Renderer<UnaryOp>::ProcessScene(const Scene& scene, const Camera& camera, Image& image) const
+void Renderer<UnaryOp>::ProcessScene(const Scene& scene, const Camera& camera, Image& image)
 {
-
-    std::cout << "0% processing completed." << std::endl;
-    int percentage_completed = 0;
-    int prev_percentage_written = 0;
     const int initial_depth = 0;
     const RealNum horizontal_length = static_cast<RealNum>(num_horizontal_pixels_);
     const RealNum vertical_length = static_cast<RealNum>(num_vertical_pixels_);
-    const HitableList& world(scene.World());
     std::uniform_real_distribution<RealNum> dist(0.0, 1.0);
+    std::cout << "Pre-processing scene for faster rendering" << std::endl;
+    PreprocessWorld(scene.World(), camera.TimeShutterOpens(), camera.TimeShutterCloses());
+    std::cout << "0% processing completed." << std::endl;
+    int percentage_completed = 0;
+    int prev_percentage_written = 0;
     for (size_t j = num_vertical_pixels_; j >= 1; --j)
     {
         size_t index_ver = j - 1;
@@ -62,7 +65,7 @@ void Renderer<UnaryOp>::ProcessScene(const Scene& scene, const Camera& camera, I
 
                 Ray r = camera.GetRay(u, v);
 
-                color += GetColor(world, r, initial_depth);
+                color += GetColor(ordered_world_, r, initial_depth);
             }
 
             color /= static_cast<RealNum>(num_rays_per_pixel_);
@@ -86,18 +89,18 @@ void Renderer<UnaryOp>::ProcessScene(const Scene& scene, const Camera& camera, I
 }
 
 template <typename UnaryOp>
-Vec3 Renderer<UnaryOp>::GetColor(const HitableList& world, const Ray& r, uint16_t depth) const
+Vec3 Renderer<UnaryOp>::GetColor(const Hitable& target, const Ray& r, uint16_t depth) const
 {
     HitRecord rec;
     // We increase the minimum parameter to avoid finding out the original intersection again
     RealNum min_param = 0.001;
-    if (world.Hit(r, min_param, std::numeric_limits<RealNum>::max(), rec))
+    if (target.Hit(r, min_param, std::numeric_limits<RealNum>::max(), rec))
     {
         Ray scattered_ray;
         Vec3 attenuation;
         if (depth < maximum_depth_ && rec.mat->Scatter(r, rec, attenuation, scattered_ray))
         {
-            return attenuation * GetColor(world, scattered_ray, depth + 1);
+            return attenuation * GetColor(target, scattered_ray, depth + 1);
         }
         else
         {
@@ -110,6 +113,24 @@ Vec3 Renderer<UnaryOp>::GetColor(const HitableList& world, const Ray& r, uint16_
         RealNum t = 0.5*(unit_direction.Y() + 1.0);
         return (1.0 - t)*Vec3(1.0, 1.0, 1.0) + t * Vec3(0.5, 0.7, 1.0);
     }
+}
+
+template<typename UnaryOp>
+void Renderer<UnaryOp>::PreprocessWorld(const HitableList& world, RealNum t0, RealNum t1)
+{
+    std::vector<HitableInABox> boxed_hitables;
+    int counter = 0;
+    for(auto it = world.Begin(); it != world.End(); ++it)
+    {
+        std::shared_ptr<Hitable> hpt = *it;
+        boxed_hitables.push_back(
+            std::make_pair(AxesAlignedBoundingBox(), hpt)
+        );
+        hpt->ComputeBoundingBox(t0, t1, boxed_hitables[counter].first);
+        ++counter;
+    }
+
+    ordered_world_ = BoundingVolumeHierarchy(boxed_hitables, t0, t1);
 }
 
 

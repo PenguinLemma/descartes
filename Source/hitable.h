@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ray.h"
+#include "axes_aligned_bounding_box.hpp"
 #include <memory>
 
 namespace plemma
@@ -22,6 +23,7 @@ class Hitable
 {
 public:
     virtual bool Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const = 0;
+    virtual bool ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const = 0;
     virtual ~Hitable() {}
 };
 

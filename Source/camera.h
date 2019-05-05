@@ -18,7 +18,7 @@ public:
         time_open_shutter_ = t0;
         time_close_shutter_ = t1;
         lens_radius_ = aperture / 2.0;
-        RealNum theta = vert_fov_deg * kFloatPi / 180.0;
+        RealNum theta = vert_fov_deg * kPi / 180.0;
         RealNum half_height = tan(theta / 2.0);
         RealNum half_width  = aspect * half_height;
         origin_ = lookfrom;
@@ -31,6 +31,9 @@ public:
         horizontal_ = 2.0 * half_width * focus_dist * horizontal_normal_;
         vertical_   = 2.0 * half_height * focus_dist * vertical_normal_;
     }
+
+    RealNum TimeShutterOpens() const { return time_open_shutter_; }
+    RealNum TimeShutterCloses() const { return time_close_shutter_; }
 
     Ray GetRay(RealNum u, RealNum v) const
     {

@@ -8,7 +8,7 @@ namespace plemma
 namespace glancy
 {
 
-inline RealNum Schlick(RealNum cosine, RealNum refraction_index)
+constexpr RealNum Schlick(RealNum cosine, RealNum refraction_index)
 {
     RealNum r0 = (1.0 - refraction_index) / (1.0 + refraction_index);
     r0 = r0 * r0;
