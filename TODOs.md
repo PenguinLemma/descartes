@@ -2,7 +2,9 @@
  - [x] Better memory manage (smart pointers, vector instead of list)
  - [x] Extract all random number generations to a class so that seeding and initializing is done just once
  - [x] Add motion blur
- - [ ] Add Bounding Volume Hierarchies
+ - [x] Add Bounding Volume Hierarchies
+    - [ ] Add random axis sorting of boxed hitables
+    - [ ] Study the possibility of a better choice of axis w.r.t. which we do the spacial ordering at each step
  - [ ] Try to switch to `constexpr` as much as possible
  - [ ] Use timing tool to find out if `constexpr` is helping
  - [ ] Add the option to check if the new `plemma::glancy::Hitable` would invade other `plemma::glancy::Hitables` in `plemma::glancy::HitableList::Add()`
@@ -33,11 +35,19 @@ property-based testing, but generators might provide a good start:
 https://github.com/catchorg/Catch2/blob/master/docs/generators.md
  - [ ] Add [Catch2](https://github.com/catchorg/Catch2 "Catch2 repo") as testing library
  - [ ] Create tests for:
+     - [ ] `plemma::glancy::AxesAlignedBoundingBox::Hit`
+     - [ ] Free method `plemma::glancy::ComputeAABBForFixedSphere`
+     - [ ] Free method `plemma::glancy::UnionOfAABBs`
+     - [ ] All `plemma::glancy::BoundingVolumeHierarchy`'s constructors
+     - [ ] `plemma::glancy::BoundingVolumeHierarchy::Hit`
+     - [ ] `plemma::glancy::BoundingVolumeHierarchy::ComputeBoundingBox`
      - [ ] `plemma::glancy::Camera::GetRay`
      - [ ] `plemma::glancy::Dielectric::Scatter`
      - [ ] `plemma::glancy::HitableList::Hit` with mocked hitables derived from `plemma::glancy::Hitable`
+     - [ ] `plemma::glancy::HitableList::ComputeBoundingBox` with mocked hitables derived from `plemma::glancy::Hitable`
      - [ ] `plemma::glancy::HitableList::Add`
      - [ ] `plemma::glancy::Lambertian::Scatter`
      - [ ] `plemma::glancy::Metal::Scatter`
      - [ ] `plemma::glancy::Sphere::Hit`
+     - [ ] `plemma::glancy::Sphere::ComputeBoundingBox` for static and dynamic sphere
      - [ ] `plemma::glancy::Vec3::*`
