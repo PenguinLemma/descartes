@@ -18,7 +18,7 @@ class BoundingVolumeHierarchy : public Hitable
 public:
     BoundingVolumeHierarchy() = default;
     BoundingVolumeHierarchy(std::vector<HitableInABox>& boxed_hitables,
-        RealNum t0, RealNum t1) 
+        RealNum t0, RealNum t1)
 	:
 		BoundingVolumeHierarchy(boxed_hitables,
 			0, static_cast<int>(boxed_hitables.size()),
@@ -97,8 +97,6 @@ BoundingVolumeHierarchy::BoundingVolumeHierarchy(
     }
     else
     {
-		// Order with respect to random axis
-
         left_child_ = std::make_shared<BoundingVolumeHierarchy>(
             boxed_hitables,
             from, from + number_elements/2,
