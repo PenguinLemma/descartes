@@ -3,17 +3,17 @@
 #include <string>
 #include <random>
 #include <chrono>
-#include "hitable_list.h"
-#include "sphere.h"
-#include "camera.h"
-#include "image.h"
-#include "lambertian.h"
-#include "metal.h"
-#include "dielectric.h"
-#include "rand_engine.h"
-#include "renderer.h"
-#include "two_spheres_scene.h"
-#include "random_spheres_scene.h"
+#include "hitable_list.hpp"
+#include "sphere.hpp"
+#include "camera.hpp"
+#include "image.hpp"
+#include "lambertian.hpp"
+#include "metal.hpp"
+#include "dielectric.hpp"
+#include "rand_engine.hpp"
+#include "renderer.hpp"
+#include "two_spheres_scene.hpp"
+#include "random_spheres_scene.hpp"
 
 int main() {
 

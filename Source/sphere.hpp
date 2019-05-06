@@ -1,10 +1,10 @@
 #pragma once
 
-#include "constants.h"
-#include "hitable.h"
-#include "material.h"
-#include "ray.h"
-#include "vec3.h"
+#include "constants.hpp"
+#include "hitable.hpp"
+#include "material.hpp"
+#include "ray.hpp"
+#include "vec3.hpp"
 #include "axes_aligned_bounding_box.hpp"
 #include <cmath>
 #include <memory>

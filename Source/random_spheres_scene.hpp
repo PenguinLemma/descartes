@@ -1,10 +1,10 @@
 #pragma once
 
-#include "scene.h"
-#include "sphere.h"
-#include "lambertian.h"
-#include "dielectric.h"
-#include "metal.h"
+#include "scene.hpp"
+#include "sphere.hpp"
+#include "lambertian.hpp"
+#include "dielectric.hpp"
+#include "metal.hpp"
 #include <memory>
 
 namespace plemma

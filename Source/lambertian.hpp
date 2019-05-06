@@ -1,10 +1,10 @@
 #pragma once
 
-#include "ray.h"
-#include "vec3.h"
-#include "hitable.h"
-#include "material.h"
-#include "rand_engine.h"
+#include "ray.hpp"
+#include "vec3.hpp"
+#include "hitable.hpp"
+#include "material.hpp"
+#include "rand_engine.hpp"
 
 namespace plemma
 {

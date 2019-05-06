@@ -1,9 +1,9 @@
 #pragma once
 
 #include "bounding_volume_hierarchy.hpp"
-#include "camera.h"
-#include "image.h"
-#include "scene.h"
+#include "camera.hpp"
+#include "image.hpp"
+#include "scene.hpp"
 #include <algorithm>
 #include <iostream>
 #include <limits>

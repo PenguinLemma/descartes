@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ray.h"
+#include "ray.hpp"
 #include "axes_aligned_bounding_box.hpp"
 #include <memory>
 

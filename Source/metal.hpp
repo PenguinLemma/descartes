@@ -1,9 +1,9 @@
 #pragma once
 
-#include "vec3.h"
-#include "ray.h"
-#include "material.h"
-#include "rand_engine.h"
+#include "vec3.hpp"
+#include "ray.hpp"
+#include "material.hpp"
+#include "rand_engine.hpp"
 
 namespace plemma
 {

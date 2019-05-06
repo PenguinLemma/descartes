@@ -3,7 +3,7 @@
 #include <cmath>
 #include <random>
 #include <array>
-#include "rand_engine.h"
+#include "rand_engine.hpp"
 
 namespace plemma
 {

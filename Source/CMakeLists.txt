@@ -4,24 +4,25 @@ set(SOURCES
 
 set(HEADERS
     axes_aligned_bounding_box.hpp
-    camera.h
-    chronometer.h
-    constants.h
-    dielectric.h
-    hitable.h
-    hitable_list.h
-    image.h
-    lambertian.h
-    material.h
-    metal.h
-    rand_engine.h
-    renderer.h
-    ray.h
-    scene.h
-    sphere.h
-    two_spheres_scene.h
-    utilities.h
-    vec3.h
+    bounding_volume_hierarchy.hpp
+    camera.hpp
+    chronometer.hpp
+    constants.hpp
+    dielectric.hpp
+    hitable.hpp
+    hitable_list.hpp
+    image.hpp
+    lambertian.hpp
+    material.hpp
+    metal.hpp
+    rand_engine.hpp
+    renderer.hpp
+    ray.hpp
+    scene.hpp
+    sphere.hpp
+    two_spheres_scene.hpp
+    utilities.hpp
+    vec3.hpp
 )
 
 add_executable(Glancy ${SOURCES} ${HEADERS})

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "ray.h"
-#include "vec3.h"
-#include "constants.h"
+#include "ray.hpp"
+#include "vec3.hpp"
+#include "constants.hpp"
 
 namespace plemma
 {

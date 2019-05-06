@@ -1,8 +1,8 @@
 #pragma once
 
-#include "hitable_list.h"
-#include "camera.h"
-#include "vec3.h"
+#include "hitable_list.hpp"
+#include "camera.hpp"
+#include "vec3.hpp"
 #include <memory>
 
 namespace plemma

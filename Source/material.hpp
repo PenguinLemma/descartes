@@ -1,8 +1,8 @@
 #pragma once
 
-#include "hitable.h"
-#include "ray.h"
-#include "vec3.h"
+#include "hitable.hpp"
+#include "ray.hpp"
+#include "vec3.hpp"
 
 namespace plemma
 {

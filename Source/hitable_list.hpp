@@ -1,7 +1,7 @@
 #pragma once
 
-#include "hitable.h"
-#include "ray.h"
+#include "hitable.hpp"
+#include "ray.hpp"
 #include <vector>
 #include <memory>
 #include <utility>

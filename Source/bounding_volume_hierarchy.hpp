@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hitable.h"
+#include "hitable.hpp"
 #include "axes_aligned_bounding_box.hpp"
 #include <memory>
 #include <utility>
