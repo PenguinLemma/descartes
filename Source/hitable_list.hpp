@@ -51,7 +51,7 @@ bool HitableList::ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAli
         return false;
 
     AxesAlignedBoundingBox temp_bbox;
-    if(not hitables_[0]->ComputeBoundingBox(time_from, time_to, temp_bbox))
+    if(!hitables_[0]->ComputeBoundingBox(time_from, time_to, temp_bbox))
     {
         return false;
     }

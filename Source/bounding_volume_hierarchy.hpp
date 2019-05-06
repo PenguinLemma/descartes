@@ -43,7 +43,7 @@ private:
 
 inline bool BoundingVolumeHierarchy::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const
 {
-    if (not bbox_.Hit(r, t_min, t_max))
+    if (!bbox_.Hit(r, t_min, t_max))
     {
         return false;
     }
@@ -52,7 +52,7 @@ inline bool BoundingVolumeHierarchy::Hit(const Ray& r, RealNum t_min, RealNum t_
     bool hits_left_child = left_child_->Hit(r, t_min, t_max, left_rec);
     bool hits_right_child = right_child_->Hit(r, t_min, t_max, right_rec);
 
-    if(hits_left_child and hits_right_child)
+    if(hits_left_child && hits_right_child)
     {
         if (left_rec.t < right_rec.t)
             rec = left_rec;
