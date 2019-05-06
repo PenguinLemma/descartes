@@ -70,7 +70,7 @@ void Renderer<UnaryOp>::ProcessScene(const Scene& scene, const Camera& camera, I
 
             color /= static_cast<RealNum>(num_rays_per_pixel_);
 
-            std::transform(color.Begin(), color.End(), color.Begin(), GammaCorrection);
+            std::transform(std::begin(color), std::end(color), std::begin(color), GammaCorrection);
             color *= static_cast<RealNum>(255.9999);
             image.PaintPixel(index_hor, index_ver, color);
         }
@@ -120,7 +120,7 @@ void Renderer<UnaryOp>::PreprocessWorld(const HitableList& world, RealNum t0, Re
 {
     std::vector<HitableInABox> boxed_hitables;
     int counter = 0;
-    for(auto it = world.Begin(); it != world.End(); ++it)
+    for(auto it = std::begin(world); it != std::end(world); ++it)
     {
         std::shared_ptr<Hitable> hpt = *it;
         boxed_hitables.push_back(

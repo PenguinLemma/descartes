@@ -29,8 +29,10 @@ public:
     constexpr Vec3 operator-() const noexcept { return Vec3(-comp_[0], -comp_[1], -comp_[2]); }
     constexpr RealNum operator[](int i) const noexcept { return comp_[i]; }
     constexpr RealNum& operator[](int i) noexcept { return comp_[i]; }
-    constexpr auto Begin() noexcept { return comp_.begin(); }
-    constexpr auto End() noexcept { return comp_.end(); }
+	constexpr auto begin() noexcept { return comp_.begin(); }
+	constexpr auto end() noexcept { return comp_.end(); }
+	constexpr auto begin() const noexcept { return comp_.begin(); }
+	constexpr auto end() const noexcept { return comp_.end(); }
 
     constexpr Vec3& operator+=(const Vec3& v) noexcept;
     constexpr Vec3& operator-=(const Vec3& v) noexcept;
@@ -39,7 +41,7 @@ public:
     constexpr Vec3& operator*=(const RealNum t) noexcept;
     constexpr Vec3& operator/=(const RealNum t) noexcept;
 
-    constexpr RealNum Norm() const noexcept
+    RealNum Norm() const noexcept
     {
         return sqrt(comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2]);
     }
@@ -49,7 +51,7 @@ public:
         return comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2];
     }
 
-    constexpr void Normalize() noexcept;
+    void Normalize() noexcept;
 
 private:
     std::array<RealNum, 3> comp_{};
@@ -68,7 +70,7 @@ inline std::ostream& operator<<(std::ostream& os, const Vec3& v) noexcept
     return os;
 }
 
-constexpr void Vec3::Normalize() noexcept
+void Vec3::Normalize() noexcept
 {
     RealNum norm_inverse = static_cast<RealNum>(1.0) / std::sqrt(comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2]);
     comp_[0] *= norm_inverse;

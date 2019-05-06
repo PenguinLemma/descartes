@@ -17,8 +17,8 @@ public:
         maxima_(M)
     {}
 
-    Vec3 Minima() const { return minima_; }
-    Vec3 Maxima() const { return maxima_; }
+    const Vec3& Minima() const { return minima_; }
+    const Vec3& Maxima() const { return maxima_; }
 
     bool Hit(const Ray& r, RealNum param_min, RealNum param_max) const
     {
@@ -62,16 +62,16 @@ inline AxesAlignedBoundingBox UnionOfAABBs(const AxesAlignedBoundingBox& bbox1,
     // Get minimum
     Vec3 minima;
     Vec3 maxima;
-    std::transform(bbox1.Minima().Begin(),
-                   bbox1.Minima().End(),
-                   bbox2.Minima().Begin(),
-                   minima.Begin(),
+    std::transform(std::begin(bbox1.Minima()),
+                   std::end(bbox1.Minima()),
+                   std::begin(bbox2.Minima()),
+                   std::begin(minima),
                    [](RealNum a, RealNum b){ return std::min(a,b); }
                 );
-    std::transform(bbox1.Maxima().Begin(),
-                   bbox1.Maxima().End(),
-                   bbox2.Maxima().Begin(),
-                   maxima.Begin(),
+    std::transform(std::begin(bbox1.Maxima()),
+                   std::end(bbox1.Maxima()),
+                   std::begin(bbox2.Maxima()),
+                   std::begin(maxima),
                    [](RealNum a, RealNum b){ return std::min(a,b); }
                 );
     return AxesAlignedBoundingBox(minima, maxima);

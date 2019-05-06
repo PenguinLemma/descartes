@@ -19,8 +19,10 @@ public:
     bool Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const override;
     bool ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const override;
     void Add(std::shared_ptr<Hitable>&& hitable){ hitables_.push_back(hitable); }
-    auto Begin() const { return std::begin(hitables_); }
-    auto End() const { return std::end(hitables_); }
+    auto begin() noexcept { return hitables_.begin(); }
+    auto end() noexcept { return hitables_.end(); }
+    auto begin() const noexcept { return hitables_.begin(); }
+    auto end() const noexcept { return hitables_.end(); }
 
 private:
     std::vector<std::shared_ptr<Hitable> > hitables_;
