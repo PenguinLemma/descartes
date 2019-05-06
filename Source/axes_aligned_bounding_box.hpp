@@ -72,7 +72,7 @@ inline AxesAlignedBoundingBox UnionOfAABBs(const AxesAlignedBoundingBox& bbox1,
                    std::end(bbox1.Maxima()),
                    std::begin(bbox2.Maxima()),
                    std::begin(maxima),
-                   [](RealNum a, RealNum b){ return std::min(a,b); }
+                   [](RealNum a, RealNum b){ return std::max(a,b); }
                 );
     return AxesAlignedBoundingBox(minima, maxima);
 }
