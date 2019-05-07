@@ -33,7 +33,7 @@
 Property-based testing seems a good approach, Catch2 still doesn't fully support
 property-based testing, but generators might provide a good start:
 https://github.com/catchorg/Catch2/blob/master/docs/generators.md
- - [ ] Add [Catch2](https://github.com/catchorg/Catch2 "Catch2 repo") as testing library
+ - [x] Add [Catch2](https://github.com/catchorg/Catch2 "Catch2 repo") as testing library
  - [ ] Create tests for:
      - [ ] `plemma::glancy::AxesAlignedBoundingBox::Hit`
      - [ ] Free method `plemma::glancy::ComputeAABBForFixedSphere`
