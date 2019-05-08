@@ -16,4 +16,4 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
 endif()
 
 # Add project subdirectories
-add_subdirectory(Source)
+add_subdirectory(src)
