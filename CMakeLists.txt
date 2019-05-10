@@ -17,3 +17,4 @@ endif()
 
 # Add project subdirectories
 add_subdirectory(src)
+add_subdirectory(test)
