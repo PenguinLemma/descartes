@@ -1,0 +1,9 @@
+language: cpp
+
+dist: xenial
+sudo: false
+
+compiler:
+  - gcc
+
+script: mkdir build && cd build && cmake .. && make
