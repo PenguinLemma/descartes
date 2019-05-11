@@ -179,7 +179,7 @@ constexpr Vec3& Vec3::operator/=(const RealNum t) noexcept
     return *this;
 }
 
-constexpr Vec3 UnitVector(Vec3 v) noexcept
+inline Vec3 UnitVector(Vec3 v) noexcept
 {
     return v / v.Norm();
 }
@@ -212,7 +212,7 @@ constexpr Vec3 Reflect(const Vec3& v, const Vec3& n) noexcept
 }
 
 // name "ni_over_nt" might need to be improved
-constexpr bool Refract(const Vec3& v, const Vec3& n, RealNum ni_over_nt, Vec3& refracted) noexcept
+bool Refract(const Vec3& v, const Vec3& n, RealNum ni_over_nt, Vec3& refracted) noexcept
 {
     Vec3 v_unit = UnitVector(v);
     RealNum dt = Dot(v_unit, n);
