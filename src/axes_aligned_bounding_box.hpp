@@ -59,7 +59,6 @@ inline AxesAlignedBoundingBox ComputeAABBForFixedSphere(const Vec3& center, Real
 inline AxesAlignedBoundingBox UnionOfAABBs(const AxesAlignedBoundingBox& bbox1,
                                            const AxesAlignedBoundingBox& bbox2)
 {
-    // Get minimum
     Vec3 minima;
     Vec3 maxima;
     std::transform(std::begin(bbox1.Minima()),
@@ -67,13 +66,13 @@ inline AxesAlignedBoundingBox UnionOfAABBs(const AxesAlignedBoundingBox& bbox1,
                    std::begin(bbox2.Minima()),
                    std::begin(minima),
                    [](RealNum a, RealNum b){ return std::min(a,b); }
-                );
+    );
     std::transform(std::begin(bbox1.Maxima()),
                    std::end(bbox1.Maxima()),
                    std::begin(bbox2.Maxima()),
                    std::begin(maxima),
                    [](RealNum a, RealNum b){ return std::max(a,b); }
-                );
+    );
     return AxesAlignedBoundingBox(minima, maxima);
 }
 

@@ -29,10 +29,10 @@ public:
     constexpr Vec3 operator-() const noexcept { return Vec3(-comp_[0], -comp_[1], -comp_[2]); }
     constexpr RealNum operator[](int i) const noexcept { return comp_[i]; }
     constexpr RealNum& operator[](int i) noexcept { return comp_[i]; }
-	constexpr auto begin() noexcept { return comp_.begin(); }
-	constexpr auto end() noexcept { return comp_.end(); }
-	constexpr auto begin() const noexcept { return comp_.begin(); }
-	constexpr auto end() const noexcept { return comp_.end(); }
+    constexpr auto begin() noexcept { return comp_.begin(); }
+    constexpr auto end() noexcept { return comp_.end(); }
+    constexpr auto begin() const noexcept { return comp_.begin(); }
+    constexpr auto end() const noexcept { return comp_.end(); }
 
     constexpr Vec3& operator+=(const Vec3& v) noexcept;
     constexpr Vec3& operator-=(const Vec3& v) noexcept;
@@ -43,7 +43,7 @@ public:
 
     RealNum Norm() const noexcept
     {
-        return sqrt(comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2]);
+        return std::sqrt(comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2]);
     }
 
     constexpr RealNum SquaredNorm() const noexcept
@@ -72,7 +72,7 @@ inline std::ostream& operator<<(std::ostream& os, const Vec3& v) noexcept
 
 constexpr bool operator==(Vec3 const& u, Vec3 const& v)
 {
-	return (u[0] == v[0]) && (u[1] == v[1]) && (u[2] == v[2]);
+    return (u[0] == v[0]) && (u[1] == v[1]) && (u[2] == v[2]);
 }
 
 void Vec3::Normalize() noexcept

@@ -19,10 +19,10 @@ public:
     BoundingVolumeHierarchy() = default;
     BoundingVolumeHierarchy(std::vector<HitableInABox>& boxed_hitables,
         RealNum t0, RealNum t1)
-	:
-		BoundingVolumeHierarchy(boxed_hitables,
-			0, static_cast<int>(boxed_hitables.size()),
-			t0, t1)
+    :
+        BoundingVolumeHierarchy(boxed_hitables,
+            0, static_cast<int>(boxed_hitables.size()),
+            t0, t1)
     {
     }
 
@@ -42,7 +42,7 @@ private:
     std::shared_ptr<Hitable> right_child_;
 };
 
-inline bool BoundingVolumeHierarchy::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const
+bool BoundingVolumeHierarchy::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const
 {
     if (!bbox_.Hit(r, t_min, t_max))
     {
