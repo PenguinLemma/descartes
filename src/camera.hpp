@@ -9,6 +9,9 @@ namespace plemma
 namespace glancy
 {
 
+// Class that models the camera, containing its position and
+// direction, time that the shutter opens and closes, its
+// field of view and the distance from the focus to the lense.
 class Camera
 {
 public:
@@ -35,6 +38,10 @@ public:
     RealNum TimeShutterOpens() const { return time_open_shutter_; }
     RealNum TimeShutterCloses() const { return time_close_shutter_; }
 
+    // Returns a ray that passes through a random point in the camera
+    // lens and point in image with coordinates u and v. This ray occurs
+    // at a random instant between the time the shutter of the camera
+    // opens and the time it closes.
     Ray GetRay(RealNum u, RealNum v) const
     {
         Vec3 random_dir = lens_radius_ * GetRandomPointInUnitDiscXY();
