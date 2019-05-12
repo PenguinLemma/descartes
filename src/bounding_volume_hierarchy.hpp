@@ -13,10 +13,17 @@ namespace glancy
 
 typedef std::pair<AxesAlignedBoundingBox, std::shared_ptr<Hitable> > HitableInABox;
 
+// Class that acts both as node and tree implementation.
+// BoundingVolumeHierarchy will allow us to do binary search
+// over the hitables with each ray by having a bbox that
+// contains both children volumes/hitables as parent.
+// It requires to have pre-computed AABBs for each
+// hitable to avoid repeating the calculations.
 class BoundingVolumeHierarchy : public Hitable
 {
 public:
     BoundingVolumeHierarchy() = default;
+    // Constructor that builds the BVH tree from all hitables
     BoundingVolumeHierarchy(std::vector<HitableInABox>& boxed_hitables,
         RealNum t0, RealNum t1)
     :
@@ -26,10 +33,18 @@ public:
     {
     }
 
+    // Constructor that builds the BVH tree from the hitables from
+    // position 'from' to position 'to'. Essential given recursive
+    // structure (and creation) of BVH tree.
     BoundingVolumeHierarchy(std::vector<HitableInABox>& boxed_hitables,
         int from, int to, RealNum t0, RealNum t1);
 
+    // Check if ray hits the parent, in the case it does, recursively
+    // call hit until reaching a leaf (where actual hitables are)
     virtual bool Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const override;
+
+    // Computes AxesAlignedBoundingBox if possible and returns
+    // whether it was possible or not.
     virtual bool ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const override
     {
         bbox = bbox_;
