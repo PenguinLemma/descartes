@@ -108,11 +108,11 @@ template <typename Center, typename Radius>
 bool Sphere<Center, Radius>::ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const
 {
     size_t number_snapshots = static_cast<size_t>(
-        std::ceil((time_to - time_from) / kSecondsBetweenSnapshotsForBBoxCalculation));
+        std::ceil((time_to - time_from) / constants::kSecondsBetweenSnapshotsForBBoxCalculation));
     std::vector<RealNum> times(number_snapshots);
-    RealNum prev_to_start = time_from - kSecondsBetweenSnapshotsForBBoxCalculation;
+    RealNum prev_to_start = time_from - constants::kSecondsBetweenSnapshotsForBBoxCalculation;
     std::generate(std::begin(times), std::end(times),
-        [t = prev_to_start]() mutable { return t + kSecondsBetweenSnapshotsForBBoxCalculation; }
+        [t = prev_to_start]() mutable { return t + constants::kSecondsBetweenSnapshotsForBBoxCalculation; }
     );
 
     // Compute the maximum displacement of the center between

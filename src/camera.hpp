@@ -21,7 +21,7 @@ public:
         time_open_shutter_ = t0;
         time_close_shutter_ = t1;
         lens_radius_ = aperture / 2.0;
-        RealNum theta = vert_fov_deg * kPi / 180.0;
+        RealNum theta = constants::kPi * vert_fov_deg / 180.0;
         RealNum half_height = tan(theta / 2.0);
         RealNum half_width  = aspect * half_height;
         origin_ = lookfrom;
