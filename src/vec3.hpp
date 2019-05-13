@@ -38,8 +38,8 @@ public:
     constexpr Vec3& operator-=(const Vec3& v) noexcept;
     constexpr Vec3& operator*=(const Vec3& v) noexcept;
     constexpr Vec3& operator/=(const Vec3& v) noexcept;
-    constexpr Vec3& operator*=(const RealNum t) noexcept;
-    constexpr Vec3& operator/=(const RealNum t) noexcept;
+    constexpr Vec3& operator*=(RealNum t) noexcept;
+    constexpr Vec3& operator/=(RealNum t) noexcept;
 
     RealNum Norm() const noexcept
     {
