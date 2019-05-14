@@ -14,6 +14,7 @@ namespace plemma {
 namespace glancy {
 
 constexpr RealNum kToleranceEqualityCheck = Real(1e-5);
+constexpr RealNum kMinNormToDivide = Real(1e-5);
 constexpr RealNum kMaxRandomGeneration = Real(1e4);
 constexpr RealNum kMinRandomGeneration = Real(-1e4);
 
@@ -49,17 +50,17 @@ private:
     std::uniform_real_distribution<RealNum> dist_;
 };
 
-Vec3 const& Vec3RandomGenerator::get() const
+inline Vec3 const& Vec3RandomGenerator::get() const
 {
     return current_;
 }
 
-Catch::Generators::GeneratorWrapper<Vec3> RandomFiniteVec3()
+inline Catch::Generators::GeneratorWrapper<Vec3> RandomFiniteVec3()
 {
     return Catch::Generators::GeneratorWrapper<Vec3>(std::make_unique<Vec3RandomGenerator>());
 }
 
-Catch::Generators::GeneratorWrapper<Vec3> RandomFiniteVec3(RealNum min, RealNum max)
+inline Catch::Generators::GeneratorWrapper<Vec3> RandomFiniteVec3(RealNum min, RealNum max)
 {
     return Catch::Generators::GeneratorWrapper<Vec3>(std::make_unique<Vec3RandomGenerator>(min, max));
 }

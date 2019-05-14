@@ -119,7 +119,106 @@ TEST_CASE("Component wise prod * : Vec3 x Vec3 -> Vec3", "[Vec3]")
         CHECK( ones * v == v );
     }
 
-    // I'm here :)
+    SECTION("(0, 0, 0) zeroes all components")
+    {
+        Vec3 zero;
+        auto v = GENERATE(take(100, RandomFiniteVec3()));
+        CHECK( v * zero == zero );
+        CHECK( zero * v == zero );
+    }
+
+    SECTION("It's commutative")
+    {
+        auto u = GENERATE(take(100, RandomFiniteVec3()));
+        auto v = GENERATE(take(100, RandomFiniteVec3()));
+        CHECK( u * v == v * u );
+    }
+
+    SECTION("e_i captures i-th component")
+    {
+        auto v = GENERATE(take(100, RandomFiniteVec3()));
+        Vec3 e1(1.0, 0.0, 0.0);
+        Vec3 e2(0.0, 1.0, 0.0);
+        Vec3 e3(0.0, 0.0, 1.0);
+
+        CHECK( e1 * v == Vec3(v.X(), 0.0, 0.0) );
+        CHECK( e2 * v == Vec3(0.0, v.Y(), 0.0) );
+        CHECK( e3 * v == Vec3(0.0, 0.0, v.Z()) );
+
+        CHECK( v * e1 == Vec3(v.X(), 0.0, 0.0) );
+        CHECK( v * e2 == Vec3(0.0, v.Y(), 0.0) );
+        CHECK( v * e3 == Vec3(0.0, 0.0, v.Z()) );
+    }
+}
+
+TEST_CASE("Component wise div / : Vec3 x Vec3 -> Vec3", "[Vec3]")
+{
+    SECTION("(1, 1, 1) is right neutral element")
+    {
+        Vec3 ones(1.0, 1.0, 1.0);
+        auto v = GENERATE(take(100, RandomFiniteVec3()));
+        CHECK( v * ones == v );
+    }
+
+    SECTION("(0, 0, 0) is a fixed point as right argument")
+    {
+        Vec3 zero;
+        // TODO: extract this as method `GenerateVec3WithNonZeroComp(how_many)`
+        auto v = GENERATE(
+            take(100,
+                filter(
+                    [](Vec3 const & v){
+                        return v.X() > kMinNormToDivide
+                            && v.Y() > kMinNormToDivide
+                            && v.Z() > kMinNormToDivide;
+                    },
+                    RandomFiniteVec3()
+                )
+            )
+        );
+        CHECK( zero / v == zero );
+    }
+
+    SECTION("Division by one-self gives (1, 1, 1)")
+    {
+        Vec3 ones(1.0, 1.0, 1.0);
+        auto v = GENERATE(
+            take(100,
+                filter(
+                    [](Vec3 const & v){
+                        return v.X() > kMinNormToDivide
+                            && v.Y() > kMinNormToDivide
+                            && v.Z() > kMinNormToDivide;
+                    },
+                    RandomFiniteVec3()
+                )
+            )
+        );
+        CHECK( v / v == ones );
+    }
+
+    SECTION("Comp-wise multiplication and division are inverse")
+    {
+        auto original = GENERATE(take(100, RandomFiniteVec3()));
+        auto operand = GENERATE(
+            take(100,
+                filter(
+                    [](Vec3 const & v){
+                        return v.X() > kMinNormToDivide
+                            && v.Y() > kMinNormToDivide
+                            && v.Z() > kMinNormToDivide;
+                    },
+                    RandomFiniteVec3()
+                )
+            )
+        );
+        // TODO: ApproxVec3??
+        // CHECK( original * operand / operand == original );
+        // CHECK( operand * original / operand == original );
+        // Dummy checks for now to be able to build
+        CHECK( operand == operand );
+        CHECK( original == original );
+    }
 }
 
 TEST_CASE("Vector is unitary after normalizing", "[Vec3][Norm]")
