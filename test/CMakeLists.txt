@@ -15,3 +15,9 @@ set(INCLUDE_DIR
 add_executable(GlancyTest ${TEST_SOURCES})
 
 target_include_directories(GlancyTest PRIVATE ${INCLUDE_DIR} ${CMAKE_CURRENT_LIST_DIR}/../src)
+
+set_target_properties(GlancyTest PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)

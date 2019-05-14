@@ -26,3 +26,9 @@ set(HEADERS
 )
 
 add_executable(Glancy ${SOURCES} ${HEADERS})
+
+set_target_properties(Glancy PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+)
