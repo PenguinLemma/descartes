@@ -13,9 +13,9 @@ namespace plemma {
 
 namespace glancy {
 
-constexpr RealNum kToleranceEqualityCheck = 1e-5;
-constexpr RealNum kMaxRandomGeneration = 1e4;
-constexpr RealNum kMinRandomGeneration = -1e4;
+constexpr RealNum kToleranceEqualityCheck = Real(1e-5);
+constexpr RealNum kMaxRandomGeneration = Real(1e4);
+constexpr RealNum kMinRandomGeneration = Real(-1e4);
 
 class Vec3RandomGenerator : public Catch::Generators::IGenerator<Vec3>
 {

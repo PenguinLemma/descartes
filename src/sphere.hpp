@@ -42,7 +42,7 @@ bool Sphere<Center,Radius>::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitR
     RealNum c = Dot(or_to_center, or_to_center) - radius * radius;
     RealNum discriminant = b*b - a*c;
 
-    if (discriminant > 0.0)
+    if (discriminant > Real(0))
     {
         RealNum sqrt_discriminant = std::sqrt(discriminant);
         RealNum temp = (-b - sqrt_discriminant)/a;
@@ -78,7 +78,7 @@ bool Sphere<Vec3, RealNum>::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitR
     RealNum c = Dot(or_to_center, or_to_center) - radius_ * radius_;
     RealNum discriminant = b*b - a*c;
 
-    if (discriminant > 0.0)
+    if (discriminant > Real(0))
     {
         RealNum sqrt_discriminant = std::sqrt(discriminant);
         RealNum temp = (-b - sqrt_discriminant)/a;

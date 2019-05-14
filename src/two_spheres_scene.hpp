@@ -23,14 +23,14 @@ private:
 
 inline void TwoSpheresScene::LoadWorld()
 {
-    Vec3 center_from(0.0, 1.0, 1.0);
-    Vec3 center_to(0.0, 1.1, 1.0);
+    Vec3 center_from(Real(0), Real(1), Real(1));
+    Vec3 center_to(Real(0), Real(1.1), Real(1));
     auto center = [=](RealNum t){ return center_from + t * (center_to - center_from); };
-    auto radius = [](RealNum t){ return 1.0; };
-    world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(Vec3(0.0, -1000.0, 0.0), 1000.0,
-                        std::make_shared<Lambertian>(Vec3(0.5, 0.5, 0.5))));
+    auto radius = [](RealNum t){ return Real(1.0); };
+    world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(Vec3(Real(0), Real(-1000), Real(0)), Real(1000),
+                        std::make_shared<Lambertian>(Vec3(Real(0.5), Real(0.5), Real(0.5)))));
     world_.Add(std::make_shared<Sphere<decltype(center), decltype(radius)> >(center, radius,
-                        std::make_shared<Metal>(Vec3(0.5, 0.5, 0.5), 0.9)));
+                        std::make_shared<Metal>(Vec3(Real(0.5), Real(0.5), Real(0.5)), Real(0.9))));
 }
 
 } // namespace glancy

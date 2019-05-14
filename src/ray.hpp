@@ -11,7 +11,7 @@ namespace glancy
 class Ray
 {
 public:
-    Ray() {}
+	Ray() noexcept = default;
     Ray(const Vec3& origin, const Vec3& direction, RealNum t)
         : origin_(origin), direction_(direction), time_(t) {}
     inline Vec3 Origin() const { return origin_; }
@@ -19,6 +19,7 @@ public:
     inline RealNum Time() const { return time_; }
     inline Vec3 PointAtParameter(RealNum lambda) const { return origin_ + lambda * direction_; }
 
+private:
     Vec3 origin_;
     Vec3 direction_;
     RealNum time_;
@@ -26,7 +27,7 @@ public:
 
 constexpr Vec3 Reflect(const Vec3& v, const Vec3& n) noexcept
 {
-    return v - 2.0 * Dot(v,n)*n;
+    return v - Real(2) * Dot(v,n)*n;
 }
 
 // name "ni_over_nt" might need to be improved
@@ -34,8 +35,8 @@ inline bool Refract(const Vec3& v, const Vec3& n, RealNum ni_over_nt, Vec3& refr
 {
     Vec3 v_unit = UnitVector(v);
     RealNum dt = Dot(v_unit, n);
-    RealNum discriminant = 1.0 - ni_over_nt * ni_over_nt * (1.0 - dt * dt);
-    if (discriminant > 0.0)
+    RealNum discriminant = Real(1) - ni_over_nt * ni_over_nt * (Real(1) - dt * dt);
+    if (discriminant > Real(0))
     {
         refracted = ni_over_nt * (v_unit - dt * n) - std::sqrt(discriminant) * n;
         return true;

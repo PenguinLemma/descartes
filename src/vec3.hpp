@@ -3,15 +3,13 @@
 #include <cmath>
 #include <random>
 #include <array>
+#include "utilities.hpp"
 #include "rand_engine.hpp"
 
 namespace plemma
 {
 namespace glancy
 {
-
-typedef float RealNum;
-
 
 class Vec3
 {
@@ -77,7 +75,7 @@ constexpr bool operator==(Vec3 const& u, Vec3 const& v)
 
 void Vec3::Normalize() noexcept
 {
-    RealNum norm_inverse = static_cast<RealNum>(1.0) / std::sqrt(comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2]);
+    RealNum norm_inverse = Real(1) / std::sqrt(comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2]);
     comp_[0] *= norm_inverse;
     comp_[1] *= norm_inverse;
     comp_[2] *= norm_inverse;
@@ -172,7 +170,7 @@ constexpr Vec3& Vec3::operator*=(const RealNum t) noexcept
 
 constexpr Vec3& Vec3::operator/=(const RealNum t) noexcept
 {
-    RealNum tinv = static_cast<RealNum>(1.0) / t;
+    RealNum tinv = Real(1) / t;
     comp_[0] *= tinv;
     comp_[1] *= tinv;
     comp_[2] *= tinv;
@@ -186,9 +184,9 @@ inline Vec3 UnitVector(Vec3 v) noexcept
 
 inline Vec3 GetRandomPointInUnitBall() noexcept
 {
-    Vec3 p(1.0, 1.0, 1.0);
-    std::uniform_real_distribution<RealNum> distribution(-1.0, 1.0);
-    while (!(p.SquaredNorm() < 1.0))
+    Vec3 p(Real(1), Real(1), Real(1));
+    std::uniform_real_distribution<RealNum> distribution(Real(-1), Real(1));
+    while (!(p.SquaredNorm() < Real(1)))
     {
         p = Vec3(distribution(my_engine()), distribution(my_engine()), distribution(my_engine()));
     }
@@ -197,11 +195,11 @@ inline Vec3 GetRandomPointInUnitBall() noexcept
 
 inline Vec3 GetRandomPointInUnitDiscXY() noexcept
 {
-    Vec3 p(1.0, 1.0, 0.0);
-    std::uniform_real_distribution<RealNum> distribution(-1.0, 1.0);
-    while (!(p.SquaredNorm() < 1.0))
+    Vec3 p(Real(1), Real(1), Real(1));
+    std::uniform_real_distribution<RealNum> distribution(Real(-1), Real(1));
+    while (!(p.SquaredNorm() < Real(1)))
     {
-        p = Vec3(distribution(my_engine()), distribution(my_engine()), 0.0);
+        p = Vec3(distribution(my_engine()), distribution(my_engine()), Real(0));
     }
     return p;
 }

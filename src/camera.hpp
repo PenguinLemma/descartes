@@ -20,9 +20,9 @@ public:
     {
         time_open_shutter_ = t0;
         time_close_shutter_ = t1;
-        lens_radius_ = aperture / 2.0;
-        RealNum theta = constants::kPi * vert_fov_deg / 180.0;
-        RealNum half_height = tan(theta / 2.0);
+        lens_radius_ = aperture / Real(2);
+        RealNum theta = constants::kPi * vert_fov_deg / Real(180);
+        RealNum half_height = tan(theta / Real(2));
         RealNum half_width  = aspect * half_height;
         origin_ = lookfrom;
         looking_direction_ = UnitVector(lookfrom - lookat);
@@ -31,8 +31,8 @@ public:
         lower_left_corner_ = origin_ - half_width * focus_dist * horizontal_normal_
                                      - half_height * focus_dist * vertical_normal_
                                      - focus_dist * looking_direction_;
-        horizontal_ = 2.0 * half_width * focus_dist * horizontal_normal_;
-        vertical_   = 2.0 * half_height * focus_dist * vertical_normal_;
+        horizontal_ = Real(2) * half_width * focus_dist * horizontal_normal_;
+        vertical_   = Real(2) * half_height * focus_dist * vertical_normal_;
     }
 
     RealNum TimeShutterOpens() const { return time_open_shutter_; }
@@ -46,7 +46,7 @@ public:
     {
         Vec3 random_dir = lens_radius_ * GetRandomPointInUnitDiscXY();
         Vec3 offset = random_dir.X() * horizontal_normal_ + random_dir.Y() * vertical_normal_;
-        std::uniform_real_distribution<RealNum> dist(0.0, 1.0);
+        std::uniform_real_distribution<RealNum> dist(Real(0), Real(1));
         RealNum lambda = dist(my_engine());
         RealNum t = time_open_shutter_ + lambda * (time_close_shutter_ - time_open_shutter_);
         return Ray(origin_ + offset, lower_left_corner_ + u*horizontal_ + v*vertical_ - origin_ - offset, t);

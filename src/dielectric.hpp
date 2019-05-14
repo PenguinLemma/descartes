@@ -44,11 +44,11 @@ public:
         Vec3 outward_normal;
         Vec3 reflected = Reflect(ray_in.Direction(), rec.normal);
         RealNum ni_over_nt;
-        attenuation = Vec3(1.0, 1.0, 1.0);
+        attenuation = Vec3(Real(1), Real(1), Real(1));
         Vec3 refracted;
         RealNum reflect_prob;
         RealNum cosine;
-        if (Dot(ray_in.Direction(), rec.normal) > 0.0)
+        if (Dot(ray_in.Direction(), rec.normal) > Real(0))
         {
             outward_normal = -rec.normal;
             ni_over_nt = refraction_index_;
@@ -57,7 +57,7 @@ public:
         else
         {
             outward_normal = rec.normal;
-            ni_over_nt = 1.0 / refraction_index_;
+            ni_over_nt = Real(1) / refraction_index_;
             cosine = -Dot(ray_in.Direction(), rec.normal) / ray_in.Direction().Norm();
         }
 
@@ -67,10 +67,10 @@ public:
         }
         else
         {
-            reflect_prob = 1.0;
+            reflect_prob = Real(1);
         }
 
-        std::uniform_real_distribution<RealNum> distribution(0.0, 1.0);
+        std::uniform_real_distribution<RealNum> distribution(Real(0), Real(1));
 
         if (distribution(my_engine()) < reflect_prob)
         {

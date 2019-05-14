@@ -40,13 +40,13 @@ inline bool AxesAlignedBoundingBox::Hit(const Ray& r, RealNum param_min, RealNum
 {
     for (int i = 0; i < 3; ++i)
     {
-        RealNum inv_direction_comp = 1.0 / r.Direction()[i];
+        RealNum inv_direction_comp = Real(1) / r.Direction()[i];
         // Calculate parameters lambda0, lambda1 such that component i of
         // r(lambda) belongs to [minima_[i], maxima_[i]] for all
         // lambda in [lambda_0, lambda_1] contained in [param_min, param_max]
         RealNum lambda_0 =  (minima_[i] - r.Origin()[i]) * inv_direction_comp;
         RealNum lambda_1 =  (maxima_[i] - r.Origin()[i]) * inv_direction_comp;
-        if (inv_direction_comp < 0.0)
+        if (inv_direction_comp < Real(0))
             std::swap(lambda_0, lambda_1);
 
         // Calculate the intersection of the already calculated intervals

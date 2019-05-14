@@ -24,6 +24,7 @@ int main() {
     using plemma::glancy::TwoSpheresScene;
     using plemma::glancy::RandomSpheresScene;
     using plemma::glancy::Camera;
+	using plemma::glancy::Real;
 
     plemma::glancy::my_engine();
 
@@ -39,17 +40,17 @@ int main() {
     size_t ny = 1500;
     Image image(nx, ny);
 
-    Vec3 lookfrom(10.0, 1.4, 2.0);
-    Vec3 lookat(3.5, 0.6, 0.5);
+    Vec3 lookfrom(Real(10), Real(1.4), Real(2));
+    Vec3 lookat(Real(3.5), Real(0.6), Real(0.5));
     RealNum dist_to_focus = (lookfrom - lookat).Norm();
-    RealNum aperture = 0.1;
-    RealNum aspect = static_cast<RealNum>(nx) / static_cast<RealNum>(ny);
+    RealNum aperture = Real(0.1);
+    RealNum aspect = Real(nx) / Real(ny);
 
-    Camera camera(lookfrom, lookat, Vec3(0.0, 1.0, 0.0), 30.0, aspect, aperture, dist_to_focus, 0.0, 0.1);
+    Camera camera(lookfrom, lookat, Vec3(Real(0), Real(1), Real(0)), Real(30), aspect, aperture, dist_to_focus, Real(0), Real(0.1));
 
     size_t n_rays_per_pixel = 100;
     uint16_t max_depth = 50;
-    auto gamma_correction = [](RealNum x){ return static_cast<RealNum>(std::sqrt(x)); };
+    auto gamma_correction = [](RealNum x){ return Real(std::sqrt(x)); };
     plemma::glancy::Renderer rend(gamma_correction, nx, ny, n_rays_per_pixel, max_depth);
 
     std::cout << "Please, wait patiently while Glancy is enlightened" << std::endl;

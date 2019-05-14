@@ -13,7 +13,7 @@ namespace glancy
 class Metal : public Material
 {
 public:
-    Metal(const Vec3& alb, const RealNum f) : albedo_(alb), fuzz_(std::min(f, static_cast<RealNum>(1.0))) {}
+    Metal(const Vec3& alb, const RealNum f) : albedo_(alb), fuzz_(std::min(f, Real(1))) {}
 
     virtual bool Scatter(const Ray& ray_in, const HitRecord& rec,
                          Vec3& attenuation, Ray& scattered_ray) const override
@@ -21,7 +21,7 @@ public:
         Vec3 reflected = Reflect(UnitVector(ray_in.Direction()), rec.normal);
         scattered_ray = Ray(rec.p, reflected + fuzz_*GetRandomPointInUnitBall(), ray_in.Time());
         attenuation = albedo_;
-        return (Dot(scattered_ray.Direction(), rec.normal) > 0.0);
+        return (Dot(scattered_ray.Direction(), rec.normal) > Real(0));
     }
 
     // https://en.wikipedia.org/wiki/Albedo
