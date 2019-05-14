@@ -40,7 +40,7 @@ private:
 // Format of written output is the same than SingleMeasurement::Show :
 // process_name took time_elapsed units_name
 template <typename Function, typename TimeUnitsToShow>
-void MeasureFunction(Function f, const std::string& process_name, const std::string& units_name)
+inline void MeasureFunction(Function f, const std::string& process_name, const std::string& units_name)
 {
     SingleMeasurement<TimeUnitsToShow> measurement;
     measurement.Start();

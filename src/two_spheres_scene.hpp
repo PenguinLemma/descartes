@@ -21,7 +21,7 @@ private:
     HitableList world_;
 };
 
-void TwoSpheresScene::LoadWorld()
+inline void TwoSpheresScene::LoadWorld()
 {
     Vec3 center_from(0.0, 1.0, 1.0);
     Vec3 center_to(0.0, 1.1, 1.0);

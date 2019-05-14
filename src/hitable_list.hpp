@@ -28,7 +28,7 @@ private:
     std::vector<std::shared_ptr<Hitable> > hitables_;
 };
 
-bool HitableList::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const
+inline bool HitableList::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const
 {
     HitRecord temp_rec;
     bool hit_anything = false;
@@ -47,7 +47,7 @@ bool HitableList::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec
     return hit_anything;
 }
 
-bool HitableList::ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const
+inline bool HitableList::ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const
 {
     if (hitables_.size() < 1)
         return false;

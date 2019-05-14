@@ -22,7 +22,7 @@ private:
     HitableList world_;
 };
 
-void RandomSpheresScene::LoadWorld()
+inline void RandomSpheresScene::LoadWorld()
 {
     std::uniform_real_distribution<RealNum> dist(0.0, 1.0);
 
