@@ -28,7 +28,7 @@ public:
         RealNum t0, RealNum t1)
     :
         BoundingVolumeHierarchy(boxed_hitables,
-            0, static_cast<int>(boxed_hitables.size()),
+            0, boxed_hitables.size(),
             t0, t1)
     {
     }
@@ -37,7 +37,7 @@ public:
     // position 'from' to position 'to'. Essential given recursive
     // structure (and creation) of BVH tree.
     BoundingVolumeHierarchy(std::vector<HitableInABox>& boxed_hitables,
-        int from, int to, RealNum t0, RealNum t1);
+        size_t from, size_t to, RealNum t0, RealNum t1);
 
     // Check if ray hits the parent, in the case it does, recursively
     // call hit until reaching a leaf (where actual hitables are)
@@ -45,7 +45,10 @@ public:
 
     // Computes AxesAlignedBoundingBox if possible and returns
     // whether it was possible or not.
-    virtual bool ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const override
+    virtual bool ComputeBoundingBox(
+		[[maybe_unused]] RealNum time_from, 
+		[[maybe_unused]] RealNum time_to, 
+		AxesAlignedBoundingBox& bbox) const override
     {
         bbox = bbox_;
         return true;
@@ -92,10 +95,10 @@ inline bool BoundingVolumeHierarchy::Hit(const Ray& r, RealNum t_min, RealNum t_
 
 inline BoundingVolumeHierarchy::BoundingVolumeHierarchy(
     std::vector<HitableInABox>& boxed_hitables,
-    int from, int to, RealNum t0, RealNum t1)
+    size_t from, size_t to, RealNum t0, RealNum t1)
 {
     AxesAlignedBoundingBox bbox_left, bbox_right;
-    int number_elements = to - from;
+    size_t number_elements = to - from;
     if (number_elements == 1)
     {
         left_child_ = boxed_hitables[from].second;
@@ -107,8 +110,8 @@ inline BoundingVolumeHierarchy::BoundingVolumeHierarchy(
     {
         left_child_ = boxed_hitables[from].second;
         bbox_left = boxed_hitables[from].first;
-        right_child_ = boxed_hitables[from+1].second;
-        bbox_right = boxed_hitables[from+1].first;
+        right_child_ = boxed_hitables[from + 1].second;
+        bbox_right = boxed_hitables[from + 1].first;
     }
     else
     {

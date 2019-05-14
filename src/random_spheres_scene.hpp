@@ -52,7 +52,7 @@ inline void RandomSpheresScene::LoadWorld()
             RealNum perturbance = dist(my_engine());
             auto moving_center = [=](RealNum t) { return center + t * Vec3(Real(0), perturbance, Real(0)); };
             RealNum radius = Real(0.2);
-            auto constant_radius = [=](RealNum t) { return radius; };
+            auto constant_radius = [=]([[maybe_unused]] RealNum t) { return radius; };
             bool is_static = (dist(my_engine()) > Real(0.2));
 
             if ((center - Vec3(Real(4), Real(0.2), Real(0))).SquaredNorm() > Real(0.9 * 0.9))

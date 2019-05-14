@@ -146,7 +146,10 @@ bool Sphere<Center, Radius>::ComputeBoundingBox(RealNum time_from, RealNum time_
 }
 
 template <>
-bool Sphere<Vec3, RealNum>::ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const
+bool Sphere<Vec3, RealNum>::ComputeBoundingBox(
+	[[maybe_unused]] RealNum time_from, 
+	[[maybe_unused]] RealNum time_to, 
+	AxesAlignedBoundingBox& bbox) const
 {
     bbox = ComputeAABBForFixedSphere(center_, radius_);
     return true;

@@ -26,7 +26,7 @@ inline void TwoSpheresScene::LoadWorld()
     Vec3 center_from(Real(0), Real(1), Real(1));
     Vec3 center_to(Real(0), Real(1.1), Real(1));
     auto center = [=](RealNum t){ return center_from + t * (center_to - center_from); };
-    auto radius = [](RealNum t){ return Real(1.0); };
+    auto radius = []([[maybe_unused]] RealNum t){ return Real(1); };
     world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(Vec3(Real(0), Real(-1000), Real(0)), Real(1000),
                         std::make_shared<Lambertian>(Vec3(Real(0.5), Real(0.5), Real(0.5)))));
     world_.Add(std::make_shared<Sphere<decltype(center), decltype(radius)> >(center, radius,
