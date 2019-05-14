@@ -63,7 +63,7 @@ public:
 
         if (Refract(ray_in.Direction(), outward_normal, ni_over_nt, refracted))
         {
-            reflect_prob = Schlick(cosine, refraction_index_);
+            reflect_prob = utilities::Schlick(cosine, refraction_index_);
         }
         else
         {
