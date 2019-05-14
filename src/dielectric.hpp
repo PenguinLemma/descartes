@@ -13,16 +13,37 @@ namespace plemma
 namespace glancy
 {
 
+// Class implementing material of type Dielectric. Objects of
+// such type of material are characterized by the following
+// property with respect to interaction with light:
+// - when a ray hits them, it splits into a reflected and
+// a refracted ray. In this implementation, we will choose
+// randomly which of the two resulting rays to follow after
+// the split for each ray that hits the object.
 class Dielectric : public Material
 {
 public:
     Dielectric(RealNum ri) : refraction_index_(ri) {}
+
+    // Returns false if the ray is absorbed by this material
+    // and true otherwise. It also computes the scattered ray
+    // resulting from the interaction between ray and material
+    // and the attenuation that should be applied to the
+    // computed color.
+    // In the case of dielectrics:
+    // - Return value is always true, rays are never absorbed.
+    // - Attenuation is always (1, 1, 1) (which means "no attenuation")
+    // - Scattered ray is chosen randomly between a reflected and
+    //   a refracted ray. In the case the refracted ray doesn't exist,
+    //   we choose the reflected one with probability 1. See method
+    //   `bool Refract(const Vec3& v, const Vec3& n, RealNum ni_over_nt, Vec3& refracted)`
+    //   for more information
     virtual bool Scatter(const Ray& ray_in, const HitRecord& rec,
                          Vec3& attenuation, Ray& scattered_ray) const override
     {
         Vec3 outward_normal;
         Vec3 reflected = Reflect(ray_in.Direction(), rec.normal);
-        RealNum ni_over_nt; // this name has to be improved
+        RealNum ni_over_nt;
         attenuation = Vec3(1.0, 1.0, 1.0);
         Vec3 refracted;
         RealNum reflect_prob;
