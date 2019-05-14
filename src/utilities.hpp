@@ -13,7 +13,7 @@ typedef float RealNum;
 template <typename T>
 constexpr RealNum Real(T number)
 {
-	return static_cast<RealNum>(number);
+    return static_cast<RealNum>(number);
 }
 
 namespace utilities

@@ -119,7 +119,7 @@ TEST_CASE("Component wise prod * : Vec3 x Vec3 -> Vec3", "[Vec3]")
         CHECK( ones * v == v );
     }
 
-	// I'm here :)
+    // I'm here :)
 }
 
 TEST_CASE("Vector is unitary after normalizing", "[Vec3][Norm]")

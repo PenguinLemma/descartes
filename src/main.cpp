@@ -24,7 +24,7 @@ int main() {
     using plemma::glancy::TwoSpheresScene;
     using plemma::glancy::RandomSpheresScene;
     using plemma::glancy::Camera;
-	using plemma::glancy::Real;
+    using plemma::glancy::Real;
 
     plemma::glancy::my_engine();
 

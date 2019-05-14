@@ -46,9 +46,9 @@ public:
     // Computes AxesAlignedBoundingBox if possible and returns
     // whether it was possible or not.
     virtual bool ComputeBoundingBox(
-		[[maybe_unused]] RealNum time_from, 
-		[[maybe_unused]] RealNum time_to, 
-		AxesAlignedBoundingBox& bbox) const override
+        [[maybe_unused]] RealNum time_from,
+        [[maybe_unused]] RealNum time_to,
+        AxesAlignedBoundingBox& bbox) const override
     {
         bbox = bbox_;
         return true;

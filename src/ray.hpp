@@ -11,7 +11,7 @@ namespace glancy
 class Ray
 {
 public:
-	Ray() noexcept = default;
+    Ray() noexcept = default;
     Ray(const Vec3& origin, const Vec3& direction, RealNum t)
         : origin_(origin), direction_(direction), time_(t) {}
     inline Vec3 Origin() const { return origin_; }
