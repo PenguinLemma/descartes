@@ -14,6 +14,8 @@ namespace glancy
 class Vec3
 {
 public:
+    typedef RealNum value_type;
+
     constexpr Vec3() noexcept = default;
     constexpr Vec3(RealNum a, RealNum b, RealNum c) noexcept : comp_{a,b,c} {}
     constexpr RealNum X() const noexcept { return comp_[0]; }
@@ -38,6 +40,9 @@ public:
     constexpr Vec3& operator/=(const Vec3& v) noexcept;
     constexpr Vec3& operator*=(RealNum t) noexcept;
     constexpr Vec3& operator/=(RealNum t) noexcept;
+
+    // Only for testing purposes
+    constexpr std::size_t size() const noexcept { return static_cast<std::size_t>(3); }
 
     RealNum Norm() const noexcept
     {
