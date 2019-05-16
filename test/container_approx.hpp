@@ -17,12 +17,12 @@ public:
     typedef value_type T;
 
     CompWiseApprox(T epsilon, Container const & c) :
-        tolerance_(epsilon), data_(c)
+        data_(c), tolerance_(epsilon)
     {}
 
     template <class... Args>
     CompWiseApprox(T epsilon, Args const &... args) :
-        tolerance_(epsilon), data_(args...)
+        data_(args...), tolerance_(epsilon)
     {}
 
     // Performs the test for this matcher
