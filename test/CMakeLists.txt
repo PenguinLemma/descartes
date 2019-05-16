@@ -5,6 +5,7 @@ set(TEST_SOURCES
 
 set(TEST_HEADERS
     vec3_test.hpp
+    container_approx.hpp
 )
 
 
@@ -12,7 +13,7 @@ set(INCLUDE_DIR
     ${CMAKE_CURRENT_LIST_DIR}/../include
 )
 
-add_executable(GlancyTest ${TEST_SOURCES})
+add_executable(GlancyTest ${TEST_SOURCES} ${TEST_HEADERS})
 
 target_include_directories(GlancyTest PRIVATE ${INCLUDE_DIR} ${CMAKE_CURRENT_LIST_DIR}/../src)
 
