@@ -18,10 +18,13 @@ constexpr RealNum kMinValueToDivide = Real(1e-7);
 constexpr RealNum kMaxRandomGeneration = Real(1e4);
 constexpr RealNum kMinRandomGeneration = Real(-1e4);
 
-constexpr auto CanBeUsedToDivide = [](Vec3 const& v) {
-		return v.X() > kMinValueToDivide
-			&& v.Y() > kMinValueToDivide
-			&& v.Z() > kMinValueToDivide; };
+constexpr auto CanVec3BeUsedToDivide = [](Vec3 const& v) {
+        return v.X() > kMinValueToDivide
+            && v.Y() > kMinValueToDivide
+            && v.Z() > kMinValueToDivide; };
+
+constexpr auto CanScalarBeUsedToDivide = [](RealNum const& k) {
+        return k > kMinValueToDivide; };
 
 class Vec3RandomGenerator : public Catch::Generators::IGenerator<Vec3>
 {

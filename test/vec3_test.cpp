@@ -69,7 +69,7 @@ TEST_CASE("op + : Vec3 x Vec3 -> Vec3", "[Vec3]")
         CHECK( zero + v == v );
     }
 
-    SECTION("Operation + is associative")
+    SECTION("It is associative")
     {
         auto u = GENERATE(take(100, RandomFiniteVec3()));
         auto v = GENERATE(take(100, RandomFiniteVec3()));
@@ -89,7 +89,7 @@ TEST_CASE("op + : Vec3 x Vec3 -> Vec3", "[Vec3]")
 
 TEST_CASE("op * : R x Vec3 -> Vec3", "[Vec3]")
 {
-    SECTION("1.0 is neutral element", "[Vec3][op *: R x Vec3 -> Vec3]")
+    SECTION("1.0 is neutral element", "[Vec3]")
     {
         auto v = GENERATE(take(100, RandomFiniteVec3()));
         CHECK( 1.0 * v == v );
@@ -100,13 +100,55 @@ TEST_CASE("op * : R x Vec3 -> Vec3", "[Vec3]")
         auto v = GENERATE(take(100, RandomFiniteVec3()));
         CHECK( 2.0 * v == v + v );
         CHECK( -1.0 * v == -v );
+        Vec3 triple_v = v;
+        triple_v *= 3.0;
+        CHECK( triple_v == v + v + v );
+        Vec3 minus2_v = v;
+        minus2_v *= -2.0;
+        CHECK( minus2_v == v - v + (-v) );
     }
 
-    SECTION("It's commutative")
+    SECTION("It is commutative")
     {
         auto v = GENERATE(take(100, RandomFiniteVec3()));
         auto k = GENERATE(take(10, random(Real(-100.0), Real(100.0))));
         CHECK( k * v == v * k );
+    }
+
+}
+
+TEST_CASE("op / : Vec3 x R -> Vec3", "[Vec3]")
+{
+    SECTION("1.0 is neutral element", "[Vec3]")
+    {
+        auto v = GENERATE(take(100, RandomFiniteVec3()));
+        CHECK( v / 1.0 == v );
+    }
+
+    SECTION("(0, 0, 0) is a fixed point")
+    {
+        Vec3 zero;
+        auto k = GENERATE(take(100,
+            filter(CanScalarBeUsedToDivide, random(Real(-100.0), Real(100.0)))));
+        CHECK( zero / k == zero );
+        Vec3 zero_div_k = zero;
+        zero_div_k /= k;
+        CHECK( zero_div_k == zero );
+    }
+
+    SECTION("Multiplication and division by scalar are inverse")
+    {
+        auto v = GENERATE(take(100, RandomFiniteVec3(10.0, 10.0)));
+        auto k = GENERATE(take(100,
+            filter(CanScalarBeUsedToDivide, random(Real(-100.0), Real(100.0)))));
+        CHECK_THAT( (k * v) / k,
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, v) );
+        CHECK_THAT( k *(v / k),
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, v) );
+        CHECK_THAT( (v * k) / k,
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, v) );
+        CHECK_THAT( (v / k) * k,
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, v) );
     }
 }
 
@@ -128,11 +170,16 @@ TEST_CASE("Component wise prod * : Vec3 x Vec3 -> Vec3", "[Vec3]")
         CHECK( zero * v == zero );
     }
 
-    SECTION("It's commutative")
+    SECTION("It is commutative")
     {
         auto u = GENERATE(take(100, RandomFiniteVec3()));
         auto v = GENERATE(take(100, RandomFiniteVec3()));
         CHECK( u * v == v * u );
+        Vec3 u_times_v = u;
+        u_times_v *= v;
+        Vec3 v_times_u = v;
+        v_times_u *= u;
+        CHECK( u_times_v == v_times_u );
     }
 
     SECTION("e_i captures i-th component")
@@ -158,33 +205,49 @@ TEST_CASE("Component wise div / : Vec3 x Vec3 -> Vec3", "[Vec3]")
     {
         Vec3 ones(1.0, 1.0, 1.0);
         auto v = GENERATE(take(100, RandomFiniteVec3()));
-        CHECK( v * ones == v );
+        CHECK( v / ones == v );
     }
 
-    SECTION("(0, 0, 0) is a fixed point as right argument")
+    SECTION("(0, 0, 0) is a fixed point as left argument")
     {
         Vec3 zero;
-        auto v = GENERATE(take(100, filter(CanBeUsedToDivide,RandomFiniteVec3())));
+        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3())));
         CHECK( zero / v == zero );
     }
 
     SECTION("Division by one-self gives (1, 1, 1)")
     {
         Vec3 ones(1.0, 1.0, 1.0);
-		auto v = GENERATE(take(100, filter(CanBeUsedToDivide, RandomFiniteVec3())));
+        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide, RandomFiniteVec3())));
         CHECK( v / v == ones );
     }
 
     SECTION("Comp-wise multiplication and division are inverse")
     {
         auto original = GENERATE(take(100, RandomFiniteVec3(10.0, 10.0)));
-		auto operand = GENERATE(take(100, filter(CanBeUsedToDivide, RandomFiniteVec3())));
-        CHECK_THAT( original * operand / operand,
-					IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, original) );
-        CHECK_THAT( operand * original / operand,
-					IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, original) );
+        auto operand = GENERATE(take(100, filter(CanVec3BeUsedToDivide, RandomFiniteVec3())));
+        CHECK_THAT( (original * operand) / operand,
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, original) );
+        CHECK_THAT( (operand * original) / operand,
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, original) );
+        CHECK_THAT( operand * (original / operand),
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, original) );
     }
 }
+
+// Methods not yet tested:
+// - Norm
+// - SquaredNorm
+// - Normalize (well, there is this test below)
+// - operator<<
+// - operator>>
+// - operator==   <-- its tests should be the very first
+// - Dot
+// - Cross
+// - UnitVector
+// - GetRandomPointInUnitBall
+// - GetRandomPointInUnitDiscXY
+
 
 TEST_CASE("Vector is unitary after normalizing", "[Vec3][Norm]")
 {
