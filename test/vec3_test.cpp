@@ -1,4 +1,5 @@
 #include "vec3_test.hpp"
+#include "container_approx.hpp"
 
 namespace plemma {
 
@@ -163,61 +164,25 @@ TEST_CASE("Component wise div / : Vec3 x Vec3 -> Vec3", "[Vec3]")
     SECTION("(0, 0, 0) is a fixed point as right argument")
     {
         Vec3 zero;
-        // TODO: extract this as method `GenerateVec3WithNonZeroComp(how_many)`
-        auto v = GENERATE(
-            take(100,
-                filter(
-                    [](Vec3 const & v){
-                        return v.X() > kMinNormToDivide
-                            && v.Y() > kMinNormToDivide
-                            && v.Z() > kMinNormToDivide;
-                    },
-                    RandomFiniteVec3()
-                )
-            )
-        );
+        auto v = GENERATE(take(100, filter(CanBeUsedToDivide,RandomFiniteVec3())));
         CHECK( zero / v == zero );
     }
 
     SECTION("Division by one-self gives (1, 1, 1)")
     {
         Vec3 ones(1.0, 1.0, 1.0);
-        auto v = GENERATE(
-            take(100,
-                filter(
-                    [](Vec3 const & v){
-                        return v.X() > kMinNormToDivide
-                            && v.Y() > kMinNormToDivide
-                            && v.Z() > kMinNormToDivide;
-                    },
-                    RandomFiniteVec3()
-                )
-            )
-        );
+		auto v = GENERATE(take(100, filter(CanBeUsedToDivide, RandomFiniteVec3())));
         CHECK( v / v == ones );
     }
 
     SECTION("Comp-wise multiplication and division are inverse")
     {
-        auto original = GENERATE(take(100, RandomFiniteVec3()));
-        auto operand = GENERATE(
-            take(100,
-                filter(
-                    [](Vec3 const & v){
-                        return v.X() > kMinNormToDivide
-                            && v.Y() > kMinNormToDivide
-                            && v.Z() > kMinNormToDivide;
-                    },
-                    RandomFiniteVec3()
-                )
-            )
-        );
-        // TODO: ApproxVec3??
-        // CHECK( original * operand / operand == original );
-        // CHECK( operand * original / operand == original );
-        // Dummy checks for now to be able to build
-        CHECK( operand == operand );
-        CHECK( original == original );
+        auto original = GENERATE(take(100, RandomFiniteVec3(10.0, 10.0)));
+		auto operand = GENERATE(take(100, filter(CanBeUsedToDivide, RandomFiniteVec3())));
+        CHECK_THAT( original * operand / operand,
+					IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, original) );
+        CHECK_THAT( operand * original / operand,
+					IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, original) );
     }
 }
 
