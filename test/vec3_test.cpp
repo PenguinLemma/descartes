@@ -105,7 +105,7 @@ TEST_CASE("op * : R x Vec3 -> Vec3", "[Vec3]")
         CHECK( triple_v == v + v + v );
         Vec3 minus2_v = v;
         minus2_v *= -2.0;
-        CHECK( minus2_v == v - v + (-v) );
+        CHECK( minus2_v == - v + (-v) );
     }
 
     SECTION("It is commutative")
