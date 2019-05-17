@@ -1,5 +1,6 @@
 #include "vec3_test.hpp"
 #include "container_approx.hpp"
+#include "constants.hpp"
 
 namespace plemma {
 
@@ -247,9 +248,15 @@ TEST_CASE("Norm : Vec3 -> R", "[Vec3]")
         Vec3 e1(1.0, 0.0, 0.0);
         Vec3 e2(0.0, 1.0, 0.0);
         Vec3 e3(0.0, 0.0, 1.0);
-        CHECK ( e1.Norm() == 1.0 );
-        CHECK ( e2.Norm() == 1.0 );
-        CHECK ( e3.Norm() == 1.0 );
+        CHECK( e1.Norm() == 1.0 );
+        CHECK( e2.Norm() == 1.0 );
+        CHECK( e3.Norm() == 1.0 );
+    }
+
+    SECTION("It is strictly positive for non-zero vectors")
+    {
+        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3())));
+        CHECK( v.Norm() > 0.0 );
     }
 
     SECTION("Positive multiplicative constants can be extracted of norm")
@@ -260,7 +267,7 @@ TEST_CASE("Norm : Vec3 -> R", "[Vec3]")
         CHECK( (v * k).Norm() == Approx(k * v.Norm()) );
     }
 
-    SECTION("Triangler inequality")
+    SECTION("Triangle inequality")
     {
         auto u = GENERATE(take(100, RandomFiniteVec3(-10.0, 10.0)));
         auto v = GENERATE(take(100, RandomFiniteVec3(-10.0, 10.0)));
@@ -268,13 +275,152 @@ TEST_CASE("Norm : Vec3 -> R", "[Vec3]")
     }
 }
 
+TEST_CASE("SquaredNorm : Vec3 -> R", "[Vec3]")
+{
+    SECTION("It is the square of the norm")
+    {
+        auto v = GENERATE(take(100, RandomFiniteVec3(-10.0, 10.0)));
+        CHECK( v.SquaredNorm() == Approx(v.Norm() * v.Norm()) );
+    }
+}
+
+TEST_CASE("Normalize : Vec3 -> S^3", "[Vec3]")
+{
+    SECTION("Vector is unitary after normalizing")
+    {
+        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(10.0, 10.0))));
+        v.Normalize();
+        Vec3 v_normalized = v;
+        CHECK(v_normalized.Norm() ==  Approx(1.0) );
+    }
+
+    SECTION("Normalize comp Normalize = Normalize")
+    {
+        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(10.0, 10.0))));
+        Vec3 v_normalized = v;
+        v_normalized.Normalize();
+        Vec3 v_norm_norm = v_normalized;
+        v_norm_norm.Normalize();
+        CHECK_THAT( v_norm_norm,
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, v_normalized) );
+    }
+}
+
+TEST_CASE("Dot : Vec3 x Vec3 -> R", "[Vec3]")
+{
+    SECTION("Scalar product with (0, 0, 0) is 0")
+    {
+        Vec3 zero;
+        auto v = GENERATE(take(100, RandomFiniteVec3()));
+        CHECK( Dot(zero, v) == 0.0 );
+        CHECK( Dot(v, zero) == 0.0 );
+    }
+
+    SECTION("Canonical scalar product has identity matrix in natural basis")
+    {
+        Vec3 e1(1.0, 0.0, 0.0);
+        Vec3 e2(0.0, 1.0, 0.0);
+        Vec3 e3(0.0, 0.0, 1.0);
+
+        CHECK( Dot(e1, e1) == 1.0 );
+        CHECK( Dot(e1, e2) == 0.0 );
+        CHECK( Dot(e1, e3) == 0.0 );
+
+        CHECK( Dot(e2, e1) == 0.0 );
+        CHECK( Dot(e2, e2) == 1.0 );
+        CHECK( Dot(e2, e3) == 0.0 );
+
+        CHECK( Dot(e3, e1) == 0.0 );
+        CHECK( Dot(e3, e2) == 0.0 );
+        CHECK( Dot(e3, e3) == 1.0 );
+    }
+
+    SECTION("e_i capture i-th component")
+    {
+        Vec3 e1(1.0, 0.0, 0.0);
+        Vec3 e2(0.0, 1.0, 0.0);
+        Vec3 e3(0.0, 0.0, 1.0);
+        auto v = GENERATE(take(100, RandomFiniteVec3()));
+
+        CHECK( Dot(e1, v) == v[0] );
+        CHECK( Dot(e2, v) == v[1] );
+        CHECK( Dot(e3, v) == v[2] );
+
+        CHECK( Dot(v, e1) == v[0] );
+        CHECK( Dot(v, e2) == v[1] );
+        CHECK( Dot(v, e3) == v[2] );
+    }
+
+    SECTION("Evaluated in the same vector, it results in its squared norm")
+    {
+        auto v = GENERATE(take(100, RandomFiniteVec3()));
+        CHECK( Dot(v, v) == v.SquaredNorm() );
+    }
+
+    SECTION("Dot product of orthogonal vectors is 0")
+    {
+        auto v = GENERATE(take(100, RandomFiniteVec3()));
+        CHECK ( Dot(v, Vec3( v.Y(), -v.X(),      0)) == 0.0 );
+        CHECK ( Dot(v, Vec3(-v.Y(),  v.X(),      0)) == 0.0 );
+        CHECK ( Dot(v, Vec3( v.Z(),      0, -v.X())) == 0.0 );
+        CHECK ( Dot(v, Vec3(-v.Z(),      0,  v.X())) == 0.0 );
+        CHECK ( Dot(v, Vec3(     0,  v.Z(), -v.Y())) == 0.0 );
+        CHECK ( Dot(v, Vec3(     0, -v.Z(),  v.Y())) == 0.0 );
+
+        // Another couple of orthogonal vectors to v
+        // that don't need one component to be 0
+        CHECK ( Dot(v, Vec3(v.Z() - v.Y(),
+                            v.X() - v.Z(),
+                            v.Y() - v.X())) == 0.0 );
+
+    }
+
+    SECTION("Dot product relates to cosine")
+    {
+        auto v = GENERATE(take(100, RandomFiniteVec3()));
+        // it seems that variables can't be used with GENERATE, it has to be literals
+        auto angle_rad = GENERATE(take(100, random(-1.5707963, 1.5707963)));
+        RealNum cosine = Real(std::cos(angle_rad));
+        RealNum sine = Real(std::sin(angle_rad));
+        SECTION("Vectors inside plane xy")
+        {
+            Vec3 unitary_v(v.X(), v.Y(), Real(0.0));
+            unitary_v.Normalize();
+            Vec3 rotated_v(cosine * unitary_v.X() - sine * unitary_v.Y(),
+                           sine * unitary_v.X() + cosine *unitary_v.Y(),
+                           Real(0.0));
+            CHECK( Dot(unitary_v, rotated_v) == Approx(cosine) );
+            CHECK( Dot(rotated_v, unitary_v) == Approx(cosine) );
+        }
+
+        SECTION("Vectors inside plane xz")
+        {
+            Vec3 unitary_v(v.X(), Real(0.0), v.Z());
+            unitary_v.Normalize();
+            Vec3 rotated_v(cosine * unitary_v.X() - sine * unitary_v.Z(),
+                           Real(0.0),
+                           sine * unitary_v.X() + cosine *unitary_v.Z());
+            CHECK( Dot(unitary_v, rotated_v) == Approx(cosine) );
+            CHECK( Dot(rotated_v, unitary_v) == Approx(cosine) );
+        }
+
+        SECTION("Vectors inside plane yz")
+        {
+            Vec3 unitary_v(Real(0.0), v.Y(), v.Z());
+            unitary_v.Normalize();
+            Vec3 rotated_v(Real(0.0),
+                           cosine * unitary_v.Y() - sine * unitary_v.Z(),
+                           sine * unitary_v.Y() + cosine *unitary_v.Z());
+            CHECK( Dot(unitary_v, rotated_v) == Approx(cosine) );
+            CHECK( Dot(rotated_v, unitary_v) == Approx(cosine) );
+        }
+    }
+}
+
+
 // Methods not yet tested:
-// - SquaredNorm
-// - Normalize (well, there is this test below)
 // - operator<<
 // - operator>>
-// - operator==   <-- its tests should be the very first
-// - Dot
 // - Cross
 // - UnitVector
 // - GetRandomPointInUnitBall
