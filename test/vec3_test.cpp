@@ -359,7 +359,7 @@ TEST_CASE("Dot : Vec3 x Vec3 -> R", "[Vec3]")
 
     SECTION("Dot product of orthogonal vectors is 0")
     {
-        auto v = GENERATE(take(100, RandomFiniteVec3()));
+        auto v = GENERATE(take(5, RandomFiniteVec3(30.0, 30.0)));
         CHECK ( Dot(v, Vec3( v.Y(), -v.X(),      0)) == 0.0 );
         CHECK ( Dot(v, Vec3(-v.Y(),  v.X(),      0)) == 0.0 );
         CHECK ( Dot(v, Vec3( v.Z(),      0, -v.X())) == 0.0 );
