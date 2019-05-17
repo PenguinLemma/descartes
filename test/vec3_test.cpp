@@ -235,8 +235,40 @@ TEST_CASE("Component wise div / : Vec3 x Vec3 -> Vec3", "[Vec3]")
     }
 }
 
+TEST_CASE("Norm : Vec3 -> R", "[Vec3]")
+{
+    SECTION("(0, 0, 0) has norm 0")
+    {
+        CHECK( Vec3().Norm() == 0.0  );
+    }
+
+    SECTION("e_i have norm 1")
+    {
+        Vec3 e1(1.0, 0.0, 0.0);
+        Vec3 e2(0.0, 1.0, 0.0);
+        Vec3 e3(0.0, 0.0, 1.0);
+        CHECK ( e1.Norm() == 1.0 );
+        CHECK ( e2.Norm() == 1.0 );
+        CHECK ( e3.Norm() == 1.0 );
+    }
+
+    SECTION("Positive multiplicative constants can be extracted of norm")
+    {
+        auto v = GENERATE(take(100, RandomFiniteVec3(-10.0, 10.0)));
+        auto k = GENERATE(take(100, random(Real(0.0), Real(10.0))));
+        CHECK( (k * v).Norm() == Approx(k * v.Norm()) );
+        CHECK( (v * k).Norm() == Approx(k * v.Norm()) );
+    }
+
+    SECTION("Triangler inequality")
+    {
+        auto u = GENERATE(take(100, RandomFiniteVec3(-10.0, 10.0)));
+        auto v = GENERATE(take(100, RandomFiniteVec3(-10.0, 10.0)));
+        CHECK( (u + v).Norm() <= u.Norm() + v.Norm() );
+    }
+}
+
 // Methods not yet tested:
-// - Norm
 // - SquaredNorm
 // - Normalize (well, there is this test below)
 // - operator<<
