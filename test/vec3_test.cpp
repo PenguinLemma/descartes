@@ -259,7 +259,7 @@ TEST_CASE("Norm : Vec3 -> R", "[Vec3]")
         CHECK( v.Norm() > 0.0 );
     }
 
-    SECTION("Positive multiplicative constants can be extracted of norm")
+    SECTION("Positive scalar factors can be extracted of norm")
     {
         auto v = GENERATE(take(100, RandomFiniteVec3(-10.0, 10.0)));
         auto k = GENERATE(take(100, random(Real(0.0), Real(10.0))));
@@ -357,6 +357,31 @@ TEST_CASE("Dot : Vec3 x Vec3 -> R", "[Vec3]")
         CHECK( Dot(v, v) == v.SquaredNorm() );
     }
 
+    SECTION("Scalar factors can be extracted from scalar product")
+    {
+        auto u = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
+        auto v = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
+        auto k = GENERATE(take(10, random(Real(-10.0), Real(10.0))));
+
+        CHECK( Dot(k*u, v) == Approx(k * Dot(u, v)).epsilon(kToleranceEqualityCheck) );
+        CHECK( Dot(u, k*v) == Approx(k * Dot(u, v)).epsilon(kToleranceEqualityCheck) );
+        CHECK( Dot(u*k, v) == Approx(k * Dot(u, v)).epsilon(kToleranceEqualityCheck) );
+        CHECK( Dot(u, v*k) == Approx(k * Dot(u, v)).epsilon(kToleranceEqualityCheck) );
+    }
+    SECTION(" EPSILOON??? ")
+    {
+        CHECK( 1.0 + 1e-6 == Approx(1.0).epsilon(kToleranceEqualityCheck) );
+    }
+
+    SECTION("Scalar product has distributive property with respect to +")
+    {
+        auto u = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
+        auto v = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
+        auto w = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
+        CHECK( Dot(u+v, w) == Approx(Dot(u, w) + Dot(v, w)).epsilon(kToleranceEqualityCheck) );
+        CHECK( Dot(u, v+w) == Approx(Dot(u, v) + Dot(u, w)).epsilon(kToleranceEqualityCheck) );
+    }
+
     SECTION("Dot product of orthogonal vectors is 0")
     {
         auto v = GENERATE(take(5, RandomFiniteVec3(30.0, 30.0)));
@@ -417,11 +442,134 @@ TEST_CASE("Dot : Vec3 x Vec3 -> R", "[Vec3]")
     }
 }
 
+TEST_CASE("Cross : Vec3 x Vec3 -> Vec3", "[Vec3]")
+{
+    SECTION("Cross product with (0, 0, 0) is 0")
+    {
+        Vec3 zero;
+        auto v = GENERATE(take(100, RandomFiniteVec3()));
+        CHECK( Cross(zero, v) == zero );
+        CHECK( Cross(v, zero) == zero );
+    }
+
+    SECTION("Cross product of a vector with itself is 0")
+    {
+        Vec3 zero;
+        auto v = GENERATE(take(100, RandomFiniteVec3()));
+        CHECK( Cross(v, v) == zero );
+    }
+
+    SECTION("Correctly defined over the natural basis")
+    {
+        Vec3 e1(1.0, 0.0, 0.0);
+        Vec3 e2(0.0, 1.0, 0.0);
+        Vec3 e3(0.0, 0.0, 1.0);
+        Vec3 zero;
+
+        CHECK( Cross(e1, e1) == zero );
+        CHECK( Cross(e1, e2) == e3 );
+        CHECK( Cross(e1, e3) == -e2 );
+
+        CHECK( Cross(e2, e1) == -e3 );
+        CHECK( Cross(e2, e2) == zero );
+        CHECK( Cross(e2, e3) == e1 );
+
+        CHECK( Cross(e3, e1) == e2 );
+        CHECK( Cross(e3, e2) == -e1 );
+        CHECK( Cross(e3, e3) == zero );
+    }
+
+    SECTION("It is anticommuntative")
+    {
+        auto u = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
+        auto v = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
+        CHECK( Cross(u, v) == -Cross(v, u) );
+    }
+
+    SECTION("Scalar factors can be extracted from cross product")
+    {
+        auto u = GENERATE(take(10, RandomFiniteVec3(-2.0, 2.0)));
+        auto v = GENERATE(take(10, RandomFiniteVec3(-2.0, 2.0)));
+        auto k = GENERATE(take(10, random(-2.0, 2.0)));
+        CHECK_THAT( Cross(k*u, v),
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, k*Cross(u, v)) );
+        CHECK_THAT( Cross(u*k, v),
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, k*Cross(u, v)) );
+        CHECK_THAT( Cross(u, k*v),
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, k*Cross(u, v)) );
+        CHECK_THAT( Cross(u, v*k),
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, k*Cross(u, v)) );
+    }
+
+    SECTION("Croos product has distributive property with respect to +")
+    {
+        auto u = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
+        auto v = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
+        auto w = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
+        CHECK_THAT( Cross(u+v, w),
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, Cross(u, w) + Cross(v, w)) );
+        CHECK_THAT( Cross(u, v+w),
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, Cross(u, v) + Cross(u, w)) );
+    }
+
+    SECTION("Cross product satisfies Jacobi identity")
+    {
+        auto u = GENERATE(take(10, RandomFiniteVec3(-5.0, 5.0)));
+        auto v = GENERATE(take(10, RandomFiniteVec3(-5.0, 5.0)));
+        auto w = GENERATE(take(10, RandomFiniteVec3(-5.0, 5.0)));
+        Vec3 zero;
+        CHECK_THAT( Cross(u, Cross(v, w))
+             + Cross(v, Cross(w, u))
+             + Cross(w, Cross(u, v)),
+             IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, zero) );
+    }
+
+    SECTION("Cross product relates to sine")
+    {
+        // This property is equivalent to "Norm of cross product
+        // is area of paralellogram"
+        auto v = GENERATE(take(100, RandomFiniteVec3(-10.0, 10.0)));
+        // it seems that variables can't be used with GENERATE, it has to be literals
+        // Also, we avoid values of the angle very close to 0, starting at approx 1 deg
+        auto angle_rad = GENERATE(take(100, random(Real(0.02), Real(0.78539812))));
+        RealNum cosine = Real(std::cos(angle_rad));
+        RealNum sine = Real(std::sin(angle_rad));
+        SECTION("Vectors inside plane xy")
+        {
+            Vec3 unitary_v(v.X(), v.Y(), Real(0.0));
+            unitary_v.Normalize();
+            Vec3 rotated_v(cosine * unitary_v.X() - sine * unitary_v.Y(),
+                           sine * unitary_v.X() + cosine *unitary_v.Y(),
+                           Real(0.0));
+            CHECK( Cross(unitary_v, rotated_v).Norm() == Approx(sine) );
+        }
+
+        SECTION("Vectors inside plane xz")
+        {
+            Vec3 unitary_v(v.X(), Real(0.0), v.Z());
+            unitary_v.Normalize();
+            Vec3 rotated_v(cosine * unitary_v.X() - sine * unitary_v.Z(),
+                           Real(0.0),
+                           sine * unitary_v.X() + cosine *unitary_v.Z());
+            CHECK( Cross(unitary_v, rotated_v).Norm() == Approx(sine) );
+        }
+
+        SECTION("Vectors inside plane yz")
+        {
+            Vec3 unitary_v(Real(0.0), v.Y(), v.Z());
+            unitary_v.Normalize();
+            Vec3 rotated_v(Real(0.0),
+                           cosine * unitary_v.Y() - sine * unitary_v.Z(),
+                           sine * unitary_v.Y() + cosine *unitary_v.Z());
+            CHECK( Cross(unitary_v, rotated_v).Norm() == Approx(sine) );
+        }
+    }
+}
+
 
 // Methods not yet tested:
 // - operator<<
 // - operator>>
-// - Cross
 // - UnitVector
 // - GetRandomPointInUnitBall
 // - GetRandomPointInUnitDiscXY

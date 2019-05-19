@@ -13,7 +13,7 @@ namespace plemma {
 
 namespace glancy {
 
-constexpr RealNum kToleranceEqualityCheck = Real(1e-5);
+constexpr RealNum kToleranceEqualityCheck = Real(1e-4);
 constexpr RealNum kMinValueToDivide = Real(1e-7);
 constexpr RealNum kMaxRandomGeneration = Real(1e4);
 constexpr RealNum kMinRandomGeneration = Real(-1e4);
