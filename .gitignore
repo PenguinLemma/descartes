@@ -5,3 +5,5 @@ bin/
 bin/*
 
 *.ppm
+.idea
+cmake-build-debug
