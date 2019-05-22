@@ -7,6 +7,7 @@
 
 #include <catch2/catch.hpp>
 #include "vec3.hpp"
+#include "rand_engine.hpp"
 
 
 namespace plemma {

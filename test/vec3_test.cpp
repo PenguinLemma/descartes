@@ -566,21 +566,69 @@ TEST_CASE("Cross : Vec3 x Vec3 -> Vec3", "[Vec3]")
     }
 }
 
+TEST_CASE("UnitVector : Vec3 -> Vec3", "[Vec3]")
+{
+    SECTION("Resulting vector is unitary")
+    {
+        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(10.0, 10.0))));
+        CHECK( UnitVector(v).Norm() == Approx(1.0) );
+    }
+    SECTION("UnitVector of a normal vector is itself")
+    {
+        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(10.0, 10.0))));
+        v.Normalize();
+        CHECK_THAT( UnitVector(v),
+                    IsComponentWiseApprox<Vec3>(kToleranceEqualityCheck, v) );
+    }
+}
+
+TEST_CASE("GetRandomPointInUnitBall", "[Vec3]")
+{
+    SECTION("Resulting Vec3 has norm <= 1")
+    {
+        // Seed random engine before each test
+        my_engine(Catch::rngSeed());
+        for(int i = 0; i < 100; ++i)
+        {
+            CHECK( GetRandomPointInUnitBall().Norm() <= 1.0 );
+        }
+    }
+
+    // TODO: Test that it's uniformly distributed
+    // TODO: Test that different seeds give different behaviours
+}
+
+TEST_CASE("GetRandomPointInUnitDiscXY", "[Vec3]")
+{
+    SECTION("Resulting Vec3 has norm <= 1")
+    {
+        // Seed random engine before each test
+        my_engine(Catch::rngSeed());
+        for(int i = 0; i < 100; ++i)
+        {
+            CHECK( GetRandomPointInUnitDiscXY().Norm() <= 1.0 );
+        }
+    }
+    SECTION("Resulting Vec3 has 3rd coordinate 0")
+    {
+        // Seed random engine before each test
+        my_engine(Catch::rngSeed());
+        for(int i = 0; i < 100; ++i)
+        {
+            CHECK( GetRandomPointInUnitDiscXY()[2] == 0.0 );
+        }
+    }
+
+    // TODO: Test that it's uniformly distributed
+    // TODO: Test that different seeds give different behaviours
+}
+
 
 // Methods not yet tested:
 // - operator<<
 // - operator>>
-// - UnitVector
 // - GetRandomPointInUnitBall
 // - GetRandomPointInUnitDiscXY
-
-
-TEST_CASE("Vector is unitary after normalizing", "[Vec3][Norm]")
-{
-    auto v = GENERATE(take(100, RandomFiniteVec3(-30.0, 30.0)));
-    v.Normalize();
-    REQUIRE(v.Norm() ==  Approx(1.0));
-}
 
 } // namespace glancy
 
