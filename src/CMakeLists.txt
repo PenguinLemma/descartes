@@ -16,8 +16,9 @@ set(HEADERS
     material.hpp
     metal.hpp
     rand_engine.hpp
-    renderer.hpp
+    random_spheres_scene.hpp
     ray.hpp
+    renderer.hpp
     scene.hpp
     sphere.hpp
     two_spheres_scene.hpp
