@@ -50,4 +50,4 @@ https://github.com/catchorg/Catch2/blob/master/docs/generators.md
      - [ ] `plemma::glancy::Metal::Scatter`
      - [ ] `plemma::glancy::Sphere::Hit`
      - [ ] `plemma::glancy::Sphere::ComputeBoundingBox` for static and dynamic sphere
-     - [ ] `plemma::glancy::Vec3::*`
+     - [x] `plemma::glancy::Vec3::*`

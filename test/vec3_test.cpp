@@ -2,9 +2,7 @@
 #include "container_approx.hpp"
 #include "constants.hpp"
 
-namespace plemma {
-
-namespace glancy {
+namespace plemma::glancy {
 
 TEST_CASE("Constructors", "[Vec3]")
 {
@@ -368,10 +366,6 @@ TEST_CASE("Dot : Vec3 x Vec3 -> R", "[Vec3]")
         CHECK( Dot(u*k, v) == Approx(k * Dot(u, v)).epsilon(kToleranceEqualityCheck) );
         CHECK( Dot(u, v*k) == Approx(k * Dot(u, v)).epsilon(kToleranceEqualityCheck) );
     }
-    SECTION(" EPSILOON??? ")
-    {
-        CHECK( 1.0 + 1e-6 == Approx(1.0).epsilon(kToleranceEqualityCheck) );
-    }
 
     SECTION("Scalar product has distributive property with respect to +")
     {
@@ -620,17 +614,42 @@ TEST_CASE("GetRandomPointInUnitDiscXY", "[Vec3]")
 TEST_CASE("operator<< : Vec3 -> Beautiful text", "[Vec3]")
 {
     std::ostringstream os;
-    os << Vec3(1, 2, 3);
+    os << Vec3{1, 2, 3};
     CHECK( os.str() == "1 2 3");
     os.str(std::string{});
-    os << Vec3(42.93, -2, 2.0);
+    os << Vec3{42.93, -2, 2.0};
     CHECK( os.str() == "42.93 -2 2");
 }
 
-// Methods not yet tested:
-// - operator<<
-// - operator>>
+TEST_CASE("operator>> : Pick a Vec3 -> Vec3", "[Vec3]")
+{
+    std::istringstream is;
+    Vec3 v;
+    SECTION("It reads correct numbers")
+    {
+        is.str("1e5 -2.005 9e-2");
+        is >> v;
+        CHECK( v == Vec3{1e5, -2.005, 9e-2} );
+    }
 
-} // namespace glancy
+    SECTION("It fails if it doesn't receive numbers")
+    {
+        is.str("a bc");
+        v = Vec3{};
+        CHECK( !(is >> v) );
+        SECTION("and in that case it doesn't modify the vector")
+        {
+            CHECK( v == Vec3{} );
+            SECTION("even if some values were valid")
+            {
+                v = Vec3{1, 2, 3};
+                is.str("1e-1 2 not_a_number");
+                CHECK(!(is >> v));
+                CHECK(v == Vec3{1, 2, 3});
+            }
+        }
+    }
+}
 
-} // namespace plemma
+} // namespace plemma::glancy
+
