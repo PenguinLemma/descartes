@@ -4,6 +4,7 @@
 #include <limits>
 #include <memory>
 #include <random>
+#include <sstream>
 
 #include <catch2/catch.hpp>
 #include "vec3.hpp"

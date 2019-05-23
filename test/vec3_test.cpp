@@ -617,6 +617,15 @@ TEST_CASE("GetRandomPointInUnitDiscXY", "[Vec3]")
     }
 }
 
+TEST_CASE("operator<< : Vec3 -> Beautiful text", "[Vec3]")
+{
+    std::ostringstream os;
+    os << Vec3(1, 2, 3);
+    CHECK( os.str() == "1 2 3");
+    os.str(std::string{});
+    os << Vec3(42.93, -2, 2.0);
+    CHECK( os.str() == "42.93 -2 2");
+}
 
 // Methods not yet tested:
 // - operator<<
