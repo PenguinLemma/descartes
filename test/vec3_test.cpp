@@ -593,9 +593,6 @@ TEST_CASE("GetRandomPointInUnitBall", "[Vec3]")
             CHECK( GetRandomPointInUnitBall().Norm() <= 1.0 );
         }
     }
-
-    // TODO: Test that it's uniformly distributed
-    // TODO: Test that different seeds give different behaviours
 }
 
 TEST_CASE("GetRandomPointInUnitDiscXY", "[Vec3]")
@@ -618,17 +615,12 @@ TEST_CASE("GetRandomPointInUnitDiscXY", "[Vec3]")
             CHECK( GetRandomPointInUnitDiscXY()[2] == 0.0 );
         }
     }
-
-    // TODO: Test that it's uniformly distributed
-    // TODO: Test that different seeds give different behaviours
 }
 
 
 // Methods not yet tested:
 // - operator<<
 // - operator>>
-// - GetRandomPointInUnitBall
-// - GetRandomPointInUnitDiscXY
 
 } // namespace glancy
 
