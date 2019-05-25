@@ -3,15 +3,13 @@
 #include<cmath>
 #include<chrono>
 
-namespace plemma
-{
-namespace glancy
+namespace plemma::glancy
 {
 
 typedef float RealNum;
 
 template <typename T>
-constexpr RealNum Real(T number)
+constexpr RealNum Real(T number) noexcept
 {
     return static_cast<RealNum>(number);
 }
@@ -30,6 +28,4 @@ inline RealNum Schlick(RealNum cosine, RealNum refraction_index)
 
 } // namespace utilities
 
-} // namespace glancy
-
-} // namespace plemma
+} // namespace plemma::glancy
