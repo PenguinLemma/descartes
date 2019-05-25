@@ -1,6 +1,7 @@
 #pragma once
 
 #include "vec3.hpp"
+#include "ray.hpp"
 #include <algorithm>
 
 namespace plemma
