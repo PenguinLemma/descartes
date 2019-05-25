@@ -7,6 +7,7 @@
 #include <sstream>
 
 #include <catch2/catch.hpp>
+#include "testing_constants.hpp"
 #include "vec3.hpp"
 #include "rand_engine.hpp"
 
@@ -15,24 +16,19 @@ namespace plemma {
 
 namespace glancy {
 
-constexpr RealNum kToleranceEqualityCheck = Real(1e-4);
-constexpr RealNum kMinValueToDivide = Real(1e-7);
-constexpr RealNum kMaxRandomGeneration = Real(1e4);
-constexpr RealNum kMinRandomGeneration = Real(-1e4);
-
 constexpr auto CanVec3BeUsedToDivide = [](Vec3 const& v) {
-        return v.X() > kMinValueToDivide
-            && v.Y() > kMinValueToDivide
-            && v.Z() > kMinValueToDivide; };
+        return v.X() > tconst::kMinValueToDivide
+            && v.Y() > tconst::kMinValueToDivide
+            && v.Z() > tconst::kMinValueToDivide; };
 
 constexpr auto CanScalarBeUsedToDivide = [](RealNum const& k) {
-        return k > kMinValueToDivide; };
+        return k > tconst::kMinValueToDivide; };
 
 class Vec3RandomGenerator : public Catch::Generators::IGenerator<Vec3>
 {
 public:
     Vec3RandomGenerator() :
-        dist_(kMinRandomGeneration, kMaxRandomGeneration)
+        dist_(tconst::kMinRandomGeneration, tconst::kMaxRandomGeneration)
     {
         static_cast<void>(next());
     }
