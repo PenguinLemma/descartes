@@ -78,7 +78,7 @@ constexpr bool operator==(Vec3 const& u, Vec3 const& v)
     return (u[0] == v[0]) && (u[1] == v[1]) && (u[2] == v[2]);
 }
 
-void Vec3::Normalize() noexcept
+inline void Vec3::Normalize() noexcept
 {
     RealNum norm_inverse = Real(1) / std::sqrt(comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2]);
     comp_[0] *= norm_inverse;
