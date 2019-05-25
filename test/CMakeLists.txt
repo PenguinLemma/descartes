@@ -1,12 +1,14 @@
 set(TEST_SOURCES
     main_test.cpp
     vec3_test.cpp
+    aabb_test.cpp
 )
 
 set(TEST_HEADERS
-    vec3_test.hpp
+    aabb_test.hpp
     container_approx.hpp
-)
+    vec3_test.hpp
+    testing_constants.hpp)
 
 
 set(INCLUDE_DIR
