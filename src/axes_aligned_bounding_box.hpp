@@ -62,13 +62,6 @@ inline bool AxesAlignedBoundingBox::Hit(const Ray& r, RealNum param_min, RealNum
     return true;
 }
 
-// Returns the smalest AABB containing a static sphere
-inline AxesAlignedBoundingBox ComputeAABBForFixedSphere(const Vec3& center, RealNum radius)
-{
-    return AxesAlignedBoundingBox(center - Vec3(radius, radius, radius),
-                                  center + Vec3(radius, radius, radius));
-}
-
 // Returns the union of two AABBs (i.e. the smallest AABB containing bbox1 and bbox2)
 inline AxesAlignedBoundingBox UnionOfAABBs(const AxesAlignedBoundingBox& bbox1,
                                            const AxesAlignedBoundingBox& bbox2)

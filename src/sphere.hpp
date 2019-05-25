@@ -31,6 +31,13 @@ private:
     std::shared_ptr<Material> material_;
 };
 
+// Returns the smallest AABB containing a static sphere
+inline AxesAlignedBoundingBox ComputeAABBForFixedSphere(const Vec3& center, RealNum radius)
+{
+    return AxesAlignedBoundingBox(center - Vec3(radius, radius, radius),
+                                  center + Vec3(radius, radius, radius));
+}
+
 template<typename Center, typename Radius>
 bool Sphere<Center,Radius>::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const
 {
