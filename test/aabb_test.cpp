@@ -139,7 +139,7 @@ TEST_CASE("UnionOfAABBs : AABB x AABB -> AABB", "[AABB}")
         AxesAlignedBoundingBox bigbbox{smallbbox.Minima() - dilatation_min, smallbbox.Maxima() + dilatation_max};
         CHECK( UnionOfAABBs(smallbbox, bigbbox) == bigbbox );
     }
-    SECTION("Some disjoint cases")
+    SECTION("Some disjoint cases where minima a maxima vectors of union are minima or maxima vector of one of the AABBs")
     {
         Vec3 minima1 = GENERATE(take(10, RandomFiniteVec3(-90.0, 30.0)));
         Vec3 diag1 = GENERATE(take(10, RandomFiniteVec3(0.0, 30.0)));
@@ -149,8 +149,52 @@ TEST_CASE("UnionOfAABBs : AABB x AABB -> AABB", "[AABB}")
         Vec3 minima2 = maxima1 + from_max1_to_min2;
         Vec3 maxima2 = minima2 + diag2;
         AxesAlignedBoundingBox b1{minima1, maxima1};
-        AxesAlignedBoundingBox b2{minima1, maxima2};
+        AxesAlignedBoundingBox b2{minima2, maxima2};
         CHECK( UnionOfAABBs(b1, b2) == AxesAlignedBoundingBox{minima1, maxima2} );
+    }
+    SECTION("Some disjoint cases where resulting minima and maxima are mixture")
+    {
+        Vec3 minima1 = GENERATE(take(10, RandomFiniteVec3(-90.0, 30.0)));
+        Vec3 diag1 = GENERATE(take(10, RandomFiniteVec3(0.0, 30.0)));
+        Vec3 diag2 = GENERATE(take(10, RandomFiniteVec3(0.0, 30.0)));
+        Vec3 from_max1_to_min2 = GENERATE(take(10, RandomFiniteVec3(0.0, 30.0)));
+        RealNum offset_component = GENERATE(take(10, random(Real(0.0), Real(5.0))));
+        Vec3 maxima1 = minima1 + diag1;
+        AxesAlignedBoundingBox b1{minima1, maxima1};
+        SECTION("In x direction")
+        {
+            Vec3 offset{from_max1_to_min2.X() + maxima1.X() - minima1.X() + offset_component + diag2.X(),
+                        Real(0.0), Real(0.0)};
+            Vec3 minima2 = maxima1 + from_max1_to_min2 - offset;
+            Vec3 maxima2 = minima2 + diag2;
+            AxesAlignedBoundingBox b2{minima2, maxima2};
+            CHECK( UnionOfAABBs(b1, b2) ==
+            AxesAlignedBoundingBox{Vec3{minima2.X(), minima1.Y(), minima1.Z()},
+                                   Vec3{maxima1.X(), maxima2.Y(), maxima2.Z()}} );
+        }
+        SECTION("In y direction")
+        {
+            Vec3 offset{Real(0.0),
+                        from_max1_to_min2.Y() + maxima1.Y() - minima1.Y() + offset_component + diag2.Y(),
+                        Real(0.0)};
+            Vec3 minima2 = maxima1 + from_max1_to_min2 - offset;
+            Vec3 maxima2 = minima2 + diag2;
+            AxesAlignedBoundingBox b2{minima2, maxima2};
+            CHECK( UnionOfAABBs(b1, b2) ==
+                   AxesAlignedBoundingBox{Vec3{minima1.X(), minima2.Y(), minima1.Z()},
+                                          Vec3{maxima2.X(), maxima1.Y(), maxima2.Z()}} );
+        }
+        SECTION("In z direction")
+        {
+            Vec3 offset{Real(0.0), Real(0.0),
+                        from_max1_to_min2.Z() + maxima1.Z() - minima1.Z() + offset_component + diag2.Z()};
+            Vec3 minima2 = maxima1 + from_max1_to_min2 - offset;
+            Vec3 maxima2 = minima2 + diag2;
+            AxesAlignedBoundingBox b2{minima2, maxima2};
+            CHECK( UnionOfAABBs(b1, b2) ==
+                   AxesAlignedBoundingBox{Vec3{minima1.X(), minima1.Y(), minima2.Z()},
+                                          Vec3{maxima2.X(), maxima2.Y(), maxima1.Z()}} );
+        }
     }
 }
 
