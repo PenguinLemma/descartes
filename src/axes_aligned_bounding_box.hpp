@@ -24,12 +24,12 @@ public:
         maxima_(M)
     {}
 
-    const Vec3& Minima() const { return minima_; }
-    const Vec3& Maxima() const { return maxima_; }
+    const Vec3& Minima() const noexcept { return minima_; }
+    const Vec3& Maxima() const noexcept { return maxima_; }
 
     // Returns true if the ray 'r' intersects with the box for some value
     // of the parameter of the ray in [param_min, param_max]
-    bool Hit(const Ray& r, RealNum param_min, RealNum param_max) const;
+    bool Hit(const Ray& r, RealNum param_min, RealNum param_max) const noexcept;
 
 private:
     Vec3 minima_;
@@ -37,7 +37,7 @@ private:
 };
 
 
-inline bool AxesAlignedBoundingBox::Hit(const Ray& r, RealNum param_min, RealNum param_max) const
+inline bool AxesAlignedBoundingBox::Hit(const Ray& r, RealNum param_min, RealNum param_max) const noexcept
 {
     for (int i = 0; i < 3; ++i)
     {
