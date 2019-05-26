@@ -20,6 +20,12 @@
 namespace plemma::glancy
 {
 
+// We only need operator==: AABB x AABB -> {false, true} for testing purposes
+constexpr bool operator==(AxesAlignedBoundingBox const & lhs, AxesAlignedBoundingBox const & rhs)
+{
+    return lhs.Minima() == rhs.Minima() && lhs.Maxima() == rhs.Maxima();
+}
+
 constexpr auto IsAABBNonEmpty = [](AxesAlignedBoundingBox const& bbox) {
     return bbox.Maxima().X() > bbox.Minima().X()
         && bbox.Maxima().Y() > bbox.Minima().Y()
