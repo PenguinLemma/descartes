@@ -198,5 +198,15 @@ TEST_CASE("UnionOfAABBs : AABB x AABB -> AABB", "[AABB}")
     }
 }
 
+TEST_CASE("operator<< : AABB -> Beautiful text", "[AABB]")
+{
+    std::ostringstream os;
+    os << AxesAlignedBoundingBox{Vec3{-6, -4, 2}, Vec3{2, 4, 6}};
+    CHECK( os.str() == "[-6, 2] x [-4, 4] x [2, 6]");
+    os.str(std::string{});
+    os << AxesAlignedBoundingBox{Vec3{3.45, -19, 6.0}, Vec3{3.46, 0.0, 1234}};
+    CHECK( os.str() == "[3.45, 3.46] x [-19, 0] x [6, 1234]");
+}
+
 } // namespace plemma::glancy
 

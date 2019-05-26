@@ -26,12 +26,12 @@ constexpr bool operator==(AxesAlignedBoundingBox const & lhs, AxesAlignedBoundin
     return lhs.Minima() == rhs.Minima() && lhs.Maxima() == rhs.Maxima();
 }
 
-constexpr auto IsAABBNonEmpty = [](AxesAlignedBoundingBox const& bbox) {
+constexpr auto IsAABBNonEmpty = [](AxesAlignedBoundingBox const& bbox) noexcept {
     return bbox.Maxima().X() > bbox.Minima().X()
         && bbox.Maxima().Y() > bbox.Minima().Y()
         && bbox.Maxima().Z() > bbox.Minima().Z(); };
 
-constexpr auto IsAABBEmpty = [](AxesAlignedBoundingBox const& bbox) {
+constexpr auto IsAABBEmpty = [](AxesAlignedBoundingBox const& bbox) noexcept {
     return !IsAABBNonEmpty(bbox); };
 
 class AABBRandomGenerator : public Catch::Generators::IGenerator<AxesAlignedBoundingBox>
