@@ -36,7 +36,7 @@ https://github.com/catchorg/Catch2/blob/master/docs/generators.md
  - [x] Add [Catch2](https://github.com/catchorg/Catch2 "Catch2 repo") as testing library
  - [ ] Create tests for:
      - [x] `plemma::glancy::AxesAlignedBoundingBox`
-     - [ ] Free method `plemma::glancy::UnionOfAABBs`
+     - [x] Free method `plemma::glancy::UnionOfAABBs`
      - [ ] All `plemma::glancy::BoundingVolumeHierarchy`'s constructors
      - [ ] `plemma::glancy::BoundingVolumeHierarchy::Hit`
      - [ ] `plemma::glancy::BoundingVolumeHierarchy::ComputeBoundingBox`
