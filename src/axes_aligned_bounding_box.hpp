@@ -24,8 +24,8 @@ public:
         maxima_(M)
     {}
 
-    const Vec3& Minima() const noexcept { return minima_; }
-    const Vec3& Maxima() const noexcept { return maxima_; }
+    constexpr const Vec3& Minima() const noexcept { return minima_; }
+    constexpr const Vec3& Maxima() const noexcept { return maxima_; }
 
     // Returns true if the ray 'r' intersects with the box for some value
     // of the parameter of the ray in [param_min, param_max]
