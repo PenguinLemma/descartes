@@ -35,8 +35,7 @@ property-based testing, but generators might provide a good start:
 https://github.com/catchorg/Catch2/blob/master/docs/generators.md
  - [x] Add [Catch2](https://github.com/catchorg/Catch2 "Catch2 repo") as testing library
  - [ ] Create tests for:
-     - [ ] `plemma::glancy::AxesAlignedBoundingBox::Hit`
-     - [ ] Free method `plemma::glancy::ComputeAABBForFixedSphere`
+     - [x] `plemma::glancy::AxesAlignedBoundingBox`
      - [ ] Free method `plemma::glancy::UnionOfAABBs`
      - [ ] All `plemma::glancy::BoundingVolumeHierarchy`'s constructors
      - [ ] `plemma::glancy::BoundingVolumeHierarchy::Hit`
@@ -50,4 +49,4 @@ https://github.com/catchorg/Catch2/blob/master/docs/generators.md
      - [ ] `plemma::glancy::Metal::Scatter`
      - [ ] `plemma::glancy::Sphere::Hit`
      - [ ] `plemma::glancy::Sphere::ComputeBoundingBox` for static and dynamic sphere
-     - [x] `plemma::glancy::Vec3::*`
+     - [x] `plemma::glancy::Vec3`
