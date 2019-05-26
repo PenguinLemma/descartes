@@ -118,5 +118,41 @@ TEST_CASE("Hit : AABB x Ray x RealNum x RealNum -> bool", "[AABB]")
     }
 }
 
+TEST_CASE("UnionOfAABBs : AABB x AABB -> AABB", "[AABB}")
+{
+    SECTION("It is commutative")
+    {
+        auto bbox1 = GENERATE(take(10, filter(IsAABBNonEmpty, RandomFiniteAABB())));
+        auto bbox2 = GENERATE(take(10, filter(IsAABBNonEmpty, RandomFiniteAABB())));
+        CHECK( UnionOfAABBs(bbox1, bbox2) == UnionOfAABBs(bbox2, bbox1) );
+    }
+    SECTION("Union of a bbox with itself is itself")
+    {
+        auto bbox = GENERATE(take(10, filter(IsAABBNonEmpty, RandomFiniteAABB())));
+        CHECK( UnionOfAABBs(bbox, bbox) == bbox );
+    }
+    SECTION("Union of a bbox and another one that contains the first is the second")
+    {
+        auto smallbbox = GENERATE(take(10, filter(IsAABBNonEmpty, RandomFiniteAABB(-30.0, 30.0))));
+        Vec3 dilatation_max = GENERATE(take(10, RandomFiniteVec3(0.0, 10.0)));
+        Vec3 dilatation_min = GENERATE(take(10, RandomFiniteVec3(0.0, 10.0)));
+        AxesAlignedBoundingBox bigbbox{smallbbox.Minima() - dilatation_min, smallbbox.Maxima() + dilatation_max};
+        CHECK( UnionOfAABBs(smallbbox, bigbbox) == bigbbox );
+    }
+    SECTION("Some disjoint cases")
+    {
+        Vec3 minima1 = GENERATE(take(10, RandomFiniteVec3(-90.0, 30.0)));
+        Vec3 diag1 = GENERATE(take(10, RandomFiniteVec3(0.0, 30.0)));
+        Vec3 diag2 = GENERATE(take(10, RandomFiniteVec3(0.0, 30.0)));
+        Vec3 from_max1_to_min2 = GENERATE(take(10, RandomFiniteVec3(0.0, 30.0)));
+        Vec3 maxima1 = minima1 + diag1;
+        Vec3 minima2 = maxima1 + from_max1_to_min2;
+        Vec3 maxima2 = minima2 + diag2;
+        AxesAlignedBoundingBox b1{minima1, maxima1};
+        AxesAlignedBoundingBox b2{minima1, maxima2};
+        CHECK( UnionOfAABBs(b1, b2) == AxesAlignedBoundingBox{minima1, maxima2} );
+    }
+}
+
 } // namespace plemma::glancy
 
