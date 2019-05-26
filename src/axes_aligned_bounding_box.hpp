@@ -36,6 +36,12 @@ private:
     Vec3 maxima_;
 };
 
+inline std::ostream& operator<<(std::ostream& os, const AxesAlignedBoundingBox& b) noexcept
+{
+    os << "[" << b.Minima()[0] << ", " << b.Maxima()[0] << "] x [" << b.Minima()[1] << ", " << b.Maxima()[1] << "] x [";
+    os << b.Minima()[2] <<  ", " << b.Maxima()[2] << "]";
+    return os;
+}
 
 inline bool AxesAlignedBoundingBox::Hit(const Ray& r, RealNum param_min, RealNum param_max) const noexcept
 {
