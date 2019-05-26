@@ -3,3 +3,8 @@
 //
 
 #include "ray_test.hpp"
+
+namespace plemma::glancy
+{
+
+} // namespace plemma::glancy

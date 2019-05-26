@@ -2,13 +2,13 @@ set(TEST_SOURCES
     main_test.cpp
     vec3_test.cpp
     aabb_test.cpp
-)
+    ray_test.cpp)
 
 set(TEST_HEADERS
     aabb_test.hpp
     container_approx.hpp
     vec3_test.hpp
-    testing_constants.hpp)
+    testing_constants.hpp ray_test.hpp)
 
 
 set(INCLUDE_DIR
