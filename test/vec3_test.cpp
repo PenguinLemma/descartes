@@ -453,6 +453,16 @@ TEST_CASE("Cross : Vec3 x Vec3 -> Vec3", "[Vec3]")
         CHECK( Cross(v, v) == zero );
     }
 
+    SECTION("Cross product of linearly dependent vectors is 0")
+    {
+        auto v = GENERATE(take(100, RandomFiniteVec3(-10.0, 10.0)));
+        RealNum lambda = GENERATE(take(10, random(-2.0, 2.0)));
+        CHECK( Cross(v, lambda * v).Norm() ==
+            Approx(0.0).margin(tconst::kAbsoluteToleranceEqualityCheckAroundZero) );
+        CHECK( Cross(lambda * v, v).Norm() ==
+            Approx(0.0).margin(tconst::kAbsoluteToleranceEqualityCheckAroundZero) );
+    }
+
     SECTION("Correctly defined over the natural basis")
     {
         Vec3 e1(1.0, 0.0, 0.0);
