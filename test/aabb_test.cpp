@@ -42,8 +42,10 @@ TEST_CASE("Hit : AABB x Ray x RealNum x RealNum -> bool", "[AABB]")
     {
         auto bbox = GENERATE(take(10, RandomFiniteAABB()));
         Ray ray = GENERATE(take(10, RandomRay()));
+        RealNum lower = GENERATE(take(10, random(tconst::kMinRandomGeneration, tconst::kMaxRandomGeneration)));
+        RealNum positive_delta = GENERATE(take(10, random(Real(0.0), tconst::kMaxRandomGeneration)));
 
-        CHECK( !bbox.Hit(ray, Real(-1.0), Real(1.0)) );
+        CHECK( !bbox.Hit(ray, lower, lower - positive_delta) );
     }
 
     SECTION("Hit does its job rightly when objects and constrains are non-empty")
