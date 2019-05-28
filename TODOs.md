@@ -47,6 +47,7 @@ https://github.com/catchorg/Catch2/blob/master/docs/generators.md
      - [ ] `plemma::glancy::HitableList::Add`
      - [ ] `plemma::glancy::Lambertian::Scatter`
      - [ ] `plemma::glancy::Metal::Scatter`
+     - [x] `plemma::glancy::Ray`
      - [ ] `plemma::glancy::Sphere::Hit`
      - [ ] `plemma::glancy::Sphere::ComputeBoundingBox` for static and dynamic sphere
      - [x] `plemma::glancy::Vec3`
