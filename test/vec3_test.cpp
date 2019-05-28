@@ -141,13 +141,13 @@ TEST_CASE("op / : Vec3 x R -> Vec3", "[Vec3]")
         auto k = GENERATE(take(100,
             filter(CanScalarBeUsedToDivide, random(Real(-100.0), Real(100.0)))));
         CHECK_THAT( (k * v) / k,
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, v) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, v) );
         CHECK_THAT( k *(v / k),
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, v) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, v) );
         CHECK_THAT( (v * k) / k,
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, v) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, v) );
         CHECK_THAT( (v / k) * k,
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, v) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, v) );
     }
 }
 
@@ -226,11 +226,11 @@ TEST_CASE("Component wise div / : Vec3 x Vec3 -> Vec3", "[Vec3]")
         auto original = GENERATE(take(100, RandomFiniteVec3(10.0, 10.0)));
         auto operand = GENERATE(take(100, filter(CanVec3BeUsedToDivide, RandomFiniteVec3())));
         CHECK_THAT( (original * operand) / operand,
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, original) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, original) );
         CHECK_THAT( (operand * original) / operand,
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, original) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, original) );
         CHECK_THAT( operand * (original / operand),
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, original) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, original) );
     }
 }
 
@@ -300,7 +300,7 @@ TEST_CASE("Normalize : Vec3 -> S^3", "[Vec3]")
         Vec3 v_norm_norm = v_normalized;
         v_norm_norm.Normalize();
         CHECK_THAT( v_norm_norm,
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, v_normalized) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, v_normalized) );
     }
 }
 
@@ -361,10 +361,10 @@ TEST_CASE("Dot : Vec3 x Vec3 -> R", "[Vec3]")
         auto v = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
         auto k = GENERATE(take(10, random(Real(-10.0), Real(10.0))));
 
-        CHECK( Dot(k*u, v) == Approx(k * Dot(u, v)).epsilon(tconst::kToleranceEqualityCheck) );
-        CHECK( Dot(u, k*v) == Approx(k * Dot(u, v)).epsilon(tconst::kToleranceEqualityCheck) );
-        CHECK( Dot(u*k, v) == Approx(k * Dot(u, v)).epsilon(tconst::kToleranceEqualityCheck) );
-        CHECK( Dot(u, v*k) == Approx(k * Dot(u, v)).epsilon(tconst::kToleranceEqualityCheck) );
+        CHECK( Dot(k*u, v) == Approx(k * Dot(u, v)).epsilon(tconst::kRelativeToleranceEqualityCheck) );
+        CHECK( Dot(u, k*v) == Approx(k * Dot(u, v)).epsilon(tconst::kRelativeToleranceEqualityCheck) );
+        CHECK( Dot(u*k, v) == Approx(k * Dot(u, v)).epsilon(tconst::kRelativeToleranceEqualityCheck) );
+        CHECK( Dot(u, v*k) == Approx(k * Dot(u, v)).epsilon(tconst::kRelativeToleranceEqualityCheck) );
     }
 
     SECTION("Scalar product has distributive property with respect to +")
@@ -372,8 +372,8 @@ TEST_CASE("Dot : Vec3 x Vec3 -> R", "[Vec3]")
         auto u = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
         auto v = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
         auto w = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
-        CHECK( Dot(u+v, w) == Approx(Dot(u, w) + Dot(v, w)).epsilon(tconst::kToleranceEqualityCheck) );
-        CHECK( Dot(u, v+w) == Approx(Dot(u, v) + Dot(u, w)).epsilon(tconst::kToleranceEqualityCheck) );
+        CHECK( Dot(u+v, w) == Approx(Dot(u, w) + Dot(v, w)).epsilon(tconst::kRelativeToleranceEqualityCheck) );
+        CHECK( Dot(u, v+w) == Approx(Dot(u, v) + Dot(u, w)).epsilon(tconst::kRelativeToleranceEqualityCheck) );
     }
 
     SECTION("Dot product of orthogonal vectors is 0")
@@ -486,13 +486,13 @@ TEST_CASE("Cross : Vec3 x Vec3 -> Vec3", "[Vec3]")
         auto v = GENERATE(take(10, RandomFiniteVec3(-2.0, 2.0)));
         auto k = GENERATE(take(10, random(-2.0, 2.0)));
         CHECK_THAT( Cross(k*u, v),
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, k*Cross(u, v)) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, k*Cross(u, v)) );
         CHECK_THAT( Cross(u*k, v),
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, k*Cross(u, v)) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, k*Cross(u, v)) );
         CHECK_THAT( Cross(u, k*v),
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, k*Cross(u, v)) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, k*Cross(u, v)) );
         CHECK_THAT( Cross(u, v*k),
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, k*Cross(u, v)) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, k*Cross(u, v)) );
     }
 
     SECTION("Croos product has distributive property with respect to +")
@@ -501,9 +501,9 @@ TEST_CASE("Cross : Vec3 x Vec3 -> Vec3", "[Vec3]")
         auto v = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
         auto w = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
         CHECK_THAT( Cross(u+v, w),
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, Cross(u, w) + Cross(v, w)) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, Cross(u, w) + Cross(v, w)) );
         CHECK_THAT( Cross(u, v+w),
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, Cross(u, v) + Cross(u, w)) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, Cross(u, v) + Cross(u, w)) );
     }
 
     SECTION("Cross product satisfies Jacobi identity")
@@ -515,7 +515,7 @@ TEST_CASE("Cross : Vec3 x Vec3 -> Vec3", "[Vec3]")
         CHECK_THAT( Cross(u, Cross(v, w))
              + Cross(v, Cross(w, u))
              + Cross(w, Cross(u, v)),
-             IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, zero) );
+             IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, zero) );
     }
 
     SECTION("Cross product relates to sine")
@@ -572,7 +572,7 @@ TEST_CASE("UnitVector : Vec3 -> Vec3", "[Vec3]")
         auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(10.0, 10.0))));
         v.Normalize();
         CHECK_THAT( UnitVector(v),
-                    IsComponentWiseApprox<Vec3>(tconst::kToleranceEqualityCheck, v) );
+                    IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, v) );
     }
 }
 
