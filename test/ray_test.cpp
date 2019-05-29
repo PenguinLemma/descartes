@@ -53,4 +53,107 @@ TEST_CASE("PointAtParameter : R^+ -> Vec3", "[Ray]")
     }
 }
 
+TEST_CASE("Reflect : Vec3 x Vec3 -> Vec3", "[Ray]")
+{
+    Vec3 randvec = GENERATE(take(10, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(-10.0, 10.0))));
+
+    SECTION("Zero vector is not reflected")
+    {
+        Vec3 normal{randvec};
+        CHECK( Reflect(Vec3{}, normal) == Vec3{} );
+    }
+
+    SECTION("If normal is 0, reflection is identity")
+    {
+        CHECK( Reflect(randvec, Vec3{}) == randvec );
+    }
+
+    SECTION("Reflected vector and original vector have the same norm")
+    {
+        Vec3 normal = GENERATE(take(10, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(-1.0, 1.0))));
+        normal.Normalize();
+        CHECK( Reflect(randvec, normal).Norm()
+            == Approx(randvec.Norm()).epsilon(tconst::kRelativeToleranceEqualityCheck) );
+    }
+
+    SECTION("Calculation is correct in the axis' planes")
+    {
+        RealNum a_positive = GENERATE(take(10, random(0.0, 10.0)));
+        RealNum b_positive = GENERATE(take(10, random(0.0, 10.0)));
+        RealNum sign = GENERATE(Real(-1), Real(1));
+        SECTION("Vectors inside plane xy")
+        {
+            CHECK_THAT(
+                Reflect(sign * Vec3{-a_positive, b_positive, Real(0)}, sign * Vec3{Real(1), Real(0), Real(0)}),
+                IsComponentWiseApprox<Vec3>(
+                    tconst::kRelativeToleranceEqualityCheck,
+                    sign * Vec3{a_positive, b_positive, Real(0)}) );
+            CHECK_THAT(
+                Reflect(sign * Vec3{-a_positive, -b_positive, Real(0)}, sign * Vec3{Real(1), Real(0), Real(0)}),
+                IsComponentWiseApprox<Vec3>(
+                    tconst::kRelativeToleranceEqualityCheck,
+                    sign * Vec3{a_positive, -b_positive, Real(0)}) );
+            CHECK_THAT(
+                Reflect(sign * Vec3{a_positive, -b_positive, Real(0)}, sign * Vec3{Real(0), Real(1), Real(0)}),
+                IsComponentWiseApprox<Vec3>(
+                    tconst::kRelativeToleranceEqualityCheck,
+                    sign * Vec3{a_positive, b_positive, Real(0)}) );
+            CHECK_THAT(
+                Reflect(sign * Vec3{-a_positive, -b_positive, Real(0)}, sign * Vec3{Real(0), Real(1), Real(0)}),
+                IsComponentWiseApprox<Vec3>(
+                    tconst::kRelativeToleranceEqualityCheck,
+                    sign * Vec3{-a_positive, b_positive, Real(0)}) );
+        }
+
+        SECTION("Vectors inside plane xz")
+        {
+            CHECK_THAT(
+                Reflect(sign * Vec3{-a_positive, Real(0), b_positive}, sign * Vec3{Real(1), Real(0), Real(0)}),
+                IsComponentWiseApprox<Vec3>(
+                    tconst::kRelativeToleranceEqualityCheck,
+                    sign * Vec3{a_positive, Real(0), b_positive}) );
+            CHECK_THAT(
+                Reflect(sign * Vec3{-a_positive, Real(0), -b_positive}, sign * Vec3{Real(1), Real(0), Real(0)}),
+                IsComponentWiseApprox<Vec3>(
+                    tconst::kRelativeToleranceEqualityCheck,
+                    sign * Vec3{a_positive, Real(0), -b_positive}) );
+            CHECK_THAT(
+                Reflect(sign * Vec3{a_positive, Real(0), -b_positive}, sign * Vec3{Real(0), Real(0), Real(1)}),
+                IsComponentWiseApprox<Vec3>(
+                    tconst::kRelativeToleranceEqualityCheck,
+                    sign * Vec3{a_positive, Real(0), b_positive}) );
+            CHECK_THAT(
+                Reflect(sign * Vec3{-a_positive, Real(0), -b_positive}, sign * Vec3{Real(0), Real(0), Real(1)}),
+                IsComponentWiseApprox<Vec3>(
+                    tconst::kRelativeToleranceEqualityCheck,
+                    sign * Vec3{-a_positive, Real(0), b_positive}) );
+        }
+
+        SECTION("Vectors inside plane yz")
+        {
+            CHECK_THAT(
+                Reflect(sign * Vec3{Real(0), -a_positive, b_positive}, sign * Vec3{Real(0), Real(1), Real(0)}),
+                IsComponentWiseApprox<Vec3>(
+                    tconst::kRelativeToleranceEqualityCheck,
+                    sign * Vec3{Real(0), a_positive, b_positive}) );
+            CHECK_THAT(
+                Reflect(sign * Vec3{Real(0), -a_positive, -b_positive}, sign * Vec3{Real(0), Real(1), Real(0)}),
+                IsComponentWiseApprox<Vec3>(
+                    tconst::kRelativeToleranceEqualityCheck,
+                    sign * Vec3{Real(0), a_positive, -b_positive}) );
+            CHECK_THAT(
+                Reflect(sign * Vec3{Real(0), a_positive, -b_positive}, sign * Vec3{Real(0), Real(0), Real(1)}),
+                IsComponentWiseApprox<Vec3>(
+                    tconst::kRelativeToleranceEqualityCheck,
+                    sign * Vec3{Real(0), a_positive, b_positive}) );
+            CHECK_THAT(
+                Reflect(sign * Vec3{Real(0), -a_positive, -b_positive}, sign * Vec3{Real(0), Real(0), Real(1)}),
+                IsComponentWiseApprox<Vec3>(
+                    tconst::kRelativeToleranceEqualityCheck,
+                    sign * Vec3{Real(0), -a_positive, b_positive}) );
+        }
+    }
+}
+
+
 } // namespace plemma::glancy
