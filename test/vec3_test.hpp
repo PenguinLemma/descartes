@@ -7,6 +7,7 @@
 #include <sstream>
 
 #include <catch2/catch.hpp>
+#include "container_approx.hpp"
 #include "testing_constants.hpp"
 #include "vec3.hpp"
 #include "rand_engine.hpp"
