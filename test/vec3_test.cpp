@@ -137,7 +137,7 @@ TEST_CASE("op / : Vec3 x R -> Vec3", "[Vec3]")
 
     SECTION("Multiplication and division by scalar are inverse")
     {
-        auto v = GENERATE(take(100, RandomFiniteVec3(10.0, 10.0)));
+        auto v = GENERATE(take(100, RandomFiniteVec3(-10.0, 10.0)));
         auto k = GENERATE(take(100,
             filter(CanScalarBeUsedToDivide, random(Real(-100.0), Real(100.0)))));
         CHECK_THAT( (k * v) / k,
@@ -223,7 +223,7 @@ TEST_CASE("Component wise div / : Vec3 x Vec3 -> Vec3", "[Vec3]")
 
     SECTION("Comp-wise multiplication and division are inverse")
     {
-        auto original = GENERATE(take(100, RandomFiniteVec3(10.0, 10.0)));
+        auto original = GENERATE(take(100, RandomFiniteVec3(-10.0, 10.0)));
         auto operand = GENERATE(take(100, filter(CanVec3BeUsedToDivide, RandomFiniteVec3())));
         CHECK_THAT( (original * operand) / operand,
                     IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, original) );
@@ -286,7 +286,7 @@ TEST_CASE("Normalize : Vec3 -> S^3", "[Vec3]")
 {
     SECTION("Vector is unitary after normalizing")
     {
-        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(10.0, 10.0))));
+        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(-10.0, 10.0))));
         v.Normalize();
         Vec3 v_normalized = v;
         CHECK(v_normalized.Norm() ==  Approx(1.0) );
@@ -294,7 +294,7 @@ TEST_CASE("Normalize : Vec3 -> S^3", "[Vec3]")
 
     SECTION("Normalize comp Normalize = Normalize")
     {
-        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(10.0, 10.0))));
+        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(-10.0, 10.0))));
         Vec3 v_normalized = v;
         v_normalized.Normalize();
         Vec3 v_norm_norm = v_normalized;
@@ -378,7 +378,7 @@ TEST_CASE("Dot : Vec3 x Vec3 -> R", "[Vec3]")
 
     SECTION("Dot product of orthogonal vectors is 0")
     {
-        auto v = GENERATE(take(5, RandomFiniteVec3(30.0, 30.0)));
+        auto v = GENERATE(take(5, RandomFiniteVec3(-10.0, 10.0)));
         CHECK ( Dot(v, Vec3( v.Y(), -v.X(),      0)) == 0.0 );
         CHECK ( Dot(v, Vec3(-v.Y(),  v.X(),      0)) == 0.0 );
         CHECK ( Dot(v, Vec3( v.Z(),      0, -v.X())) == 0.0 );
@@ -390,7 +390,8 @@ TEST_CASE("Dot : Vec3 x Vec3 -> R", "[Vec3]")
         // that don't need one component to be 0
         CHECK ( Dot(v, Vec3(v.Z() - v.Y(),
                             v.X() - v.Z(),
-                            v.Y() - v.X())) == 0.0 );
+                            v.Y() - v.X()))
+                            == Approx(0.0).margin(tconst::kAbsoluteToleranceEqualityCheckAroundZero) );
 
     }
 
@@ -574,12 +575,12 @@ TEST_CASE("UnitVector : Vec3 -> Vec3", "[Vec3]")
 {
     SECTION("Resulting vector is unitary")
     {
-        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(10.0, 10.0))));
+        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(-10.0, 10.0))));
         CHECK( UnitVector(v).Norm() == Approx(1.0) );
     }
     SECTION("UnitVector of a normal vector is itself")
     {
-        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(10.0, 10.0))));
+        auto v = GENERATE(take(100, filter(CanVec3BeUsedToDivide,RandomFiniteVec3(-10.0, 10.0))));
         v.Normalize();
         CHECK_THAT( UnitVector(v),
                     IsComponentWiseApprox<Vec3>(tconst::kRelativeToleranceEqualityCheck, v) );
