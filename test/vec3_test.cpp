@@ -372,8 +372,14 @@ TEST_CASE("Dot : Vec3 x Vec3 -> R", "[Vec3]")
         auto u = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
         auto v = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
         auto w = GENERATE(take(10, RandomFiniteVec3(-10.0, 10.0)));
-        CHECK( Dot(u+v, w) == Approx(Dot(u, w) + Dot(v, w)).epsilon(tconst::kRelativeToleranceEqualityCheck) );
-        CHECK( Dot(u, v+w) == Approx(Dot(u, v) + Dot(u, w)).epsilon(tconst::kRelativeToleranceEqualityCheck) );
+        CHECK( Dot(u+v, w)
+            == Approx(Dot(u, w) + Dot(v, w))
+                .epsilon(tconst::kRelativeToleranceEqualityCheck)
+                .margin(tconst::kAbsoluteToleranceEqualityCheckAroundZero));
+        CHECK( Dot(u, v+w)
+            == Approx(Dot(u, v) + Dot(u, w))
+                .epsilon(tconst::kRelativeToleranceEqualityCheck)
+                .margin(tconst::kAbsoluteToleranceEqualityCheckAroundZero));
     }
 
     SECTION("Dot product of orthogonal vectors is 0")
