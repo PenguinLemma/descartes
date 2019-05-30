@@ -100,10 +100,10 @@ typedef Dielectric<kRefractiveIndexVacuumNum, kRefractiveIndexVacuumDen> Vacuum;
 // Refractive index of ice = 1.31
 constexpr int kRefractiveIndexIceNum = 131;
 constexpr int kRefractiveIndexIceDen = 100;
-typedef Dielectric<kRefractiveIndexIceNum, kRefractiveIndexIceNum> Ice;
+typedef Dielectric<kRefractiveIndexIceNum, kRefractiveIndexIceDen> Ice;
 
-// Refractive index of water = 1/3
-constexpr int kRefractiveIndexWaterNum = 1;
+// Refractive index of water = 4/3
+constexpr int kRefractiveIndexWaterNum = 4;
 constexpr int kRefractiveIndexWaterDen = 3;
 typedef Dielectric<kRefractiveIndexWaterNum, kRefractiveIndexWaterDen> Water;
 
