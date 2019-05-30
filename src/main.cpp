@@ -14,6 +14,7 @@
 #include "renderer.hpp"
 #include "two_spheres_scene.hpp"
 #include "random_spheres_scene.hpp"
+#include "different_dielectrics_scene.hpp"
 
 int main() {
 
@@ -21,6 +22,7 @@ int main() {
     using plemma::glancy::Vec3;
     using plemma::glancy::Image;
     using plemma::glancy::Scene;
+    using plemma::glancy::DifferentDielectricsScene;
     using plemma::glancy::TwoSpheresScene;
     using plemma::glancy::RandomSpheresScene;
     using plemma::glancy::Camera;
@@ -42,11 +44,16 @@ int main() {
 
     Vec3 lookfrom(Real(10), Real(1.4), Real(2));
     Vec3 lookat(Real(3.5), Real(0.6), Real(0.5));
+    Vec3 vertical_positive_camera{Real(0), Real(1), Real(0)};
+    RealNum vertical_fov_deg{Real(30)};
     RealNum dist_to_focus = (lookfrom - lookat).Norm();
     RealNum aperture = Real(0.1);
     RealNum aspect = Real(nx) / Real(ny);
+    RealNum t0{Real(0)};
+    RealNum t1{Real(0.1)};
 
-    Camera camera(lookfrom, lookat, Vec3(Real(0), Real(1), Real(0)), Real(30), aspect, aperture, dist_to_focus, Real(0), Real(0.1));
+    Camera camera(lookfrom, lookat, vertical_positive_camera,
+        vertical_fov_deg, aspect, aperture, dist_to_focus, t0, t1);
 
     size_t n_rays_per_pixel = 100;
     uint16_t max_depth = 50;

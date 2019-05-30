@@ -9,6 +9,7 @@ set(HEADERS
     chronometer.hpp
     constants.hpp
     dielectric.hpp
+    different_dielectrics_scene.hpp
     hitable.hpp
     hitable_list.hpp
     image.hpp
