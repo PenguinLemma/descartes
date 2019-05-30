@@ -32,7 +32,7 @@ inline void RandomSpheresScene::LoadWorld()
 
     // Add 3 mid size spheres
     world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(Vec3(Real(0), Real(1), Real(0)), Real(1),
-                                        std::make_shared<Dielectric>(Real(1.5))));
+                                        std::make_shared<WindowGlass>()));
 
     world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(Vec3(Real(-4), Real(1), Real(0)), Real(1),
                                         std::make_shared<Lambertian>(Vec3(Real(0.4), Real(0.2), Real(0.1)))));
@@ -98,13 +98,13 @@ inline void RandomSpheresScene::LoadWorld()
                     if (is_static)
                     {
                         world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(
-                            center, radius, std::make_shared<Dielectric>(Real(1.5)))
+                            center, radius, std::make_shared<WindowGlass>())
                         );
                     }
                     else
                     {
                         world_.Add(std::make_shared<Sphere<decltype(moving_center), decltype(constant_radius)> >(
-                            moving_center, constant_radius, std::make_shared<Dielectric>(Real(1.5)))
+                            moving_center, constant_radius, std::make_shared<WindowGlass>())
                         );
                     }
                 }

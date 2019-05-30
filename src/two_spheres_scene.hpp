@@ -4,11 +4,10 @@
 #include "sphere.hpp"
 #include "lambertian.hpp"
 #include "dielectric.hpp"
+#include "metal.hpp"
 #include <memory>
 
-namespace plemma
-{
-namespace glancy
+namespace plemma::glancy
 {
 
 class TwoSpheresScene : public Scene
@@ -33,6 +32,4 @@ inline void TwoSpheresScene::LoadWorld()
                         std::make_shared<Metal>(Vec3(Real(0.5), Real(0.5), Real(0.5)), Real(0.9))));
 }
 
-} // namespace glancy
-
-} // namespace plemma
+} // namespace plemma::glancy

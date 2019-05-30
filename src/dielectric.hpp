@@ -8,9 +8,7 @@
 #include "rand_engine.hpp"
 #include <random>
 
-namespace plemma
-{
-namespace glancy
+namespace plemma::glancy
 {
 
 // Class implementing material of type Dielectric. Objects of
@@ -20,11 +18,18 @@ namespace glancy
 // a refracted ray. In this implementation, we will choose
 // randomly which of the two resulting rays to follow after
 // the split for each ray that hits the object.
+
+// Remember that ri = c/v, where c is the speed of light in vacuum
+// and v is the phase velocity of light in the medium (material).
+// That means ri >= 1.0
+template <int refractive_index_numerator, int refractive_index_denominator>
 class Dielectric : public Material
 {
 public:
-    Dielectric(RealNum ri) : refraction_index_(ri) {}
 
+    Dielectric() :
+        refractive_index_{Real(refractive_index_numerator)/Real(refractive_index_denominator)}
+    {}
     // Returns false if the ray is absorbed by this material
     // and true otherwise. It also computes the scattered ray
     // resulting from the interaction between ray and material
@@ -51,19 +56,19 @@ public:
         if (Dot(ray_in.Direction(), rec.normal) > Real(0))
         {
             outward_normal = -rec.normal;
-            ni_over_nt = refraction_index_;
-            cosine = refraction_index_ * Dot(ray_in.Direction(), rec.normal) / ray_in.Direction().Norm();
+            ni_over_nt = refractive_index_;
+            cosine = refractive_index_ * Dot(ray_in.Direction(), rec.normal) / ray_in.Direction().Norm();
         }
         else
         {
             outward_normal = rec.normal;
-            ni_over_nt = Real(1) / refraction_index_;
+            ni_over_nt = Real(1) / refractive_index_;
             cosine = -Dot(ray_in.Direction(), rec.normal) / ray_in.Direction().Norm();
         }
 
         if (Refract(ray_in.Direction(), outward_normal, ni_over_nt, refracted))
         {
-            reflect_prob = utilities::Schlick(cosine, refraction_index_);
+            reflect_prob = utilities::Schlick(cosine, refractive_index_);
         }
         else
         {
@@ -84,9 +89,47 @@ public:
     }
 
 private:
-    RealNum refraction_index_;
+    const RealNum refractive_index_;
 };
 
-} // namespace glancy
+// Refractive index of vacuum = 1
+constexpr int kRefractiveIndexVacuumNum = 1;
+constexpr int kRefractiveIndexVacuumDen = 1;
+typedef Dielectric<kRefractiveIndexVacuumNum, kRefractiveIndexVacuumDen> Vacuum;
 
-} // namespace plemma
+// Refractive index of ice = 1.31
+constexpr int kRefractiveIndexIceNum = 131;
+constexpr int kRefractiveIndexIceDen = 100;
+typedef Dielectric<kRefractiveIndexIceNum, kRefractiveIndexIceNum> Ice;
+
+// Refractive index of water = 1/3
+constexpr int kRefractiveIndexWaterNum = 1;
+constexpr int kRefractiveIndexWaterDen = 3;
+typedef Dielectric<kRefractiveIndexWaterNum, kRefractiveIndexWaterDen> Water;
+
+// Refractive index of olive oil = 1.47
+constexpr int kRefractiveIndexOliveOilNum = 147;
+constexpr int kRefractiveIndexOliveOilDen = 100;
+typedef Dielectric<kRefractiveIndexOliveOilNum, kRefractiveIndexOliveOilDen> OliveOil;
+
+// Refractive index of window glass = 1.52. Same for Crown glass (lenses)
+constexpr int kRefractiveIndexWindowGlassNum = 152;
+constexpr int kRefractiveIndexWindowGlassDen = 100;
+typedef Dielectric<kRefractiveIndexWindowGlassNum, kRefractiveIndexWindowGlassDen> WindowGlass;
+
+// Refractive index of flint glass = 1.62
+constexpr int kRefractiveIndexFlintGlassNum = 162;
+constexpr int kRefractiveIndexFlintGlassDen = 100;
+typedef Dielectric<kRefractiveIndexFlintGlassNum, kRefractiveIndexFlintGlassDen> FlintGlass;
+
+// Refractive index of sapphire = 1.77
+constexpr int kRefractiveIndexSapphireNum = 177;
+constexpr int kRefractiveIndexSapphireDen = 100;
+typedef Dielectric<kRefractiveIndexSapphireNum, kRefractiveIndexSapphireDen> Sapphire;
+
+// Refractive index of diamond = 2.42
+constexpr int kRefractiveIndexDiamondNum = 242;
+constexpr int kRefractiveIndexDiamondDen = 100;
+typedef Dielectric<kRefractiveIndexDiamondNum, kRefractiveIndexDiamondDen> Diamond;
+
+} // namespace plemma::glancy
