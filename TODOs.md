@@ -3,7 +3,7 @@
  - [x] Extract all random number generations to a class so that seeding and initializing is done just once
  - [x] Add motion blur
  - [x] Add Bounding Volume Hierarchies
-    - [ ] Add random axis sorting of boxed hitables
+    - [x] Add random axis sorting of boxed hitables
     - [ ] Study the possibility of a better choice of axis w.r.t. which we do the spacial ordering at each step
  - [ ] Try to switch to `constexpr` as much as possible
  - [ ] Use timing tool to find out if `constexpr` is helping

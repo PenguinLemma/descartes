@@ -2,9 +2,12 @@
 
 #include "hitable.hpp"
 #include "axes_aligned_bounding_box.hpp"
+#include "constants.hpp"
 #include <memory>
 #include <utility>
 #include <vector>
+#include <functional>
+#include <array>
 
 namespace plemma
 {
@@ -12,6 +15,22 @@ namespace glancy
 {
 
 typedef std::pair<AxesAlignedBoundingBox, std::shared_ptr<Hitable> > HitableInABox;
+
+const std::array<std::function<bool(HitableInABox const & a, HitableInABox const & b)>, 3>
+    OrderWithRespectToAxis{
+    [](HitableInABox const & a, HitableInABox const & b) -> bool
+    {
+        return a.first.Minima().X() < b.first.Minima().X();
+    },
+        [](HitableInABox const & a, HitableInABox const & b) -> bool
+    {
+        return a.first.Minima().Y() < b.first.Minima().Y();
+    },
+    [](HitableInABox const & a, HitableInABox const & b) -> bool
+    {
+    return a.first.Minima().Z() < b.first.Minima().Z();
+    }
+};
 
 // Class that acts both as node and tree implementation.
 // BoundingVolumeHierarchy will allow us to do binary search
@@ -55,6 +74,9 @@ public:
     }
 
 private:
+    int ChooseOrderingAxis(
+        [[maybe_unused]] std::vector<HitableInABox>& boxed_hitables,
+        [[maybe_unused]] size_t from, [[maybe_unused]] size_t to) const;
     AxesAlignedBoundingBox bbox_;
     std::shared_ptr<Hitable> left_child_;
     std::shared_ptr<Hitable> right_child_;
@@ -115,6 +137,13 @@ inline BoundingVolumeHierarchy::BoundingVolumeHierarchy(
     }
     else
     {
+        int ordering_axis = ChooseOrderingAxis(boxed_hitables, from, to);
+        if(ordering_axis == 0)
+        {
+            sort(boxed_hitables.begin() + from,
+                 boxed_hitables.begin() + to,
+                 OrderWithRespectToAxis[ordering_axis]);
+        }
         left_child_ = std::make_shared<BoundingVolumeHierarchy>(
             boxed_hitables,
             from, from + number_elements/2,
@@ -129,6 +158,13 @@ inline BoundingVolumeHierarchy::BoundingVolumeHierarchy(
     bbox_ = UnionOfAABBs(bbox_left, bbox_right);
 }
 
+inline int BoundingVolumeHierarchy::ChooseOrderingAxis(
+    [[maybe_unused]] std::vector<HitableInABox>& boxed_hitables,
+    [[maybe_unused]] size_t from, [[maybe_unused]] size_t to) const
+{
+    std::uniform_int_distribution<> choose_axis(1,3);
+    return choose_axis(my_engine());
+}
 
 } // namespace glancy
 
