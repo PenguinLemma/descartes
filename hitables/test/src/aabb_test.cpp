@@ -2,7 +2,7 @@
 // Created by penguinlemma on 25.05.19.
 //
 
-#include "aabb_test.hpp"
+#include "aabb_random_generator.hpp"
 
 namespace plemma::glancy
 {
