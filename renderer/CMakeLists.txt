@@ -1,0 +1,17 @@
+pl_add_header_only_library(
+    renderer
+    NAMESPACE
+        glancy::
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/camera.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/image.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/renderer.hpp
+    LINKED_LIBS
+        glancy::hitables
+        glancy::materials
+        glancy::math
+        glancy::scenes
+        glancy::utilities
+    COMPILER_FEATURES
+        cxx_std_17
+)

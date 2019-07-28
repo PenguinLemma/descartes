@@ -10,10 +10,9 @@
 #include <random>
 #include <sstream>
 
-#include <catch2/catch.hpp>
+#include "catch.hpp"
 #include "testing_constants.hpp"
-#include "vec3_test.hpp"
-#include "ray_test.hpp"
+#include "ray_random_generator.hpp"
 
 #include "axes_aligned_bounding_box.hpp"
 

@@ -10,8 +10,8 @@ namespace plemma
 namespace chronometer
 {
 
-using Clock = typename std::chrono::steady_clock;
-using TimePoint = typename std::chrono::time_point<Clock>;
+using Clock = std::chrono::steady_clock;
+using TimePoint = std::chrono::time_point<Clock>;
 
 // Class to facilitate measuring duration of chuncks of code.
 template <typename TimeUnitsToShow>

@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "types.hpp"
+
 namespace plemma
 {
 namespace glancy

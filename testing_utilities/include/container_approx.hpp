@@ -3,6 +3,8 @@
 #include <string>
 #include <sstream>
 
+#include "catch.hpp"
+
 namespace plemma
 {
 

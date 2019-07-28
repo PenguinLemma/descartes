@@ -1,19 +1,35 @@
-# Building Glancy with CMake
+cmake_minimum_required(VERSION 3.11)
 
-cmake_minimum_required(VERSION 3.0)
+project(df_common LANGUAGES CXX)
 
-project(Glancy)
+set(cmake_utils_dir "${CMAKE_CURRENT_SOURCE_DIR}/CMake")
+list(INSERT CMAKE_MODULE_PATH 0 "${cmake_utils_dir}")
+
+# Use FetchContent to make visible cmake-lemmata contents
+# to cmake
+include(FetchContent)
+FetchContent_Declare(
+    cmake-lemmata
+    GIT_REPOSITORY https://github.com/PenguinLemma/cmake-lemmata.git
+)
+FetchContent_GetProperties(cmake-lemmata)
+if(NOT cmake-lemmata_POPULATED)
+  FetchContent_Populate(cmake-lemmata)
+  list(INSERT CMAKE_MODULE_PATH 0 "${cmake_utils_dir}/cmake-lemmata")
+endif()
+
+include(libraryAdditionLemma)
+include(glancyCompilerOptions)
 
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
-# c++ compiler flags
-if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    add_compile_options(-Wall -Wextra -Wpedantic -Werror -O3)
-elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
-    add_compile_options(/W4 /WX /permissive-)
-endif()
-
-# Add project subdirectories
-add_subdirectory(src)
-add_subdirectory(test)
+add_subdirectory(glancy)
+add_subdirectory(hitables)
+add_subdirectory(materials)
+add_subdirectory(math)
+add_subdirectory(renderer)
+add_subdirectory(scenes)
+add_subdirectory(testing_utilities)
+add_subdirectory(thirdparty)
+add_subdirectory(utilities)

@@ -3,6 +3,7 @@
 #include <cmath>
 #include <random>
 #include <array>
+#include <iostream>
 #include "utilities.hpp"
 #include "rand_engine.hpp"
 

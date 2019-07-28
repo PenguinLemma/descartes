@@ -4,6 +4,9 @@ build/*
 bin/
 bin/*
 
+obj/
+lib/
+
 *.ppm
 .idea
 cmake-build-debug

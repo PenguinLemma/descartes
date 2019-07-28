@@ -1,0 +1,13 @@
+pl_add_header_only_library(
+    utilities
+    NAMESPACE
+        glancy::
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/chronometer.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/constants.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/rand_engine.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/types.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/utilities.hpp
+    COMPILER_FEATURES
+        cxx_std_17
+)
