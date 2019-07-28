@@ -1,0 +1,17 @@
+pl_add_header_only_library(
+    testing_utilities
+    NAMESPACE
+        glancy::
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/aabb_random_generator.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/container_approx.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/ray_random_generator.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/testing_constants.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/vec3_random_generator.hpp
+    LINKED_LIBS
+        Catch2::Catch
+        glancy::hitables
+        glancy::math
+    COMPILER_FEATURES
+        cxx_std_17
+)

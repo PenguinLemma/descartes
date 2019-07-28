@@ -15,5 +15,6 @@ install:
   - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-8 90
 
 script:
-  - mkdir build && cd build && cmake .. && make
-  - ./../bin/GlancyTest
+  - mkdir build && cd build && cmake .. && make -j4
+  - ./../bin/hitables_test
+  - ./../bin/math_test

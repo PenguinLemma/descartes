@@ -1,0 +1,16 @@
+pl_add_header_only_library(
+    scenes
+    NAMESPACE
+        glancy::
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/different_dielectrics_scene.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/random_spheres_scene.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/scene.hpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/two_spheres_scene.hpp
+    LINKED_LIBS
+        glancy::hitables
+        glancy::materials
+        glancy::math
+    COMPILER_FEATURES
+        cxx_std_17
+)
