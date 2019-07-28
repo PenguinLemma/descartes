@@ -1,3 +1,4 @@
 [submodule "CMake/cmake-lemmata"]
 	path = CMake/cmake-lemmata
 	url = https://github.com/PenguinLemma/cmake-lemmata.git
+	branch = master
