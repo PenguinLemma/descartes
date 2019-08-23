@@ -1,13 +1,11 @@
 #pragma once
 
-#include "ray.hpp"
-#include "axes_aligned_bounding_box.hpp"
 #include <memory>
+#include "axes_aligned_bounding_box.hpp"
+#include "ray.hpp"
 
-namespace plemma
-{
-namespace glancy
-{
+namespace plemma {
+namespace glancy {
 
 class Material;
 
@@ -21,12 +19,14 @@ struct HitRecord
 
 class Hitable
 {
-public:
+  public:
     virtual bool Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const = 0;
-    virtual bool ComputeBoundingBox(RealNum time_from, RealNum time_to, AxesAlignedBoundingBox& bbox) const = 0;
+    virtual bool ComputeBoundingBox(RealNum time_from,
+                                    RealNum time_to,
+                                    AxesAlignedBoundingBox& bbox) const = 0;
     virtual ~Hitable() {}
 };
 
-} // namespace glancy
+}  // namespace glancy
 
-} // namespace plemma
+}  // namespace plemma

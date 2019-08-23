@@ -1,14 +1,12 @@
 #pragma once
 
-#include <iostream>
 #include <chrono>
+#include <iostream>
 #include <string>
 
-namespace plemma
-{
+namespace plemma {
 
-namespace chronometer
-{
+namespace chronometer {
 
 using Clock = std::chrono::steady_clock;
 using TimePoint = std::chrono::time_point<Clock>;
@@ -17,7 +15,7 @@ using TimePoint = std::chrono::time_point<Clock>;
 template <typename TimeUnitsToShow>
 class SingleMeasurement
 {
-public:
+  public:
     // Start the chronometer
     void Start() { begin_ = Clock::now(); }
     // Stop the chronometer
@@ -26,10 +24,11 @@ public:
     void Show(const std::string& process_name, const std::string& units_name)
     {
         std::cout << process_name << " took ";
-        std::cout << std::chrono::duration_cast<TimeUnitsToShow> (end_ - begin_).count();
+        std::cout << std::chrono::duration_cast<TimeUnitsToShow>(end_ - begin_).count();
         std::cout << " " << units_name << std::endl;
     }
-private:
+
+  private:
     TimePoint begin_;
     TimePoint end_;
 };
@@ -40,7 +39,9 @@ private:
 // Format of written output is the same than SingleMeasurement::Show :
 // process_name took time_elapsed units_name
 template <typename Function, typename TimeUnitsToShow>
-inline void MeasureFunction(Function f, const std::string& process_name, const std::string& units_name)
+inline void MeasureFunction(Function f,
+                            const std::string& process_name,
+                            const std::string& units_name)
 {
     SingleMeasurement<TimeUnitsToShow> measurement;
     measurement.Start();
@@ -49,6 +50,6 @@ inline void MeasureFunction(Function f, const std::string& process_name, const s
     measurement.Show(process_name, units_name);
 }
 
-} // namespace chronometer
+}  // namespace chronometer
 
-} // namespace plemma
+}  // namespace plemma

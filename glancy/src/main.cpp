@@ -1,32 +1,34 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <random>
 #include <chrono>
-#include "hitable_list.hpp"
-#include "sphere.hpp"
+#include <fstream>
+#include <iostream>
+#include <random>
+#include <string>
+
 #include "camera.hpp"
+#include "dielectric.hpp"
+#include "different_dielectrics_scene.hpp"
+#include "hitable_list.hpp"
 #include "image.hpp"
 #include "lambertian.hpp"
 #include "metal.hpp"
-#include "dielectric.hpp"
 #include "rand_engine.hpp"
-#include "renderer.hpp"
-#include "two_spheres_scene.hpp"
 #include "random_spheres_scene.hpp"
-#include "different_dielectrics_scene.hpp"
+#include "renderer.hpp"
+#include "sphere.hpp"
+#include "two_spheres_scene.hpp"
 
-int main() {
+int main()
+{
 
-    using plemma::glancy::RealNum;
-    using plemma::glancy::Vec3;
-    using plemma::glancy::Image;
-    using plemma::glancy::Scene;
-    using plemma::glancy::DifferentDielectricsScene;
-    using plemma::glancy::TwoSpheresScene;
-    using plemma::glancy::RandomSpheresScene;
     using plemma::glancy::Camera;
+    using plemma::glancy::DifferentDielectricsScene;
+    using plemma::glancy::Image;
+    using plemma::glancy::RandomSpheresScene;
     using plemma::glancy::Real;
+    using plemma::glancy::RealNum;
+    using plemma::glancy::Scene;
+    using plemma::glancy::TwoSpheresScene;
+    using plemma::glancy::Vec3;
 
     plemma::glancy::my_engine();
 
@@ -52,12 +54,19 @@ int main() {
     RealNum t0{Real(0)};
     RealNum t1{Real(0.1)};
 
-    Camera camera(lookfrom, lookat, vertical_positive_camera,
-        vertical_fov_deg, aspect, aperture, dist_to_focus, t0, t1);
+    Camera camera(lookfrom,
+                  lookat,
+                  vertical_positive_camera,
+                  vertical_fov_deg,
+                  aspect,
+                  aperture,
+                  dist_to_focus,
+                  t0,
+                  t1);
 
     size_t n_rays_per_pixel = 100;
     uint16_t max_depth = 50;
-    auto gamma_correction = [](RealNum x){ return Real(std::sqrt(x)); };
+    auto gamma_correction = [](RealNum x) { return Real(std::sqrt(x)); };
     plemma::glancy::Renderer rend(gamma_correction, nx, ny, n_rays_per_pixel, max_depth);
 
     std::cout << "Please, wait patiently while Glancy is enlightened" << std::endl;
@@ -67,5 +76,6 @@ int main() {
     image.Save("../myimage.ppm");
 
     std::cout << "---- Glancy finished its job ----" << std::endl;
-    std::cout << "Results can be seen in 'myimage.ppm', in the root of this repo." << std::endl << std::endl;
+    std::cout << "Results can be seen in 'myimage.ppm', in the root of this repo." << std::endl
+              << std::endl;
 }

@@ -1,22 +1,22 @@
 #pragma once
 
-#include "ray.hpp"
-#include "vec3.hpp"
 #include "hitable.hpp"
 #include "material.hpp"
 #include "rand_engine.hpp"
+#include "ray.hpp"
+#include "vec3.hpp"
 
-namespace plemma
-{
-namespace glancy
-{
+namespace plemma {
+namespace glancy {
 
 class Lambertian : public Material
 {
-public:
+  public:
     Lambertian(const Vec3& alb) : albedo_(alb) {}
-    virtual bool Scatter(const Ray& ray_in, const HitRecord& rec,
-                         Vec3& attenuation, Ray& scattered_ray) const override
+    virtual bool Scatter(const Ray& ray_in,
+                         const HitRecord& rec,
+                         Vec3& attenuation,
+                         Ray& scattered_ray) const override
     {
         Vec3 direction = rec.normal + GetRandomPointInUnitBall();
         scattered_ray = Ray(rec.p, direction, ray_in.Time());
@@ -24,10 +24,10 @@ public:
         return true;
     }
 
-private:
+  private:
     Vec3 albedo_;
 };
 
-} // namespace glancy
+}  // namespace glancy
 
-} // namespace plemma
+}  // namespace plemma

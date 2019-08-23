@@ -1,7 +1,6 @@
 #pragma once
 
-namespace plemma::glancy
-{
+namespace plemma::glancy {
 
 typedef float RealNum;
 
@@ -11,5 +10,4 @@ constexpr RealNum Real(T number) noexcept
     return static_cast<RealNum>(number);
 }
 
-
-} // namespace plemma::glancy
+}  // namespace plemma::glancy

@@ -1,15 +1,14 @@
 #pragma once
 
-#include "vec3.hpp"
-#include "ray.hpp"
+#include <random>
 #include "hitable.hpp"
 #include "material.hpp"
-#include "utilities.hpp"
 #include "rand_engine.hpp"
-#include <random>
+#include "ray.hpp"
+#include "utilities.hpp"
+#include "vec3.hpp"
 
-namespace plemma::glancy
-{
+namespace plemma::glancy {
 
 // Class implementing material of type Dielectric. Objects of
 // such type of material are characterized by the following
@@ -25,10 +24,9 @@ namespace plemma::glancy
 template <int refractive_index_numerator, int refractive_index_denominator>
 class Dielectric : public Material
 {
-public:
-
-    Dielectric() :
-        refractive_index_{Real(refractive_index_numerator)/Real(refractive_index_denominator)}
+  public:
+    Dielectric()
+        : refractive_index_{Real(refractive_index_numerator) / Real(refractive_index_denominator)}
     {}
     // Returns false if the ray is absorbed by this material
     // and true otherwise. It also computes the scattered ray
@@ -43,8 +41,10 @@ public:
     //   we choose the reflected one with probability 1. See method
     //   `bool Refract(const Vec3& v, const Vec3& n, RealNum ni_over_nt, Vec3& refracted)`
     //   for more information
-    virtual bool Scatter(const Ray& ray_in, const HitRecord& rec,
-                         Vec3& attenuation, Ray& scattered_ray) const override
+    virtual bool Scatter(const Ray& ray_in,
+                         const HitRecord& rec,
+                         Vec3& attenuation,
+                         Ray& scattered_ray) const override
     {
         Vec3 outward_normal;
         Vec3 reflected = Reflect(ray_in.Direction(), rec.normal);
@@ -53,42 +53,37 @@ public:
         Vec3 refracted;
         RealNum reflect_prob;
         RealNum cosine;
-        if (Dot(ray_in.Direction(), rec.normal) > Real(0))
-        {
+        if (Dot(ray_in.Direction(), rec.normal) > Real(0)) {
             outward_normal = -rec.normal;
             ni_over_nt = refractive_index_;
-            cosine = refractive_index_ * Dot(ray_in.Direction(), rec.normal) / ray_in.Direction().Norm();
+            cosine =
+                refractive_index_ * Dot(ray_in.Direction(), rec.normal) / ray_in.Direction().Norm();
         }
-        else
-        {
+        else {
             outward_normal = rec.normal;
             ni_over_nt = Real(1) / refractive_index_;
             cosine = -Dot(ray_in.Direction(), rec.normal) / ray_in.Direction().Norm();
         }
 
-        if (Refract(ray_in.Direction(), outward_normal, ni_over_nt, refracted))
-        {
+        if (Refract(ray_in.Direction(), outward_normal, ni_over_nt, refracted)) {
             reflect_prob = utilities::Schlick(cosine, refractive_index_);
         }
-        else
-        {
+        else {
             reflect_prob = Real(1);
         }
 
         std::uniform_real_distribution<RealNum> distribution(Real(0), Real(1));
 
-        if (distribution(my_engine()) < reflect_prob)
-        {
+        if (distribution(my_engine()) < reflect_prob) {
             scattered_ray = Ray(rec.p, reflected, ray_in.Time());
         }
-        else
-        {
+        else {
             scattered_ray = Ray(rec.p, refracted, ray_in.Time());
         }
         return true;
     }
 
-private:
+  private:
     const RealNum refractive_index_;
 };
 
@@ -132,4 +127,4 @@ constexpr int kRefractiveIndexDiamondNum = 242;
 constexpr int kRefractiveIndexDiamondDen = 100;
 typedef Dielectric<kRefractiveIndexDiamondNum, kRefractiveIndexDiamondDen> Diamond;
 
-} // namespace plemma::glancy
+}  // namespace plemma::glancy

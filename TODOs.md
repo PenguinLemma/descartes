@@ -27,7 +27,7 @@
  - [x] Switch to use `uint8_t`, `uin16_t`, etc
  - [ ] Improve use of namespaces
  - [ ] Check that naming conventions are preserved (as of Google's style guide or whichever is decided)
- - [ ] Add automatic formatting
+ - [x] Add automatic formatting
 
 ## Testing
 Property-based testing seems a good approach, Catch2 still doesn't fully support

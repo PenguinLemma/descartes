@@ -1,25 +1,24 @@
 #pragma once
 
-#include "hitable_list.hpp"
-#include "camera.hpp"
-#include "vec3.hpp"
 #include <memory>
+#include "camera.hpp"
+#include "hitable_list.hpp"
+#include "vec3.hpp"
 
-namespace plemma
-{
-namespace glancy
-{
+namespace plemma {
+namespace glancy {
 
 class Scene
 {
-public:
+  public:
     virtual void LoadWorld() = 0;
     virtual const HitableList& World() const = 0;
     virtual ~Scene() {}
-private:
+
+  private:
     HitableList world_;
 };
 
-} // namespace glancy
+}  // namespace glancy
 
-} // namespace plemma
+}  // namespace plemma

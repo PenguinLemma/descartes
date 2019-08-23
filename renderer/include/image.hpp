@@ -1,22 +1,24 @@
 #pragma once
 
-#include <vector>
-#include <string>
-#include <fstream>
 #include <cstdint>
+#include <fstream>
+#include <string>
+#include <vector>
 
-namespace plemma
-{
-namespace glancy
-{
+namespace plemma {
+namespace glancy {
 
 class Image
 {
-public:
-    Image(size_t width, size_t height) : pixels_(width, std::vector<Vec3> (height)) {}
-    void PaintPixel(size_t h_index, size_t v_index, Vec3& color) { pixels_[h_index][v_index] = color; }
+  public:
+    Image(size_t width, size_t height) : pixels_(width, std::vector<Vec3>(height)) {}
+    void PaintPixel(size_t h_index, size_t v_index, Vec3& color)
+    {
+        pixels_[h_index][v_index] = color;
+    }
     void Save(const std::string& file_path) const;
-private:
+
+  private:
     std::vector<std::vector<Vec3> > pixels_;
 };
 
@@ -27,11 +29,9 @@ void Image::Save(const std::string& file_path) const
     size_t width = pixels_.size();
     size_t height = pixels_[0].size();
     myimage << "P3\n" << width << " " << height << "\n255\n";
-    for (size_t c = height; c > 0U; --c)
-    {
+    for (size_t c = height; c > 0U; --c) {
         size_t column = c - 1U;
-        for (size_t row = 0U; row < width; ++row)
-        {
+        for (size_t row = 0U; row < width; ++row) {
             myimage << static_cast<size_t>(pixels_[row][column].R()) << " ";
             myimage << static_cast<size_t>(pixels_[row][column].G()) << " ";
             myimage << static_cast<size_t>(pixels_[row][column].B()) << std::endl;
@@ -41,6 +41,6 @@ void Image::Save(const std::string& file_path) const
     myimage.close();
 }
 
-} // namespace glancy
+}  // namespace glancy
 
-} // namespace plemma
+}  // namespace plemma

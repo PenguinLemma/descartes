@@ -1,34 +1,31 @@
 #pragma once
 
+#include <algorithm>
+#include <iostream>
+#include <limits>
 #include "bounding_volume_hierarchy.hpp"
 #include "camera.hpp"
 #include "image.hpp"
 #include "scene.hpp"
-#include <algorithm>
-#include <iostream>
-#include <limits>
 
-namespace plemma
-{
-namespace glancy
-{
+namespace plemma {
+namespace glancy {
 
 template <typename UnaryOp>
 class Renderer
 {
-public:
-    Renderer(UnaryOp gc, size_t h_pixels, size_t v_pixels,
-             size_t rays_pixel, uint16_t maxd)
-    :
-        GammaCorrection(gc),
-        num_horizontal_pixels_(h_pixels),
-        num_vertical_pixels_(v_pixels),
-        num_rays_per_pixel_(rays_pixel),
-        maximum_depth_(maxd)
-    { }
+  public:
+    Renderer(UnaryOp gc, size_t h_pixels, size_t v_pixels, size_t rays_pixel, uint16_t maxd)
+        : GammaCorrection(gc),
+          num_horizontal_pixels_(h_pixels),
+          num_vertical_pixels_(v_pixels),
+          num_rays_per_pixel_(rays_pixel),
+          maximum_depth_(maxd)
+    {}
 
     void ProcessScene(const Scene& scene, const Camera& camera, Image& image);
-private:
+
+  private:
     Vec3 GetColor(const Hitable& target, const Ray& r, uint16_t depth) const;
     void PreprocessWorld(const HitableList& world, RealNum t0, RealNum t1);
 
@@ -52,14 +49,11 @@ void Renderer<UnaryOp>::ProcessScene(const Scene& scene, const Camera& camera, I
     std::cout << "0% processing completed." << std::endl;
     int percentage_completed = 0;
     int prev_percentage_written = 0;
-    for (size_t j = num_vertical_pixels_; j >= 1; --j)
-    {
+    for (size_t j = num_vertical_pixels_; j >= 1; --j) {
         size_t index_ver = j - 1;
-        for (size_t index_hor = 0; index_hor < num_horizontal_pixels_; ++index_hor)
-        {
+        for (size_t index_hor = 0; index_hor < num_horizontal_pixels_; ++index_hor) {
             Vec3 color(Real(0), Real(0), Real(0));
-            for (size_t s = 0; s < num_rays_per_pixel_; ++s)
-            {
+            for (size_t s = 0; s < num_rays_per_pixel_; ++s) {
                 RealNum u = (Real(index_hor) + dist(my_engine())) / horizontal_length;
                 RealNum v = (Real(index_ver) + dist(my_engine())) / vertical_length;
 
@@ -75,9 +69,9 @@ void Renderer<UnaryOp>::ProcessScene(const Scene& scene, const Camera& camera, I
             image.PaintPixel(index_hor, index_ver, color);
         }
 
-        percentage_completed = static_cast<int>(Real(100) * (Real(1) - Real(index_ver + 1) / vertical_length));
-        if (static_cast<int>(percentage_completed) >= prev_percentage_written + 5)
-        {
+        percentage_completed =
+            static_cast<int>(Real(100) * (Real(1) - Real(index_ver + 1) / vertical_length));
+        if (static_cast<int>(percentage_completed) >= prev_percentage_written + 5) {
             int to_write = percentage_completed - (percentage_completed % 5);
             std::cout << to_write << "% processing completed." << std::endl;
             prev_percentage_written = to_write;
@@ -94,38 +88,32 @@ Vec3 Renderer<UnaryOp>::GetColor(const Hitable& target, const Ray& r, uint16_t d
     HitRecord rec;
     // We increase the minimum parameter to avoid finding out the original intersection again
     RealNum min_param = Real(0.001);
-    if (target.Hit(r, min_param, std::numeric_limits<RealNum>::max(), rec))
-    {
+    if (target.Hit(r, min_param, std::numeric_limits<RealNum>::max(), rec)) {
         Ray scattered_ray;
         Vec3 attenuation;
-        if (depth < maximum_depth_ && rec.mat->Scatter(r, rec, attenuation, scattered_ray))
-        {
+        if (depth < maximum_depth_ && rec.mat->Scatter(r, rec, attenuation, scattered_ray)) {
             return attenuation * GetColor(target, scattered_ray, depth + 1);
         }
-        else
-        {
+        else {
             return Vec3(Real(0), Real(0), Real(0));
         }
     }
-    else
-    {
+    else {
         Vec3 unit_direction = UnitVector(r.Direction());
-        RealNum t = Real(0.5)*(unit_direction.Y() + Real(1));
-        return (Real(1) - t)*Vec3(Real(1), Real(1), Real(1)) + t * Vec3(Real(0.5), Real(0.7), Real(1));
+        RealNum t = Real(0.5) * (unit_direction.Y() + Real(1));
+        return (Real(1) - t) * Vec3(Real(1), Real(1), Real(1)) +
+               t * Vec3(Real(0.5), Real(0.7), Real(1));
     }
 }
 
-template<typename UnaryOp>
+template <typename UnaryOp>
 void Renderer<UnaryOp>::PreprocessWorld(const HitableList& world, RealNum t0, RealNum t1)
 {
     std::vector<HitableInABox> boxed_hitables;
     int counter = 0;
-    for(auto it = std::begin(world); it != std::end(world); ++it)
-    {
+    for (auto it = std::begin(world); it != std::end(world); ++it) {
         std::shared_ptr<Hitable> hpt = *it;
-        boxed_hitables.push_back(
-            std::make_pair(AxesAlignedBoundingBox(), hpt)
-        );
+        boxed_hitables.push_back(std::make_pair(AxesAlignedBoundingBox(), hpt));
         hpt->ComputeBoundingBox(t0, t1, boxed_hitables[counter].first);
         ++counter;
     }
@@ -133,7 +121,6 @@ void Renderer<UnaryOp>::PreprocessWorld(const HitableList& world, RealNum t0, Re
     ordered_world_ = BoundingVolumeHierarchy(boxed_hitables, t0, t1);
 }
 
+}  // namespace glancy
 
-} // namespace glancy
-
-} // namespace plemma
+}  // namespace plemma

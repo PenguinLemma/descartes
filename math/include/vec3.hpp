@@ -1,24 +1,22 @@
 #pragma once
 
-#include <cmath>
-#include <random>
 #include <array>
+#include <cmath>
 #include <iostream>
-#include "utilities.hpp"
+#include <random>
 #include "rand_engine.hpp"
+#include "utilities.hpp"
 
-namespace plemma
-{
-namespace glancy
-{
+namespace plemma {
+namespace glancy {
 
 class Vec3
 {
-public:
+  public:
     typedef RealNum value_type;
 
     constexpr Vec3() noexcept = default;
-    constexpr Vec3(RealNum a, RealNum b, RealNum c) noexcept : comp_{a,b,c} {}
+    constexpr Vec3(RealNum a, RealNum b, RealNum c) noexcept : comp_{a, b, c} {}
     constexpr RealNum X() const noexcept { return comp_[0]; }
     constexpr RealNum Y() const noexcept { return comp_[1]; }
     constexpr RealNum Z() const noexcept { return comp_[2]; }
@@ -47,20 +45,19 @@ public:
 
     RealNum Norm() const noexcept
     {
-        return std::sqrt(comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2]);
+        return std::sqrt(comp_[0] * comp_[0] + comp_[1] * comp_[1] + comp_[2] * comp_[2]);
     }
 
     constexpr RealNum SquaredNorm() const noexcept
     {
-        return comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2];
+        return comp_[0] * comp_[0] + comp_[1] * comp_[1] + comp_[2] * comp_[2];
     }
 
     void Normalize() noexcept;
 
-private:
+  private:
     std::array<RealNum, 3> comp_{};
 };
-
 
 inline std::istream& operator>>(std::istream& is, Vec3& v) noexcept
 {
@@ -81,7 +78,8 @@ constexpr bool operator==(Vec3 const& u, Vec3 const& v)
 
 inline void Vec3::Normalize() noexcept
 {
-    RealNum norm_inverse = Real(1) / std::sqrt(comp_[0]*comp_[0] + comp_[1]*comp_[1] + comp_[2]*comp_[2]);
+    RealNum norm_inverse =
+        Real(1) / std::sqrt(comp_[0] * comp_[0] + comp_[1] * comp_[1] + comp_[2] * comp_[2]);
     comp_[0] *= norm_inverse;
     comp_[1] *= norm_inverse;
     comp_[2] *= norm_inverse;
@@ -114,24 +112,22 @@ constexpr Vec3 operator*(RealNum t, const Vec3& v) noexcept
 
 constexpr Vec3 operator/(const Vec3& v, const RealNum t) noexcept
 {
-    return Vec3(v[0]/t, v[1]/t, v[2]/t);
+    return Vec3(v[0] / t, v[1] / t, v[2] / t);
 }
 
 constexpr Vec3 operator*(const Vec3& v, const RealNum t) noexcept
 {
-    return Vec3(v[0]*t, v[1]*t, v[2]*t);
+    return Vec3(v[0] * t, v[1] * t, v[2] * t);
 }
 
 constexpr RealNum Dot(const Vec3& u, const Vec3& v) noexcept
 {
-    return u[0]*v[0] + u[1]*v[1] + u[2]*v[2];
+    return u[0] * v[0] + u[1] * v[1] + u[2] * v[2];
 }
 
 constexpr Vec3 Cross(const Vec3& u, const Vec3& v) noexcept
 {
-    return Vec3(u[1]*v[2] - u[2]*v[1],
-                u[2]*v[0] - u[0]*v[2],
-                u[0]*v[1] - u[1]*v[0]);
+    return Vec3(u[1] * v[2] - u[2] * v[1], u[2] * v[0] - u[0] * v[2], u[0] * v[1] - u[1] * v[0]);
 }
 
 constexpr Vec3& Vec3::operator+=(const Vec3& v) noexcept
@@ -192,8 +188,7 @@ inline Vec3 GetRandomPointInUnitBall() noexcept
 {
     Vec3 p(Real(1), Real(1), Real(1));
     std::uniform_real_distribution<RealNum> distribution(Real(-1), Real(1));
-    while (!(p.SquaredNorm() < Real(1)))
-    {
+    while (!(p.SquaredNorm() < Real(1))) {
         p = Vec3(distribution(my_engine()), distribution(my_engine()), distribution(my_engine()));
     }
     return p;
@@ -203,13 +198,12 @@ inline Vec3 GetRandomPointInUnitDiscXY() noexcept
 {
     Vec3 p(Real(1), Real(1), Real(1));
     std::uniform_real_distribution<RealNum> distribution(Real(-1), Real(1));
-    while (!(p.SquaredNorm() < Real(1)))
-    {
+    while (!(p.SquaredNorm() < Real(1))) {
         p = Vec3(distribution(my_engine()), distribution(my_engine()), Real(0));
     }
     return p;
 }
 
-} // namespace glancy
+}  // namespace glancy
 
-} // namespace plemma
+}  // namespace plemma

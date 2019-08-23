@@ -4,19 +4,16 @@
 
 #include "types.hpp"
 
-namespace plemma
-{
-namespace glancy
-{
+namespace plemma {
+namespace glancy {
 
-namespace constants
-{
+namespace constants {
 
 const RealNum kPi = std::acos(Real(-1));
 constexpr RealNum kSecondsBetweenSnapshotsForBBoxCalculation = Real(0.001);
 
-} // namespace constants
+}  // namespace constants
 
-} // namespace glancy
+}  // namespace glancy
 
-} // namespace plemma
+}  // namespace plemma
