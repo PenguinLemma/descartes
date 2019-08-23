@@ -20,9 +20,9 @@ public:
     constexpr Vec3 PointAtParameter(RealNum lambda) const { return origin_ + lambda * direction_; }
 
 private:
-    Vec3 origin_;
-    Vec3 direction_;
-    RealNum time_;
+    Vec3 origin_{};
+    Vec3 direction_{};
+    RealNum time_{};
 };
 
 constexpr Vec3 Reflect(const Vec3& v, const Vec3& n) noexcept
