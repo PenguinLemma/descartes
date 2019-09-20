@@ -10,7 +10,7 @@ TEST_CASE("Constructors : {} -> emptybox and Vec3xVec3 -> AABB", "[AABB]")
 {
     SECTION("Default construction gives (0,0,0)")
     {
-        AxesAlignedBoundingBox aabb{};
+        AxesAlignedBoundingBox const aabb;
         REQUIRE(aabb.Minima() == Vec3{});
         REQUIRE(aabb.Maxima() == Vec3{});
     }
@@ -20,7 +20,7 @@ TEST_CASE("Constructors : {} -> emptybox and Vec3xVec3 -> AABB", "[AABB]")
         Vec3 minima = GENERATE(take(10, RandomFiniteVec3()));
         Vec3 maxima = GENERATE(take(10, RandomFiniteVec3()));
 
-        AxesAlignedBoundingBox aabb{minima, maxima};
+        AxesAlignedBoundingBox aabb(minima, maxima);
 
         REQUIRE(aabb.Minima() == minima);
         REQUIRE(aabb.Maxima() == maxima);
@@ -56,19 +56,19 @@ TEST_CASE("Hit : AABB x Ray x RealNum x RealNum -> bool", "[AABB]")
         auto mu2 = GENERATE(take(10, random(Real(-2.0), Real(2.0))));
         auto mu3 = GENERATE(take(10, random(Real(-2.0), Real(2.0))));
         auto offset_origin = GENERATE(take(10, random(Real(1.0), Real(30.0))));
-        Vec3 bbox_min{bbox.Minima()};
-        Vec3 bbox_max{bbox.Maxima()};
+        Vec3 bbox_min(bbox.Minima());
+        Vec3 bbox_max(bbox.Maxima());
         Vec3 bbox_diag_dir = bbox_max - bbox_min;
-        Vec3 bbox_u1{Real(0.5) * bbox_diag_dir.X(), Real(0.0), Real(0.0)};
-        Vec3 bbox_u2{Real(0.0), Real(0.5) * bbox_diag_dir.Y(), Real(0.0)};
-        Vec3 bbox_u3{Real(0.0), Real(0.0), Real(0.5) * bbox_diag_dir.Z()};
+        Vec3 bbox_u1(Real(0.5) * bbox_diag_dir.X(), Real(0.0), Real(0.0));
+        Vec3 bbox_u2(Real(0.0), Real(0.5) * bbox_diag_dir.Y(), Real(0.0));
+        Vec3 bbox_u3(Real(0.0), Real(0.0), Real(0.5) * bbox_diag_dir.Z());
         Vec3 center_bbox = Real(0.5) * (bbox_min + bbox_max);
-        Vec3 center_front_face{bbox_min.X(), center_bbox.Y(), center_bbox.Z()};
-        Vec3 center_back_face{bbox_max.X(), center_bbox.Y(), center_bbox.Z()};
-        Vec3 center_left_face{center_bbox.X(), bbox_min.Y(), center_bbox.Z()};
-        Vec3 center_right_face{center_bbox.X(), bbox_max.Y(), center_bbox.Z()};
-        Vec3 center_bot_face{center_bbox.X(), center_bbox.Y(), bbox_min.Z()};
-        Vec3 center_top_face{center_bbox.X(), center_bbox.Y(), bbox_max.Z()};
+        Vec3 center_front_face(bbox_min.X(), center_bbox.Y(), center_bbox.Z());
+        Vec3 center_back_face(bbox_max.X(), center_bbox.Y(), center_bbox.Z());
+        Vec3 center_left_face(center_bbox.X(), bbox_min.Y(), center_bbox.Z());
+        Vec3 center_right_face(center_bbox.X(), bbox_max.Y(), center_bbox.Z());
+        Vec3 center_bot_face(center_bbox.X(), center_bbox.Y(), bbox_min.Z());
+        Vec3 center_top_face(center_bbox.X(), center_bbox.Y(), bbox_max.Z());
 
         auto ShouldRayHitFace = [](RealNum param1, RealNum param2) {
             return param1 > -1 && param1 < 1 && param2 > -1 && param2 < 1;

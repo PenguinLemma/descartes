@@ -5,9 +5,7 @@
 
 #include "catch.hpp"
 
-namespace plemma {
-
-namespace glancy {
+namespace plemma::glancy {
 
 template <typename Container>
 class CompWiseApprox : public Catch::MatcherBase<Container>
@@ -19,7 +17,7 @@ class CompWiseApprox : public Catch::MatcherBase<Container>
     CompWiseApprox(T epsilon, Container const& c) : data_(c), tolerance_(epsilon) {}
 
     template <class... Args>
-    CompWiseApprox(T epsilon, Args const&... args) : data_(args...), tolerance_(epsilon)
+    explicit CompWiseApprox(T epsilon, Args const&... args) : data_(args...), tolerance_(epsilon)
     {}
 
     // Performs the test for this matcher
@@ -48,12 +46,12 @@ class CompWiseApprox : public Catch::MatcherBase<Container>
     // is component-wise approx to
     // (*values of rhs*)
     // with a tolerance of *value of tolerance_*
-    virtual std::string describe() const override
+    [[nodiscard]] std::string describe() const override
     {
         std::ostringstream ss;
         ss << "\nis component-wise approx to\n(";
-        const auto data_begin = std::begin(data_);
-        const auto data_end = std::end(data_);
+        auto const data_begin = std::begin(data_);
+        auto const data_end = std::end(data_);
         for (auto it = data_begin; it != data_end; ++it) {
             if (it != data_begin)
                 ss << ", ";
@@ -76,6 +74,4 @@ inline CompWiseApprox<Container> IsComponentWiseApprox(Args const&... args)
     return CompWiseApprox<Container>(args...);
 }
 
-}  // namespace glancy
-
-}  // namespace plemma
+}  // namespace plemma::glancy

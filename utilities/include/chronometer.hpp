@@ -4,14 +4,12 @@
 #include <iostream>
 #include <string>
 
-namespace plemma {
-
-namespace chronometer {
+namespace plemma::chronometer {
 
 using Clock = std::chrono::steady_clock;
 using TimePoint = std::chrono::time_point<Clock>;
 
-// Class to facilitate measuring duration of chuncks of code.
+// Class to facilitate measuring duration of chunks of code.
 template <typename TimeUnitsToShow>
 class SingleMeasurement
 {
@@ -21,7 +19,7 @@ class SingleMeasurement
     // Stop the chronometer
     void Stop() { end_ = Clock::now(); }
     // Show results: process_name took time_elapsed units_name
-    void Show(const std::string& process_name, const std::string& units_name)
+    void Show(std::string const& process_name, std::string const& units_name)
     {
         std::cout << process_name << " took ";
         std::cout << std::chrono::duration_cast<TimeUnitsToShow>(end_ - begin_).count();
@@ -40,8 +38,8 @@ class SingleMeasurement
 // process_name took time_elapsed units_name
 template <typename Function, typename TimeUnitsToShow>
 inline void MeasureFunction(Function f,
-                            const std::string& process_name,
-                            const std::string& units_name)
+                            std::string const& process_name,
+                            std::string const& units_name)
 {
     SingleMeasurement<TimeUnitsToShow> measurement;
     measurement.Start();
@@ -50,6 +48,4 @@ inline void MeasureFunction(Function f,
     measurement.Show(process_name, units_name);
 }
 
-}  // namespace chronometer
-
-}  // namespace plemma
+}  // namespace plemma::chronometer

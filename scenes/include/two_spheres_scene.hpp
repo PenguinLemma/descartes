@@ -12,15 +12,15 @@ namespace plemma::glancy {
 class TwoSpheresScene : public Scene
 {
   public:
-    void LoadWorld() override;
-    virtual const HitableList& World() const override { return world_; }
-    ~TwoSpheresScene() {}
+    void LoadWorld() noexcept final;
+    [[nodiscard]] HitableList const& World() const noexcept final { return world_; }
+    ~TwoSpheresScene() final = default;
 
   private:
     HitableList world_;
 };
 
-inline void TwoSpheresScene::LoadWorld()
+inline void TwoSpheresScene::LoadWorld() noexcept
 {
     Vec3 center_from(Real(0), Real(1), Real(1));
     Vec3 center_to(Real(0), Real(1.1), Real(1));

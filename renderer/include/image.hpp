@@ -5,8 +5,7 @@
 #include <string>
 #include <vector>
 
-namespace plemma {
-namespace glancy {
+namespace plemma::glancy {
 
 class Image
 {
@@ -16,31 +15,28 @@ class Image
     {
         pixels_[h_index][v_index] = color;
     }
-    void Save(const std::string& file_path) const;
+    void Save(std::string const& file_path) const;
 
   private:
-    std::vector<std::vector<Vec3> > pixels_;
+    std::vector<std::vector<Vec3> > pixels_{};
 };
 
-void Image::Save(const std::string& file_path) const
+void Image::Save(std::string const& file_path) const
 {
-    std::ofstream myimage;
-    myimage.open(file_path);
+    std::ofstream my_image;
+    my_image.open(file_path);
     size_t width = pixels_.size();
     size_t height = pixels_[0].size();
-    myimage << "P3\n" << width << " " << height << "\n255\n";
+    my_image << "P3\n" << width << " " << height << "\n255\n";
     for (size_t c = height; c > 0U; --c) {
         size_t column = c - 1U;
         for (size_t row = 0U; row < width; ++row) {
-            myimage << static_cast<size_t>(pixels_[row][column].R()) << " ";
-            myimage << static_cast<size_t>(pixels_[row][column].G()) << " ";
-            myimage << static_cast<size_t>(pixels_[row][column].B()) << std::endl;
+            my_image << static_cast<size_t>(pixels_[row][column].R()) << " ";
+            my_image << static_cast<size_t>(pixels_[row][column].G()) << " ";
+            my_image << static_cast<size_t>(pixels_[row][column].B()) << std::endl;
         }
     }
-
-    myimage.close();
+    my_image.close();
 }
 
-}  // namespace glancy
-
-}  // namespace plemma
+}  // namespace plemma::glancy

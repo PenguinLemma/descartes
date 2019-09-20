@@ -12,9 +12,7 @@
 #include "testing_constants.hpp"
 #include "vec3.hpp"
 
-namespace plemma {
-
-namespace glancy {
+namespace plemma::glancy {
 
 constexpr auto CanVec3BeUsedToDivide = [](Vec3 const& v) {
     return v.X() > tconst::kMinValueToDivide && v.Y() > tconst::kMinValueToDivide &&
@@ -35,7 +33,7 @@ class Vec3RandomGenerator : public Catch::Generators::IGenerator<Vec3>
 
     Vec3RandomGenerator(RealNum min, RealNum max) : dist_(min, max) { static_cast<void>(next()); }
 
-    Vec3 const& get() const override;
+    [[nodiscard]] Vec3 const& get() const override;
     bool next() override
     {
         current_ = Vec3(dist_(rand_engine()), dist_(rand_engine()), dist_(rand_engine()));
@@ -43,7 +41,7 @@ class Vec3RandomGenerator : public Catch::Generators::IGenerator<Vec3>
     }
 
   private:
-    std::default_random_engine& rand_engine()
+    static std::default_random_engine& rand_engine()
     {
         static std::default_random_engine eng(Catch::rngSeed());
 
@@ -69,6 +67,4 @@ inline Catch::Generators::GeneratorWrapper<Vec3> RandomFiniteVec3(RealNum min, R
         std::make_unique<Vec3RandomGenerator>(min, max));
 }
 
-}  // namespace glancy
-
-}  // namespace plemma
+}  // namespace plemma::glancy

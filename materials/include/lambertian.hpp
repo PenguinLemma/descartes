@@ -6,17 +6,16 @@
 #include "ray.hpp"
 #include "vec3.hpp"
 
-namespace plemma {
-namespace glancy {
+namespace plemma::glancy {
 
 class Lambertian : public Material
 {
   public:
-    Lambertian(const Vec3& alb) : albedo_(alb) {}
-    virtual bool Scatter(const Ray& ray_in,
-                         const HitRecord& rec,
-                         Vec3& attenuation,
-                         Ray& scattered_ray) const override
+    explicit Lambertian(Vec3 const& alb) : albedo_(alb) {}
+    bool Scatter(Ray const& ray_in,
+                 HitRecord const& rec,
+                 Vec3& attenuation,
+                 Ray& scattered_ray) const override
     {
         Vec3 direction = rec.normal + GetRandomPointInUnitBall();
         scattered_ray = Ray(rec.p, direction, ray_in.Time());
@@ -28,6 +27,4 @@ class Lambertian : public Material
     Vec3 albedo_;
 };
 
-}  // namespace glancy
-
-}  // namespace plemma
+}  // namespace plemma::glancy

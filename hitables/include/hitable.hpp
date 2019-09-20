@@ -4,8 +4,7 @@
 #include "axes_aligned_bounding_box.hpp"
 #include "ray.hpp"
 
-namespace plemma {
-namespace glancy {
+namespace plemma::glancy {
 
 class Material;
 
@@ -20,13 +19,11 @@ struct HitRecord
 class Hitable
 {
   public:
-    virtual bool Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const = 0;
+    virtual bool Hit(Ray const& r, RealNum t_min, RealNum t_max, HitRecord& rec) const = 0;
     virtual bool ComputeBoundingBox(RealNum time_from,
                                     RealNum time_to,
                                     AxesAlignedBoundingBox& bbox) const = 0;
-    virtual ~Hitable() {}
+    virtual ~Hitable() = default;
 };
 
-}  // namespace glancy
-
-}  // namespace plemma
+}  // namespace plemma::glancy

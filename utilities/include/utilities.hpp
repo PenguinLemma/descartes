@@ -5,9 +5,7 @@
 
 #include "types.hpp"
 
-namespace plemma::glancy {
-
-namespace utilities {
+namespace plemma::glancy::utilities {
 
 inline RealNum Schlick(RealNum cosine, RealNum refraction_index)
 {
@@ -16,6 +14,4 @@ inline RealNum Schlick(RealNum cosine, RealNum refraction_index)
     return r0 + (Real(1) - r0) * std::pow((Real(1) - cosine), Real(5));
 }
 
-}  // namespace utilities
-
-}  // namespace plemma::glancy
+}  // namespace plemma::glancy::utilities

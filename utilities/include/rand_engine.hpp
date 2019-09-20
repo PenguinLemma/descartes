@@ -3,8 +3,7 @@
 #include <chrono>
 #include <random>
 
-namespace plemma {
-namespace glancy {
+namespace plemma::glancy {
 
 inline std::default_random_engine& my_engine(
     unsigned int seed =
@@ -15,6 +14,4 @@ inline std::default_random_engine& my_engine(
     return eng;
 }
 
-}  // namespace glancy
-
-}  // namespace plemma
+}  // namespace plemma::glancy

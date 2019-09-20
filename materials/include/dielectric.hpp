@@ -41,13 +41,13 @@ class Dielectric : public Material
     //   we choose the reflected one with probability 1. See method
     //   `bool Refract(const Vec3& v, const Vec3& n, RealNum ni_over_nt, Vec3& refracted)`
     //   for more information
-    virtual bool Scatter(const Ray& ray_in,
-                         const HitRecord& rec,
-                         Vec3& attenuation,
-                         Ray& scattered_ray) const override
+    bool Scatter(Ray const& ray_in,
+                 HitRecord const& rec,
+                 Vec3& attenuation,
+                 Ray& scattered_ray) const override
     {
         Vec3 outward_normal;
-        Vec3 reflected = Reflect(ray_in.Direction(), rec.normal);
+        Vec3 const reflected = Reflect(ray_in.Direction(), rec.normal);
         RealNum ni_over_nt;
         attenuation = Vec3(Real(1), Real(1), Real(1));
         Vec3 refracted;
@@ -84,7 +84,7 @@ class Dielectric : public Material
     }
 
   private:
-    const RealNum refractive_index_;
+    RealNum const refractive_index_;
 };
 
 // Refractive index of vacuum = 1

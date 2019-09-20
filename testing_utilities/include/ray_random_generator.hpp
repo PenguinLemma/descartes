@@ -31,7 +31,7 @@ class RayRandomGenerator : public Catch::Generators::IGenerator<Ray>
         static_cast<void>(next());
     }
 
-    Ray const& get() const override;
+    [[nodiscard]] Ray const& get() const override;
     bool next() override
     {
         if (!origen_gen_.next())
@@ -50,7 +50,7 @@ class RayRandomGenerator : public Catch::Generators::IGenerator<Ray>
     }
 
   private:
-    std::default_random_engine& rand_engine()
+    static std::default_random_engine& rand_engine()
     {
         static std::default_random_engine eng(Catch::rngSeed());
 

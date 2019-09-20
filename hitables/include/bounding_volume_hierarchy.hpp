@@ -9,19 +9,19 @@
 #include "constants.hpp"
 #include "hitable.hpp"
 
-namespace plemma {
-namespace glancy {
+namespace plemma::glancy {
 
 typedef std::pair<AxesAlignedBoundingBox, std::shared_ptr<Hitable> > HitableInABox;
 
-const std::array<std::function<bool(HitableInABox const& a, HitableInABox const& b)>, 3>
-    OrderWithRespectToAxis{[](HitableInABox const& a, HitableInABox const& b) -> bool {
+// TODO: move to constexpr after moving to C++20
+std::array<std::function<bool(HitableInABox const& a, HitableInABox const& b)>, 3> const
+    OrderWithRespectToAxis{[](HitableInABox const& a, HitableInABox const& b) noexcept -> bool {
                                return a.first.Minima().X() < b.first.Minima().X();
                            },
-                           [](HitableInABox const& a, HitableInABox const& b) -> bool {
+                           [](HitableInABox const& a, HitableInABox const& b) noexcept -> bool {
                                return a.first.Minima().Y() < b.first.Minima().Y();
                            },
-                           [](HitableInABox const& a, HitableInABox const& b) -> bool {
+                           [](HitableInABox const& a, HitableInABox const& b) noexcept -> bool {
                                return a.first.Minima().Z() < b.first.Minima().Z();
                            }};
 
@@ -51,13 +51,13 @@ class BoundingVolumeHierarchy : public Hitable
 
     // Check if ray hits the parent, in the case it does, recursively
     // call hit until reaching a leaf (where actual hitables are)
-    virtual bool Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const override;
+    bool Hit(Ray const& r, RealNum t_min, RealNum t_max, HitRecord& rec) const override;
 
     // Computes AxesAlignedBoundingBox if possible and returns
     // whether it was possible or not.
-    virtual bool ComputeBoundingBox([[maybe_unused]] RealNum time_from,
-                                    [[maybe_unused]] RealNum time_to,
-                                    AxesAlignedBoundingBox& bbox) const override
+    bool ComputeBoundingBox([[maybe_unused]] RealNum time_from,
+                            [[maybe_unused]] RealNum time_to,
+                            AxesAlignedBoundingBox& bbox) const override
     {
         bbox = bbox_;
         return true;
@@ -67,12 +67,13 @@ class BoundingVolumeHierarchy : public Hitable
     int ChooseOrderingAxis([[maybe_unused]] std::vector<HitableInABox>& boxed_hitables,
                            [[maybe_unused]] size_t from,
                            [[maybe_unused]] size_t to) const;
+
     AxesAlignedBoundingBox bbox_;
     std::shared_ptr<Hitable> left_child_;
     std::shared_ptr<Hitable> right_child_;
 };
 
-inline bool BoundingVolumeHierarchy::Hit(const Ray& r,
+inline bool BoundingVolumeHierarchy::Hit(Ray const& r,
                                          RealNum t_min,
                                          RealNum t_max,
                                          HitRecord& rec) const
@@ -82,8 +83,8 @@ inline bool BoundingVolumeHierarchy::Hit(const Ray& r,
     }
 
     HitRecord left_rec, right_rec;
-    bool hits_left_child = left_child_->Hit(r, t_min, t_max, left_rec);
-    bool hits_right_child = right_child_->Hit(r, t_min, t_max, right_rec);
+    bool const hits_left_child = left_child_->Hit(r, t_min, t_max, left_rec);
+    bool const hits_right_child = right_child_->Hit(r, t_min, t_max, right_rec);
 
     if (hits_left_child && hits_right_child) {
         if (left_rec.t < right_rec.t)
@@ -111,7 +112,7 @@ inline BoundingVolumeHierarchy::BoundingVolumeHierarchy(std::vector<HitableInABo
                                                         RealNum t1)
 {
     AxesAlignedBoundingBox bbox_left, bbox_right;
-    size_t number_elements = to - from;
+    size_t const number_elements = to - from;
     if (number_elements == 1) {
         left_child_ = boxed_hitables[from].second;
         bbox_left = boxed_hitables[from].first;
@@ -150,6 +151,4 @@ inline int BoundingVolumeHierarchy::ChooseOrderingAxis(
     return choose_axis(my_engine());
 }
 
-}  // namespace glancy
-
-}  // namespace plemma
+}  // namespace plemma::glancy

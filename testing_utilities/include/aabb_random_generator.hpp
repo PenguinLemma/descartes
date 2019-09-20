@@ -43,7 +43,7 @@ class AABBRandomGenerator : public Catch::Generators::IGenerator<AxesAlignedBoun
         static_cast<void>(next());
     }
 
-    AxesAlignedBoundingBox const& get() const override;
+    [[nodiscard]] AxesAlignedBoundingBox const& get() const override;
     bool next() override
     {
         if (!min_gen_.next())

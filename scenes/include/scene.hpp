@@ -5,20 +5,17 @@
 #include "hitable_list.hpp"
 #include "vec3.hpp"
 
-namespace plemma {
-namespace glancy {
+namespace plemma::glancy {
 
 class Scene
 {
   public:
-    virtual void LoadWorld() = 0;
-    virtual const HitableList& World() const = 0;
-    virtual ~Scene() {}
+    virtual void LoadWorld() noexcept = 0;
+    [[nodiscard]] virtual HitableList const& World() const noexcept = 0;
+    virtual ~Scene() = default;
 
   private:
     HitableList world_;
 };
 
-}  // namespace glancy
-
-}  // namespace plemma
+}  // namespace plemma::glancy

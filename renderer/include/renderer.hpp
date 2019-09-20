@@ -8,8 +8,7 @@
 #include "image.hpp"
 #include "scene.hpp"
 
-namespace plemma {
-namespace glancy {
+namespace plemma::glancy {
 
 template <typename UnaryOp>
 class Renderer
@@ -23,11 +22,11 @@ class Renderer
           maximum_depth_(maxd)
     {}
 
-    void ProcessScene(const Scene& scene, const Camera& camera, Image& image);
+    void ProcessScene(Scene const& scene, Camera const& camera, Image& image) noexcept;
 
   private:
-    Vec3 GetColor(const Hitable& target, const Ray& r, uint16_t depth) const;
-    void PreprocessWorld(const HitableList& world, RealNum t0, RealNum t1);
+    [[nodiscard]] Vec3 GetColor(Hitable const& target, Ray const& r, uint16_t depth) const noexcept;
+    void PreprocessWorld(HitableList const& world, RealNum t0, RealNum t1) noexcept;
 
     BoundingVolumeHierarchy ordered_world_;
     UnaryOp GammaCorrection;
@@ -38,11 +37,11 @@ class Renderer
 };
 
 template <typename UnaryOp>
-void Renderer<UnaryOp>::ProcessScene(const Scene& scene, const Camera& camera, Image& image)
+void Renderer<UnaryOp>::ProcessScene(Scene const& scene, Camera const& camera, Image& image) noexcept
 {
-    const int initial_depth = 0;
-    const RealNum horizontal_length = Real(num_horizontal_pixels_);
-    const RealNum vertical_length = Real(num_vertical_pixels_);
+    constexpr int initial_depth = 0;
+    RealNum const horizontal_length = Real(num_horizontal_pixels_);
+    RealNum const vertical_length = Real(num_vertical_pixels_);
     std::uniform_real_distribution<RealNum> dist(Real(0), Real(1));
     std::cout << "Pre-processing scene for faster rendering" << std::endl;
     PreprocessWorld(scene.World(), camera.TimeShutterOpens(), camera.TimeShutterCloses());
@@ -83,7 +82,7 @@ void Renderer<UnaryOp>::ProcessScene(const Scene& scene, const Camera& camera, I
 }
 
 template <typename UnaryOp>
-Vec3 Renderer<UnaryOp>::GetColor(const Hitable& target, const Ray& r, uint16_t depth) const
+Vec3 Renderer<UnaryOp>::GetColor(Hitable const& target, Ray const& r, uint16_t depth) const noexcept
 {
     HitRecord rec;
     // We increase the minimum parameter to avoid finding out the original intersection again
@@ -107,20 +106,18 @@ Vec3 Renderer<UnaryOp>::GetColor(const Hitable& target, const Ray& r, uint16_t d
 }
 
 template <typename UnaryOp>
-void Renderer<UnaryOp>::PreprocessWorld(const HitableList& world, RealNum t0, RealNum t1)
+void Renderer<UnaryOp>::PreprocessWorld(HitableList const& world, RealNum t0, RealNum t1) noexcept
 {
     std::vector<HitableInABox> boxed_hitables;
     int counter = 0;
     for (auto it = std::begin(world); it != std::end(world); ++it) {
         std::shared_ptr<Hitable> hpt = *it;
-        boxed_hitables.push_back(std::make_pair(AxesAlignedBoundingBox(), hpt));
-        hpt->ComputeBoundingBox(t0, t1, boxed_hitables[counter].first);
+        HitableInABox& added_element = boxed_hitables.emplace_back(AxesAlignedBoundingBox(), hpt);
+        hpt->ComputeBoundingBox(t0, t1, added_element.first);
         ++counter;
     }
 
     ordered_world_ = BoundingVolumeHierarchy(boxed_hitables, t0, t1);
 }
 
-}  // namespace glancy
-
-}  // namespace plemma
+}  // namespace plemma::glancy

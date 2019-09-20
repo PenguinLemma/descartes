@@ -19,15 +19,15 @@ namespace plemma::glancy {
 class DifferentDielectricsScene : public Scene
 {
   public:
-    void LoadWorld() override;
-    virtual const HitableList& World() const override { return world_; }
-    ~DifferentDielectricsScene() {}
+    void LoadWorld() noexcept final;
+    [[nodiscard]] HitableList const& World() const noexcept final { return world_; }
+    ~DifferentDielectricsScene() final = default;
 
   private:
     HitableList world_;
 };
 
-inline void DifferentDielectricsScene::LoadWorld()
+inline void DifferentDielectricsScene::LoadWorld() noexcept
 {
     // All spheres will be static as this scene is to test different
     // dielectric materials

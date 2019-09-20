@@ -6,34 +6,33 @@
 #include "hitable.hpp"
 #include "ray.hpp"
 
-namespace plemma {
-namespace glancy {
+namespace plemma::glancy {
 
 class HitableList : public Hitable
 {
   public:
-    HitableList() {}
+    HitableList() = default;
     HitableList(std::vector<std::shared_ptr<Hitable> >&& data) : hitables_(data) {}
-    bool Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const override;
+    bool Hit(Ray const& r, RealNum t_min, RealNum t_max, HitRecord& rec) const override;
     bool ComputeBoundingBox(RealNum time_from,
                             RealNum time_to,
                             AxesAlignedBoundingBox& bbox) const override;
     void Add(std::shared_ptr<Hitable>&& hitable) { hitables_.push_back(hitable); }
-    auto begin() noexcept { return hitables_.begin(); }
-    auto end() noexcept { return hitables_.end(); }
-    auto begin() const noexcept { return hitables_.begin(); }
-    auto end() const noexcept { return hitables_.end(); }
+    [[nodiscard]] auto begin() noexcept { return hitables_.begin(); }
+    [[nodiscard]] auto end() noexcept { return hitables_.end(); }
+    [[nodiscard]] auto begin() const noexcept { return hitables_.begin(); }
+    [[nodiscard]] auto end() const noexcept { return hitables_.end(); }
 
   private:
     std::vector<std::shared_ptr<Hitable> > hitables_;
 };
 
-inline bool HitableList::Hit(const Ray& r, RealNum t_min, RealNum t_max, HitRecord& rec) const
+inline bool HitableList::Hit(Ray const& r, RealNum t_min, RealNum t_max, HitRecord& rec) const
 {
     HitRecord temp_rec;
     bool hit_anything = false;
     RealNum closest_so_far = t_max;
-    for (const auto& item : hitables_) {
+    for (auto const& item : hitables_) {
         // we check that the pointer is not null before calling any of the
         // member functions of the object it is supposed to be pointing at
         if (item && item->Hit(r, t_min, closest_so_far, temp_rec)) {
@@ -49,7 +48,7 @@ inline bool HitableList::ComputeBoundingBox(RealNum time_from,
                                             RealNum time_to,
                                             AxesAlignedBoundingBox& bbox) const
 {
-    if (hitables_.size() < 1)
+    if (hitables_.empty())
         return false;
 
     AxesAlignedBoundingBox temp_bbox;
@@ -71,6 +70,4 @@ inline bool HitableList::ComputeBoundingBox(RealNum time_from,
     return true;
 }
 
-}  // namespace glancy
-
-}  // namespace plemma
+}  // namespace plemma::glancy

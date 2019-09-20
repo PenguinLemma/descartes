@@ -7,21 +7,20 @@
 #include "scene.hpp"
 #include "sphere.hpp"
 
-namespace plemma {
-namespace glancy {
+namespace plemma::glancy {
 
 class RandomSpheresScene : public Scene
 {
   public:
-    void LoadWorld() override;
-    virtual const HitableList& World() const override { return world_; }
-    ~RandomSpheresScene() {}
+    void LoadWorld() noexcept final;
+    [[nodiscard]] HitableList const& World() const noexcept final { return world_; }
+    ~RandomSpheresScene() noexcept final = default;
 
   private:
     HitableList world_;
 };
 
-inline void RandomSpheresScene::LoadWorld()
+inline void RandomSpheresScene::LoadWorld() noexcept
 {
     std::uniform_real_distribution<RealNum> dist(Real(0), Real(1));
 
@@ -108,7 +107,5 @@ inline void RandomSpheresScene::LoadWorld()
         }
     }
 }
-
-}  // namespace glancy
 
 }  // namespace plemma

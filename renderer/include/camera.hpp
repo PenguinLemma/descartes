@@ -4,8 +4,7 @@
 #include "ray.hpp"
 #include "vec3.hpp"
 
-namespace plemma {
-namespace glancy {
+namespace plemma::glancy {
 
 // Class that models the camera, containing its position and
 // direction, time that the shutter opens and closes, its
@@ -13,24 +12,24 @@ namespace glancy {
 class Camera
 {
   public:
-    Camera(Vec3 lookfrom,
-           Vec3 lookat,
+    Camera(Vec3 look_from,
+           Vec3 look_at,
            Vec3 vup,
            RealNum vert_fov_deg,
            RealNum aspect,
            RealNum aperture,
            RealNum focus_dist,
            RealNum t0,
-           RealNum t1)
+           RealNum t1) noexcept
     {
         time_open_shutter_ = t0;
         time_close_shutter_ = t1;
         lens_radius_ = aperture / Real(2);
-        RealNum theta = constants::kPi * vert_fov_deg / Real(180);
-        RealNum half_height = tan(theta / Real(2));
-        RealNum half_width = aspect * half_height;
-        origin_ = lookfrom;
-        looking_direction_ = UnitVector(lookfrom - lookat);
+        RealNum const theta = constants::kPi * vert_fov_deg / Real(180);
+        RealNum const half_height = std::tan(theta / Real(2));
+        RealNum const half_width = aspect * half_height;
+        origin_ = look_from;
+        looking_direction_ = UnitVector(look_from - look_at);
         horizontal_normal_ = UnitVector(Cross(vup, looking_direction_));
         vertical_normal_ = Cross(looking_direction_, horizontal_normal_);
         lower_left_corner_ = origin_ - half_width * focus_dist * horizontal_normal_ -
@@ -40,14 +39,14 @@ class Camera
         vertical_ = Real(2) * half_height * focus_dist * vertical_normal_;
     }
 
-    RealNum TimeShutterOpens() const { return time_open_shutter_; }
-    RealNum TimeShutterCloses() const { return time_close_shutter_; }
+    [[nodiscard]] RealNum TimeShutterOpens() const noexcept { return time_open_shutter_; }
+    [[nodiscard]] RealNum TimeShutterCloses() const noexcept { return time_close_shutter_; }
 
     // Returns a ray that passes through a random point in the camera
     // lens and point in image with coordinates u and v. This ray occurs
     // at a random instant between the time the shutter of the camera
     // opens and the time it closes.
-    Ray GetRay(RealNum u, RealNum v) const
+    [[nodiscard]] Ray GetRay(RealNum u, RealNum v) const noexcept
     {
         Vec3 random_dir = lens_radius_ * GetRandomPointInUnitDiscXY();
         Vec3 offset = random_dir.X() * horizontal_normal_ + random_dir.Y() * vertical_normal_;
@@ -72,6 +71,4 @@ class Camera
     RealNum time_close_shutter_;
 };
 
-}  // namespace glancy
-
-}  // namespace plemma
+}  // namespace plemma::glancy

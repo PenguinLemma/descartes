@@ -44,18 +44,18 @@ int main()
     size_t ny = 1500;
     Image image(nx, ny);
 
-    Vec3 lookfrom(Real(10), Real(1.4), Real(2));
-    Vec3 lookat(Real(3.5), Real(0.6), Real(0.5));
+    Vec3 look_from(Real(10), Real(1.4), Real(2));
+    Vec3 look_at(Real(3.5), Real(0.6), Real(0.5));
     Vec3 vertical_positive_camera{Real(0), Real(1), Real(0)};
     RealNum vertical_fov_deg{Real(30)};
-    RealNum dist_to_focus = (lookfrom - lookat).Norm();
+    RealNum dist_to_focus = (look_from - look_at).Norm();
     RealNum aperture = Real(0.1);
     RealNum aspect = Real(nx) / Real(ny);
     RealNum t0{Real(0)};
     RealNum t1{Real(0.1)};
 
-    Camera camera(lookfrom,
-                  lookat,
+    Camera camera(look_from,
+                  look_at,
                   vertical_positive_camera,
                   vertical_fov_deg,
                   aspect,
