@@ -6,7 +6,7 @@
 #include <vector>
 #include "axes_aligned_bounding_box.hpp"
 #include "constants.hpp"
-#include "hitable.hpp"
+#include "hittable.hpp"
 #include "material.hpp"
 #include "ray.hpp"
 #include "vec3.hpp"
@@ -14,7 +14,7 @@
 namespace plemma::glancy {
 
 template <typename Center, typename Radius>
-class Sphere : public Hitable
+class Sphere : public Hittable
 {
   public:
     Sphere() = default;

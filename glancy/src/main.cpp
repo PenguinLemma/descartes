@@ -7,7 +7,7 @@
 #include "camera.hpp"
 #include "dielectric.hpp"
 #include "different_dielectrics_scene.hpp"
-#include "hitable_list.hpp"
+#include "hittable_list.hpp"
 #include "image.hpp"
 #include "lambertian.hpp"
 #include "metal.hpp"

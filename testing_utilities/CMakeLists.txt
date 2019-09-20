@@ -10,7 +10,7 @@ pl_add_header_only_library(
         ${CMAKE_CURRENT_SOURCE_DIR}/include/vec3_random_generator.hpp
     LINKED_LIBS
         Catch2::Catch
-        glancy::hitables
+        glancy::hittables
         glancy::math
     COMPILER_FEATURES
         cxx_std_17

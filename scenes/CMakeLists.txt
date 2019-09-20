@@ -8,7 +8,7 @@ pl_add_header_only_library(
         ${CMAKE_CURRENT_SOURCE_DIR}/include/scene.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/two_spheres_scene.hpp
     LINKED_LIBS
-        glancy::hitables
+        glancy::hittables
         glancy::materials
         glancy::math
     COMPILER_FEATURES

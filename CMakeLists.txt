@@ -25,7 +25,7 @@ set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 add_subdirectory(glancy)
-add_subdirectory(hitables)
+add_subdirectory(hittables)
 add_subdirectory(materials)
 add_subdirectory(math)
 add_subdirectory(renderer)

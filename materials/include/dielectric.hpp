@@ -1,7 +1,7 @@
 #pragma once
 
 #include <random>
-#include "hitable.hpp"
+#include "hittable.hpp"
 #include "material.hpp"
 #include "rand_engine.hpp"
 #include "ray.hpp"

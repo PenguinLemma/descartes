@@ -40,7 +40,10 @@ class Vec3
     constexpr Vec3& operator/=(RealNum t) noexcept;
 
     // Only for testing purposes
-    [[nodiscard]] constexpr std::size_t size() const noexcept { return static_cast<std::size_t>(3); }
+    [[nodiscard]] constexpr std::size_t size() const noexcept
+    {
+        return static_cast<std::size_t>(3);
+    }
 
     [[nodiscard]] RealNum Norm() const noexcept
     {

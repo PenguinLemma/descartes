@@ -16,14 +16,14 @@ struct HitRecord
     std::shared_ptr<Material> mat;
 };
 
-class Hitable
+class Hittable
 {
   public:
     virtual bool Hit(Ray const& r, RealNum t_min, RealNum t_max, HitRecord& rec) const = 0;
     virtual bool ComputeBoundingBox(RealNum time_from,
                                     RealNum time_to,
                                     AxesAlignedBoundingBox& bbox) const = 0;
-    virtual ~Hitable() = default;
+    virtual ~Hittable() = default;
 };
 
 }  // namespace plemma::glancy

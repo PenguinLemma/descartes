@@ -7,7 +7,7 @@ pl_add_header_only_library(
         ${CMAKE_CURRENT_SOURCE_DIR}/include/image.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/renderer.hpp
     LINKED_LIBS
-        glancy::hitables
+        glancy::hittables
         glancy::materials
         glancy::math
         glancy::scenes

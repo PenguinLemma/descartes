@@ -15,7 +15,10 @@ class Ray
     [[nodiscard]] constexpr Vec3 Origin() const { return origin_; }
     [[nodiscard]] constexpr Vec3 Direction() const { return direction_; }
     [[nodiscard]] constexpr RealNum Time() const { return time_; }
-    [[nodiscard]] constexpr Vec3 PointAtParameter(RealNum lambda) const { return origin_ + lambda * direction_; }
+    [[nodiscard]] constexpr Vec3 PointAtParameter(RealNum lambda) const
+    {
+        return origin_ + lambda * direction_;
+    }
 
   private:
     Vec3 origin_{};

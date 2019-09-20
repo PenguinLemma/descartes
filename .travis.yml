@@ -16,5 +16,5 @@ install:
 
 script:
   - mkdir build && cd build && cmake .. && make -j4
-  - ./../bin/hitables_test
+  - ./../bin/hittables_test
   - ./../bin/math_test

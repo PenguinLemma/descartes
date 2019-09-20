@@ -13,11 +13,11 @@ class RandomSpheresScene : public Scene
 {
   public:
     void LoadWorld() noexcept final;
-    [[nodiscard]] HitableList const& World() const noexcept final { return world_; }
+    [[nodiscard]] HittableList const& World() const noexcept final { return world_; }
     ~RandomSpheresScene() noexcept final = default;
 
   private:
-    HitableList world_;
+    HittableList world_;
 };
 
 inline void RandomSpheresScene::LoadWorld() noexcept
@@ -108,4 +108,4 @@ inline void RandomSpheresScene::LoadWorld() noexcept
     }
 }
 
-}  // namespace plemma
+}  // namespace plemma::glancy

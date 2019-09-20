@@ -3,7 +3,7 @@ add_executable(glancy ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 target_link_libraries(
     glancy
     PUBLIC
-        glancy::hitables
+        glancy::hittables
         glancy::materials
         glancy::math
         glancy::renderer

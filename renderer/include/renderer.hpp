@@ -25,8 +25,9 @@ class Renderer
     void ProcessScene(Scene const& scene, Camera const& camera, Image& image) noexcept;
 
   private:
-    [[nodiscard]] Vec3 GetColor(Hitable const& target, Ray const& r, uint16_t depth) const noexcept;
-    void PreprocessWorld(HitableList const& world, RealNum t0, RealNum t1) noexcept;
+    [[nodiscard]] Vec3 GetColor(Hittable const& target, Ray const& r, uint16_t depth) const
+        noexcept;
+    void PreprocessWorld(HittableList const& world, RealNum t0, RealNum t1) noexcept;
 
     BoundingVolumeHierarchy ordered_world_;
     UnaryOp GammaCorrection;
@@ -37,7 +38,9 @@ class Renderer
 };
 
 template <typename UnaryOp>
-void Renderer<UnaryOp>::ProcessScene(Scene const& scene, Camera const& camera, Image& image) noexcept
+void Renderer<UnaryOp>::ProcessScene(Scene const& scene,
+                                     Camera const& camera,
+                                     Image& image) noexcept
 {
     constexpr int initial_depth = 0;
     RealNum const horizontal_length = Real(num_horizontal_pixels_);
@@ -82,7 +85,8 @@ void Renderer<UnaryOp>::ProcessScene(Scene const& scene, Camera const& camera, I
 }
 
 template <typename UnaryOp>
-Vec3 Renderer<UnaryOp>::GetColor(Hitable const& target, Ray const& r, uint16_t depth) const noexcept
+Vec3 Renderer<UnaryOp>::GetColor(Hittable const& target, Ray const& r, uint16_t depth) const
+    noexcept
 {
     HitRecord rec;
     // We increase the minimum parameter to avoid finding out the original intersection again
@@ -106,18 +110,18 @@ Vec3 Renderer<UnaryOp>::GetColor(Hitable const& target, Ray const& r, uint16_t d
 }
 
 template <typename UnaryOp>
-void Renderer<UnaryOp>::PreprocessWorld(HitableList const& world, RealNum t0, RealNum t1) noexcept
+void Renderer<UnaryOp>::PreprocessWorld(HittableList const& world, RealNum t0, RealNum t1) noexcept
 {
-    std::vector<HitableInABox> boxed_hitables;
+    std::vector<HittableInABox> boxed_hittables;
     int counter = 0;
     for (auto it = std::begin(world); it != std::end(world); ++it) {
-        std::shared_ptr<Hitable> hpt = *it;
-        HitableInABox& added_element = boxed_hitables.emplace_back(AxesAlignedBoundingBox(), hpt);
+        std::shared_ptr<Hittable> hpt = *it;
+        HittableInABox& added_element = boxed_hittables.emplace_back(AxesAlignedBoundingBox(), hpt);
         hpt->ComputeBoundingBox(t0, t1, added_element.first);
         ++counter;
     }
 
-    ordered_world_ = BoundingVolumeHierarchy(boxed_hitables, t0, t1);
+    ordered_world_ = BoundingVolumeHierarchy(boxed_hittables, t0, t1);
 }
 
 }  // namespace plemma::glancy

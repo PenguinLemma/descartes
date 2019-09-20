@@ -3,12 +3,13 @@
  - [x] Extract all random number generations to a class so that seeding and initializing is done just once
  - [x] Add motion blur
  - [x] Add Bounding Volume Hierarchies
-    - [x] Add random axis sorting of boxed hitables
+    - [x] Add random axis sorting of boxed hittables
     - [ ] Study the possibility of a better choice of axis w.r.t. which we do the spacial ordering at each step
  - [ ] Try to switch to `constexpr` as much as possible
  - [ ] Use timing tool to find out if `constexpr` is helping
- - [ ] Add the option to check if the new `plemma::glancy::Hitable` would invade other `plemma::glancy::Hitables` in `plemma::glancy::HitableList::Add()`
+ - [ ] Add the option to check if the new `plemma::glancy::Hittable` would invade other `plemma::glancy::Hittables` in `plemma::glancy::HittableList::Add()`
  - [ ] Parallelize
+ - [ ] In `axes_aligned_bounding_box.hpp`, if `Minima()` and `Maxima()` return `Vec3` instead of `Vec3 const&` the tests in `hittables_test` take much longer to finish (and will possibly be red). Study that case and see possible changes around `glancy`.
 
 ## Tools
  - [x] Add timing tool:
@@ -42,9 +43,9 @@ https://github.com/catchorg/Catch2/blob/master/docs/generators.md
      - [ ] `plemma::glancy::BoundingVolumeHierarchy::ComputeBoundingBox`
      - [ ] `plemma::glancy::Camera::GetRay`
      - [ ] `plemma::glancy::Dielectric::Scatter`
-     - [ ] `plemma::glancy::HitableList::Hit` with mocked hitables derived from `plemma::glancy::Hitable`
-     - [ ] `plemma::glancy::HitableList::ComputeBoundingBox` with mocked hitables derived from `plemma::glancy::Hitable`
-     - [ ] `plemma::glancy::HitableList::Add`
+     - [ ] `plemma::glancy::HittableList::Hit` with mocked hittables derived from `plemma::glancy::Hittable`
+     - [ ] `plemma::glancy::HittableList::ComputeBoundingBox` with mocked hittables derived from `plemma::glancy::Hittable`
+     - [ ] `plemma::glancy::HittableList::Add`
      - [ ] `plemma::glancy::Lambertian::Scatter`
      - [ ] `plemma::glancy::Metal::Scatter`
      - [x] `plemma::glancy::Ray`

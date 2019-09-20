@@ -1,6 +1,6 @@
 #pragma once
 
-#include "hitable.hpp"
+#include "hittable.hpp"
 #include "ray.hpp"
 #include "vec3.hpp"
 

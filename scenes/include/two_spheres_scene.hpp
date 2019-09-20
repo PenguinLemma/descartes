@@ -13,11 +13,11 @@ class TwoSpheresScene : public Scene
 {
   public:
     void LoadWorld() noexcept final;
-    [[nodiscard]] HitableList const& World() const noexcept final { return world_; }
+    [[nodiscard]] HittableList const& World() const noexcept final { return world_; }
     ~TwoSpheresScene() final = default;
 
   private:
-    HitableList world_;
+    HittableList world_;
 };
 
 inline void TwoSpheresScene::LoadWorld() noexcept
