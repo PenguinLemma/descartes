@@ -1,6 +1,8 @@
 #pragma once
 
 #include <memory>
+#include "checker_texture.hpp"
+#include "constant_texture.hpp"
 #include "dielectric.hpp"
 #include "lambertian.hpp"
 #include "metal.hpp"
@@ -28,7 +30,9 @@ inline void RandomSpheresScene::LoadWorld() noexcept
     world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(
         Vec3(Real(0), Real(-1000), Real(0)),
         Real(1000),
-        std::make_shared<Lambertian>(Vec3(Real(0.5), Real(0.5), Real(0.5)))));
+        std::make_shared<Lambertian>(std::make_shared<CheckerTexture>(
+            std::make_shared<ConstantTexture>(Vec3(Real(0.2), Real(0.3), Real(0.1))),
+            std::make_shared<ConstantTexture>(Vec3(Real(0.9), Real(0.9), Real(0.9)))))));
 
     // Add 3 mid size spheres
     world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(
@@ -37,7 +41,8 @@ inline void RandomSpheresScene::LoadWorld() noexcept
     world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(
         Vec3(Real(-4), Real(1), Real(0)),
         Real(1),
-        std::make_shared<Lambertian>(Vec3(Real(0.4), Real(0.2), Real(0.1)))));
+        std::make_shared<Lambertian>(
+            std::make_shared<ConstantTexture>(Vec3(Real(0.4), Real(0.2), Real(0.1))))));
 
     world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(
         Vec3(Real(4), Real(1), Real(0)),
@@ -64,14 +69,17 @@ inline void RandomSpheresScene::LoadWorld() noexcept
                     Vec3 albedo(dist(my_engine()) * dist(my_engine()),
                                 dist(my_engine()) * dist(my_engine()),
                                 dist(my_engine()) * dist(my_engine()));
+                    auto alb_texture = std::make_shared<ConstantTexture>(albedo);
                     if (is_static) {
                         world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(
-                            center, radius, std::make_shared<Lambertian>(albedo)));
+                            center, radius, std::make_shared<Lambertian>(alb_texture)));
                     }
                     else {
                         world_.Add(std::make_shared<
                                    Sphere<decltype(moving_center), decltype(constant_radius)> >(
-                            moving_center, constant_radius, std::make_shared<Lambertian>(albedo)));
+                            moving_center,
+                            constant_radius,
+                            std::make_shared<Lambertian>(alb_texture)));
                     }
                 }
                 else if (mat_choice < Real(0.85)) {

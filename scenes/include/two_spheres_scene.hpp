@@ -1,6 +1,9 @@
 #pragma once
 
 #include <memory>
+
+#include "checker_texture.hpp"
+#include "constant_texture.hpp"
 #include "dielectric.hpp"
 #include "lambertian.hpp"
 #include "metal.hpp"
@@ -29,9 +32,15 @@ inline void TwoSpheresScene::LoadWorld() noexcept
     world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(
         Vec3(Real(0), Real(-1000), Real(0)),
         Real(1000),
-        std::make_shared<Lambertian>(Vec3(Real(0.5), Real(0.5), Real(0.5)))));
+        std::make_shared<Lambertian>(std::make_shared<CheckerTexture>(
+            std::make_shared<ConstantTexture>(Vec3(Real(0.5), Real(0.5), Real(0.5))),
+            std::make_shared<ConstantTexture>(Vec3(Real(0.9), Real(0.9), Real(0.9)))))));
     world_.Add(std::make_shared<Sphere<decltype(center), decltype(radius)> >(
-        center, radius, std::make_shared<Metal>(Vec3(Real(0.5), Real(0.5), Real(0.5)), Real(0.9))));
+        center,
+        radius,
+        std::make_shared<Lambertian>(std::make_shared<CheckerTexture>(
+            std::make_shared<ConstantTexture>(Vec3(Real(0.5), Real(0.5), Real(0.5))),
+            std::make_shared<ConstantTexture>(Vec3(Real(0.9), Real(0.9), Real(0.9)))))));
 }
 
 }  // namespace plemma::glancy

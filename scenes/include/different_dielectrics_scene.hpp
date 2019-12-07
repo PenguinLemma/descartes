@@ -7,6 +7,7 @@
 #pragma once
 
 #include <memory>
+#include "constant_texture.hpp"
 #include "constants.hpp"
 #include "dielectric.hpp"
 #include "lambertian.hpp"
@@ -35,7 +36,8 @@ inline void DifferentDielectricsScene::LoadWorld() noexcept
     world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(
         Vec3{Real(0), Real(-1e5), Real(0)},
         Real(1e5),
-        std::make_shared<Lambertian>(Vec3(Real(0.0075), Real(0.3), Real(0.675)))));
+        std::make_shared<Lambertian>(
+            std::make_shared<ConstantTexture>(Vec3(Real(0.0075), Real(0.3), Real(0.675))))));
 
     // Add one sphere for each type of dielectric (except vacuum)
     RealNum radius_big_circle{Real(5.5)};
@@ -84,7 +86,9 @@ inline void DifferentDielectricsScene::LoadWorld() noexcept
                         dist(my_engine()) * dist(my_engine()),
                         dist(my_engine()) * dist(my_engine()));
             world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(
-                center, radius, std::make_shared<Lambertian>(albedo)));
+                center,
+                radius,
+                std::make_shared<Lambertian>(std::make_shared<ConstantTexture>(albedo))));
         }
     }
 
@@ -108,7 +112,9 @@ inline void DifferentDielectricsScene::LoadWorld() noexcept
                         dist(my_engine()) * dist(my_engine()),
                         dist(my_engine()) * dist(my_engine()));
             world_.Add(std::make_shared<Sphere<Vec3, RealNum> >(
-                center, radius, std::make_shared<Lambertian>(albedo)));
+                center,
+                radius,
+                std::make_shared<Lambertian>(std::make_shared<ConstantTexture>(albedo))));
         }
     }
 }

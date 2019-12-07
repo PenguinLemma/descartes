@@ -9,6 +9,7 @@ pl_add_header_only_library(
         ${CMAKE_CURRENT_SOURCE_DIR}/include/metal.hpp
     LINKED_LIBS
         glancy::math
+        glancy::textures
         glancy::hittables
     COMPILER_FEATURES
         cxx_std_17
