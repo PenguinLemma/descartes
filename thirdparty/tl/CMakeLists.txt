@@ -1,0 +1,9 @@
+pl_add_header_only_library(
+    typeclass
+    NAMESPACE
+        tl::
+    SOURCES
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/typeclass.hpp
+    COMPILER_FEATURES
+        cxx_std_17
+)
