@@ -411,8 +411,8 @@ TEST_CASE("Dot : Vec3 x Vec3 -> R", "[Vec3]")
             Vec3 rotated_v(cosine * unitary_v.X() - sine * unitary_v.Y(),
                            sine * unitary_v.X() + cosine * unitary_v.Y(),
                            Real(0.0));
-            CHECK(Dot(unitary_v, rotated_v) == Approx(cosine));
-            CHECK(Dot(rotated_v, unitary_v) == Approx(cosine));
+            CHECK(Dot(unitary_v, rotated_v) == Approx(cosine).margin(1e-5));
+            CHECK(Dot(rotated_v, unitary_v) == Approx(cosine).margin(1e-5));
         }
 
         SECTION("Vectors inside plane xz")
@@ -422,8 +422,8 @@ TEST_CASE("Dot : Vec3 x Vec3 -> R", "[Vec3]")
             Vec3 rotated_v(cosine * unitary_v.X() - sine * unitary_v.Z(),
                            Real(0.0),
                            sine * unitary_v.X() + cosine * unitary_v.Z());
-            CHECK(Dot(unitary_v, rotated_v) == Approx(cosine));
-            CHECK(Dot(rotated_v, unitary_v) == Approx(cosine));
+            CHECK(Dot(unitary_v, rotated_v) == Approx(cosine).margin(1e-5));
+            CHECK(Dot(rotated_v, unitary_v) == Approx(cosine).margin(1e-5));
         }
 
         SECTION("Vectors inside plane yz")
@@ -433,8 +433,8 @@ TEST_CASE("Dot : Vec3 x Vec3 -> R", "[Vec3]")
             Vec3 rotated_v(Real(0.0),
                            cosine * unitary_v.Y() - sine * unitary_v.Z(),
                            sine * unitary_v.Y() + cosine * unitary_v.Z());
-            CHECK(Dot(unitary_v, rotated_v) == Approx(cosine));
-            CHECK(Dot(rotated_v, unitary_v) == Approx(cosine));
+            CHECK(Dot(unitary_v, rotated_v) == Approx(cosine).margin(1e-5));
+            CHECK(Dot(rotated_v, unitary_v) == Approx(cosine).margin(1e-5));
         }
     }
 }
